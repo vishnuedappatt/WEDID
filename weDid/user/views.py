@@ -1,7 +1,7 @@
 
 import datetime
 from lib2to3.pgen2 import token
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from rest_framework.decorators import api_view,permission_classes,authentication_classes
 
 from .models import Account,UserToken
@@ -212,5 +212,62 @@ def forgotpassword(request):
     user=Account.objects.filter(email=email).exists()
     if user:
         print('enteredddd')
-    message={'detail':'email sented to  {email}'}
-    return Response(message,status=status.HTTP_200_OK)
+        user=Account.objects.get(email__exact=email)
+        print(user)
+        current_site = get_current_site(request)
+        mail_subject ='Reset password'
+        message= render_to_string('user/forgot_password_email.html',{
+                'user':user,
+                'domain': current_site,
+                'uid':urlsafe_base64_encode(force_bytes(user.id)),
+                'token':default_token_generator.make_token(user),
+
+                    })
+        to_email = email
+        send_email=EmailMessage(mail_subject, message ,to=[to_email])
+        print("here")
+        send_email.send()
+        message={f'detail':'email sented to  {email}'}
+        return Response(message,status=status.HTTP_200_OK)
+    else:
+        message={'detail':'no account presented'}
+        return Response(message,status=status.HTTP_400_BAD_REQUEST)
+    
+@api_view(['POST'])
+def resetpassword_validate(request,uidb64,token):
+    try:
+        print('get in ittt')
+        uid=urlsafe_base64_decode(uidb64).decode()
+        user =Account._default_manager.get(pk=uid)
+    except(TypeError,ValueError,OverflowError,Account.DoesNotExist):
+      user=None
+    if user is not None and default_token_generator.check_token(user,token):
+        request.session['uid']=uid
+
+        # return redirect('resetPassword')
+        print(uid)
+        message={'detail':'uid taken'}
+        return Response(message,status=status.HTTP_200_OK)
+    else:
+        message={'detail':'no account presented'}
+        return Response(message,status=status.HTTP_400_BAD_REQUEST)
+    
+    
+@api_view(['POST'])
+def resetPassword(request):
+    data=request.data
+    password =data['password']
+    confirm_password =data['confirm_password']
+
+    if password == confirm_password:
+        uid =request.session.get('uid')
+        print(uid)
+        user=Account.objects.get(pk=uid)
+        user.set_password(password)
+        user.save()
+        message={'detail':'password reset successfully'}
+        return Response(message,status=status.HTTP_200_OK)
+
+    else:
+        message={'detail':'password missmatch'}
+        return Response(message,status=status.HTTP_400_BAD_REQUEST)

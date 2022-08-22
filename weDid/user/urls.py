@@ -10,4 +10,6 @@ urlpatterns = [
     path('refresh/',views.refresh,name='refresh'),
     path('logout/',views.Logout,name='logout'),
     path('forgotpassword/',views.forgotpassword,name='forgottpassword'),
+    path('resetpassword_validate/<uidb64>/<token>',views.resetpassword_validate,name="resetpassword_validate"),
+    path('resetPassword/',views.resetPassword,name="resetPassword"),
     ]
