@@ -58,7 +58,7 @@ function NavBar() {
             <Nav.Link href="#" disabled>
               Link
             </Nav.Link>
-            <Button variant="outline-success" onClick={logOut}>Logout</Button>
+           
           </Nav>
           <Form className="d-flex">
             <Form.Control
@@ -68,6 +68,7 @@ function NavBar() {
               aria-label="Search"
             />
             <Button variant="outline-success" onClick={Alldata}>Search</Button>
+            <Button variant="outline-success" onClick={logOut}>Logout</Button>
           </Form>
         </Navbar.Collapse>
       </Container>

@@ -12,10 +12,18 @@ export const AuthProvider=({children})=>{
  let [user,setUser]=useState(()=>localStorage.getItem('authToken')? jwt_decode(localStorage.getItem('authToken')):null)
 
     const navigate=useNavigate()
-    const Userlogin=async({...values})=>{
+    
+
+    const [errors,SetError]=useState(false)
+
+
+    const Userlogin=async(email,password)=>{
         // e.preventDefault()
-       await axios.post('user/login/',{...values}).then((res)=>{
+        console.log(email,password)
+       await axios.post('user/login/',{email:email,password:password}).then((res)=>{
                 console.log(res.data)
+                console.log(res.data.message)
+
                 if (res.data.token){
                     console.log('valuess are herer')
                      localStorage.setItem('authToken',JSON.stringify(res.data))
@@ -23,15 +31,22 @@ export const AuthProvider=({children})=>{
                      console.log(res.data)
                      setUser(res.data.token)
                      console.log(res.data.token)
+                     SetError(res.data.message)
                     navigate('/')
 
                 }
-                // setUser(res.data)
+              if(res.data.message){
+                console.log(res.data.message)
+                SetError(res.data.message)
+                setTimeout(() => {
+                    SetError(false);
+                       }, 5000);
 
+              }
             }
             )  
         }
-
+        const value=user
         let logOut=()=>{
             axios.post('user/logout/').then((res)=>{
                 console.log(res.data)
@@ -49,8 +64,8 @@ export const AuthProvider=({children})=>{
             logOut:logOut,
             authToken:authToken,
             mobile:mobile,
-            setMobile:setMobile,
-            
+            setMobile:setMobile,   
+            errors:errors,        
            
         }
         return(

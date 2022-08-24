@@ -8,22 +8,42 @@ import AuthContext from '../context/authcontext';
 
 function Login() {
 
+const  {Userlogin,errors}= useContext(AuthContext)
 
-const [values,setValue]=useState({
-    email:'',
-    password:''
-})
+const [email,setEmail]=useState('')
+const [password,setPassword]=useState('')
 
-let {email,password}=values
-console.log(password,email,'woeoee')
-const  {Userlogin,}= useContext(AuthContext)
+const [empty,setEmpty]=useState(false)
+
+const checkEmail=(e)=>{
+    console.log(e.target.value)
+    let emails=e.target.value
+    setEmail(emails)    
+    
+}
+
+const checkPassword=(e)=>{
+    console.log(e.target.value)
+    let pass=e.target.value
+    setPassword(pass)
+
+}
 
 
-
-const loginHandler=(e)=>{
-    e.preventDefault()
-    Userlogin({...values})
-                }
+ const loginHandler=(e)=>{
+     e.preventDefault() 
+     if (email.trim().length !==0 &&  password.trim().length !==0){
+      console.log('values')
+      setEmpty(false)
+     Userlogin(email,password)   
+   
+     }
+     else{
+      setEmpty(true)
+      console.log('noooooo')
+     }    
+    
+ }
 
   return (
 
@@ -37,14 +57,16 @@ const loginHandler=(e)=>{
           <Form onSubmit={loginHandler} className=''>
       <Form.Group className="mb-3 mt-5" controlId="formBasicEmail">
         <Form.Label>Email address</Form.Label>
-        <Form.Control  style={{height:'4rem'}} type="text" placeholder="Enter email" name='email'  onChange={(e)=>setValue({...values,[e.target.name]:e.target.value})} />
+        <Form.Control  style={{height:'4rem'}} type="text" placeholder="Enter email" name='email'  onChange={checkEmail} />
         <Form.Text className="text-muted">        
         </Form.Text>
       </Form.Group>
       <Form.Group className="mb-3" controlId="formBasicPassword">
         <Form.Label>Password</Form.Label>
-        <Form.Control  style={{height:'4rem'}}  type="password" placeholder="Password" name='password'  onChange={(e)=>setValue({...values,[e.target.name]:e.target.value})}/>
+        <Form.Control  style={{height:'4rem'}}  type="password" placeholder="Password" name='password'  onChange={checkPassword}/>
       </Form.Group>   
+      {errors?<span style={{color:'red'}}>{errors}</span>:''}
+      {empty?<span style={{color:'red'}}>Fill the blanks to submit</span>:''}
       <Button variant="dark" type="submit"    style={{textAlign:'center',height:'4rem',width:'15rem',marginLeft:'7rem',marginTop:'3rem'}}>
         Submit
       </Button>

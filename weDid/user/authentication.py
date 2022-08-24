@@ -2,10 +2,14 @@ from rest_framework import exceptions
 import jwt ,datetime
 from rest_framework.authentication import BaseAuthentication,get_authorization_header
 from .models import Account
+from rest_framework.response import Response
 
 
 def create_access_token(id):
+    print('id is this ',id)
     user=Account.objects.get(id=id)
+    print(user)
+    print(user.email,'emaill')
     return jwt.encode({
         'user_id':id,
         'username':user.first_name,
@@ -36,11 +40,19 @@ def decode_access_token(token):
     
 def decode_refresh_token(token):
     try:
+        print(token,'loll')
+        print('enteredd')
         payload=jwt.decode(token,'refresh_secret',algorithms='HS256')
+        print(payload,'payload')
         return payload['user_id']
         
     except Exception as e:
         print(e)
+        response=Response()
+        response.data={
+            'message':'invalid credential'
+        }
+        return response
         raise exceptions.AuthenticationFailed('unauthenticated') 
     
 

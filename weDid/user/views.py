@@ -1,6 +1,5 @@
 
 import datetime
-from lib2to3.pgen2 import token
 from django.shortcuts import render,redirect
 from rest_framework.decorators import api_view,permission_classes,authentication_classes
 
@@ -71,45 +70,12 @@ def Register(request):
         # return Response(message,status=status.HTTP_400_BAD_REQUEST)
     
     
-    
-# @api_view(['POST'])
-# def verification(request):
-#     try:
-#         data=request.data
-#         mobile=request.session['phone_number']
-#         print(mobile,'second')
-#         code=data['code']
-#         print(code)
-#         if check(mobile,code):
-#             print('wehrer')
-#             user=Account.objects.get(mobile=mobile)
-#             print('hoiojio')            
-#             verified=VerificationSerializer(instance=user, data=request.data)
-#             print('whennn')
-#             if verified.is_valid():
-#                 print('adaaaaaaaa')
-#                 verified.save()
-#             else:
-#                 print('error')
-#             return Response(verified.data)
-            
-            
-#         else:
-#             message={'detail':'otp is not currect'}
-#             return Response(message,status=status.HTTP_400_BAD_REQUEST)
-#     except:
-#         message={'detail':'error in serializer'}
-#         return Response(message,status=status.HTTP_400_BAD_REQUEST)
-
+  
 
 @api_view(['POST'])
 def verification(request):   
-    print('enter')
-    # mobile=request.session['mobile']
-    # print(mobile)
-    data=request.data
-    # user=request.user
-    # print(user)
+    print('enter')  
+    data=request.data 
     code=data['code']
     mobile=data['mobile']
     # mobile=request.session['phone_number']
@@ -157,16 +123,14 @@ def Login(request):
             'message':'invalid credential'
         }
         return response
-        # raise exceptions.AuthenticationFailed('invalid credentials ')
+      
        
     if not user.check_password(password):
         response=Response()
         response.data={
             'message':'password miss match '
         }
-        return response
-        # raise exceptions.AuthenticationFailed('password miss match')
-       
+        return response  
     
     
     
@@ -198,9 +162,6 @@ def Login(request):
 
 
 @api_view(['GET'])
-# @permission_classes([IsAuthenticated])
-# authentication_classes=[JWTAuthentications]
-# @permission_classes([JWTAuthentications])
 @authentication_classes([JWTAuthentications])
 def alluser(request):
     user=Account.objects.all()
@@ -212,13 +173,20 @@ def alluser(request):
 @api_view(['POST'])
 def refresh(request):
     print('wooe')
-    refresh_token=request.COOKIES.get('refresh_token')
-    id=decode_refresh_token(refresh_token)
+    data=request.data
+    refresh=data['refresh']
+    # refresh_token=request.COOKIES.get('refresh_token')
+    id=decode_refresh_token(refresh)
     if not UserToken.objects.filter(
         user_id=id,
-        token=refresh_token,
+        token=refresh,
         expired_at__gt=datetime.datetime.now(tz=datetime.timezone.utc)
     ).exists():
+        response=Response()
+        response.data={
+            'message':'error'
+        }
+        return response
         raise exceptions.AuthenticationFailed('unauthenticate')
     
     access_token=create_access_token(id)
