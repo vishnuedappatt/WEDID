@@ -37,6 +37,11 @@ def Register(request):
             userpassword=password
             print(userpassword)
         else:
+            response=Response()
+            response.data={
+            'passworderr':'password miss match'
+            }
+            return response
             message={'detail':'password miss match'}
             return Response(message,status=status.HTTP_400_BAD_REQUEST)
             
@@ -51,12 +56,19 @@ def Register(request):
         mobile=data['mobile']
         request.session['phone_number']=mobile
         send(mobile)
+        vale=request.session['phone_number']
+        print(vale)
         print(mobile)
         serializer=AccountSerializer(user ,many=False)
         return Response(serializer.data)
     except:
-        message={'detail':'user with this email already exists'}
-        return Response(message,status=status.HTTP_400_BAD_REQUEST)
+        response=Response()
+        response.data={
+            'emailerror':'user with this email already exists'
+        }
+        return response
+        # message={'detail':'user with this email already exists'}
+        # return Response(message,status=status.HTTP_400_BAD_REQUEST)
     
     
     
@@ -91,26 +103,42 @@ def Register(request):
 
 
 @api_view(['POST'])
-def verification(request):
-    try:
-        data=request.data
-        mobile=request.session['phone_number']
-        print(mobile,'second')
-        code=data['code']
-        print(code)
-        if check(mobile,code):      
-            user=Account.objects.get(mobile=mobile)
-            print(user.is_active)
-            user.is_active=True
-            user.save()
-            serializer=AccountSerializer(user,many=False)
-            return Response(serializer.data)
-        else:
-            message={'detail':'otp is not valid'}
-            return Response(message,status=status.HTTP_400_BAD_REQUEST)
+def verification(request):   
+    print('enter')
+    # mobile=request.session['mobile']
+    # print(mobile)
+    data=request.data
+    # user=request.user
+    # print(user)
+    code=data['code']
+    mobile=data['mobile']
+    # mobile=request.session['phone_number']
+    print(mobile,'second')
+    
+    print(code)
+    if check(mobile,code):      
+        user=Account.objects.get(mobile=mobile)
+        print(user.is_active)
+        user.is_active=True
+        user.save()
+        serializer=AccountSerializer(user,many=False)
+        return Response(serializer.data)
+    else:
+        response=Response()
+        response.data={
+            'otp':'otp experied'
+        }
+        return response
+        message={'detail':'otp is not valid'}
+        return Response(message,status=status.HTTP_400_BAD_REQUEST)
        
         
-    except:
+   
+        response=Response()
+        response.data={
+            'otperror':' error found'
+        }
+        return response
         message={'detail':'error in serializer'}
         return Response(message,status=status.HTTP_400_BAD_REQUEST)
     
@@ -124,10 +152,21 @@ def Login(request):
     user=Account.objects.filter(email=email).first()
     print('wow')
     if user is None:
-        raise exceptions.AuthenticationFailed('invalid credentials ')
-    
+        response=Response()
+        response.data={
+            'message':'invalid credential'
+        }
+        return response
+        # raise exceptions.AuthenticationFailed('invalid credentials ')
+       
     if not user.check_password(password):
-        raise exceptions.AuthenticationFailed('password miss match')
+        response=Response()
+        response.data={
+            'message':'password miss match '
+        }
+        return response
+        # raise exceptions.AuthenticationFailed('password miss match')
+       
     
     
     
@@ -192,6 +231,7 @@ def refresh(request):
 @api_view(['POST'])
 # @authentication_classes([JWTAuthentications])
 def Logout(request):
+    print('heuuuu')
     refresh_token=request.COOKIES.get('refresh_token')
     # UserToken.objects.filter(user_id=request.user.id).delete()
     UserToken.objects.filter(token=refresh_token).delete()

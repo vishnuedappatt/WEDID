@@ -1,81 +1,66 @@
 import React from 'react'
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import {useState} from 'react'
+import {useState,useContext} from 'react'
+import Card from 'react-bootstrap/Card'
+import { Link } from 'react-router-dom';
+import AuthContext from '../context/authcontext';
 
 function Login() {
 
-const [email,setEmail]=useState('')
-const [password,setPassword]=useState('')
-const [emailerror,SetErrorEmail]=useState(false)
-const [passworderror,setError]=useState(false)
 
-const checkEmail=(e)=>{
-    console.log(e.target.value)
-    let emails=e.target.value
-    let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    if ( re.test(emails) ) {
-        console.log('email field')
-        SetErrorEmail(false)
-    }
-    else{
-        SetErrorEmail(true)
-    }
-    setEmail(emails)
-    
-    
-}
-const checkPassword=(e)=>{
-    console.log(e.target.value)
-    let pass=e.target.value
+const [values,setValue]=useState({
+    email:'',
+    password:''
+})
 
-    if (pass.length>6){
-        console.log('value')
-        setError(false)
-    }
-    else{
-    console.log('error')
-    setError(true)
-    }
-    setPassword(pass)
-
-}
+let {email,password}=values
+console.log(password,email,'woeoee')
+const  {Userlogin,}= useContext(AuthContext)
 
 
- const loginHandler=(e)=>{
-    e.preventDefault() 
-    if (password.length<6 || email ===''){
-        console.log('hello')
-        SetErrorEmail(true)
-        alert('error')
-        setError(true)
-        
-    }
-    else{
-        console.log('welcome')
 
-    }
-    
- }
+const loginHandler=(e)=>{
+    e.preventDefault()
+    Userlogin({...values})
+                }
+
   return (
+
     <div>
-    <Form onSubmit={loginHandler} bg='dark'>
-      <Form.Group className="mb-3" controlId="formBasicEmail">
+         <Card style={{ width: '32rem',height:'35rem' ,backgroundColor:'#339966',borderRadius:'2rem'}}>
+      <Card.Img  />
+      <Card.Body>
+        {/* <Card.Title>LOGIN</Card.Title> */}
+        <Card.Text>
+         
+          <Form onSubmit={loginHandler} className=''>
+      <Form.Group className="mb-3 mt-5" controlId="formBasicEmail">
         <Form.Label>Email address</Form.Label>
-        <Form.Control type="text" placeholder="Enter email" value={email}  onChange={checkEmail} />{emailerror?<span style={{color:'red'}}>type a valid email address</span>:' '}
+        <Form.Control  style={{height:'4rem'}} type="text" placeholder="Enter email" name='email'  onChange={(e)=>setValue({...values,[e.target.name]:e.target.value})} />
         <Form.Text className="text-muted">        
         </Form.Text>
       </Form.Group>
       <Form.Group className="mb-3" controlId="formBasicPassword">
         <Form.Label>Password</Form.Label>
-        <Form.Control type="password" placeholder="Password"  value={password} onChange={checkPassword}/> { passworderror?<span style={{color:'red'}}>minimum 6 charector</span>:''}
+        <Form.Control  style={{height:'4rem'}}  type="password" placeholder="Password" name='password'  onChange={(e)=>setValue({...values,[e.target.name]:e.target.value})}/>
       </Form.Group>   
-      <Button variant="primary" type="submit"  style={{textAlign:'center',height:'50px',width:'100px',}}>
+      <Button variant="dark" type="submit"    style={{textAlign:'center',height:'4rem',width:'15rem',marginLeft:'7rem',marginTop:'3rem'}}>
         Submit
       </Button>
+      <Button variant="dark" type="submit"    style={{textAlign:'center',height:'4rem',width:'15rem',marginLeft:'7rem',marginTop:'3rem'}}><Link to='/register' style={{textDecoration:'none'}}> Create An Account</Link>
+       
+      </Button>
     </Form>     
+        </Card.Text>
+        {/* <Button variant="primary" style={{marginLeft:'25rem'}}>Forgot password</Button> */}
+        <Link style={{marginLeft:'20rem',textDecoration:'None',color:'black'}} to='/forgotpassword'>forgotpassword</Link>
+      </Card.Body>
+    </Card>
+   
     </div>
   )
 }
 
 export default Login
+

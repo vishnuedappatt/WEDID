@@ -5,8 +5,31 @@ import Form from 'react-bootstrap/Form';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
+import {useContext} from 'react'
+import AuthContext from '../context/authcontext';
+import axios  from '../axios'
 
 function NavBar() {
+  const {logOut,user}=useContext(AuthContext)
+  const Alldata=(e)=>{
+    e.preventDefault()
+     axios.get('user/use/',{
+      headers: {
+        Authorization:'Bearer '+ user //the token is a variable which holds the token
+      }
+     }).then((res)=>{
+            console.log(res.data)
+            if (res.data){
+                console.log('valuess are herer')
+             
+
+            }
+            // setUser(res.data)
+
+        }
+        )  
+    }
+
   return (
     
 <div>
@@ -35,6 +58,7 @@ function NavBar() {
             <Nav.Link href="#" disabled>
               Link
             </Nav.Link>
+            <Button variant="outline-success" onClick={logOut}>Logout</Button>
           </Nav>
           <Form className="d-flex">
             <Form.Control
@@ -43,7 +67,7 @@ function NavBar() {
               className="me-2"
               aria-label="Search"
             />
-            <Button variant="outline-success">Search</Button>
+            <Button variant="outline-success" onClick={Alldata}>Search</Button>
           </Form>
         </Navbar.Collapse>
       </Container>
