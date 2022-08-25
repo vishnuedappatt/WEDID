@@ -11,7 +11,7 @@ from rest_framework.permissions import IsAuthenticated,IsAdminUser
 from rest_framework  import status
 from django.contrib.auth.hashers import make_password
 from .verify import send,check
-from . authentication import JWTAuthentications, create_access_token,create_refresh_token,decode_access_token,decode_refresh_token
+from . authentication import ADMINAuth, JWTAuthentications, create_access_token,create_refresh_token,decode_access_token,decode_refresh_token
 from rest_framework import exceptions
 from rest_framework.authentication import get_authorization_header
 from django.contrib.sites.shortcuts import get_current_site
@@ -159,7 +159,8 @@ def Login(request):
 
 
 @api_view(['GET'])
-@authentication_classes([JWTAuthentications])
+# @authentication_classes([JWTAuthentications])
+@authentication_classes([ADMINAuth])
 def alluser(request):
     user=Account.objects.all()
     serializer=AccountSerializer(user,many=True)    

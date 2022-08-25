@@ -5,15 +5,32 @@ import {useState,useContext} from 'react'
 import Card from 'react-bootstrap/Card'
 import { Link } from 'react-router-dom';
 import AuthContext from '../context/authcontext';
-
+import Modal from 'react-bootstrap/Modal';
 function Login() {
 
-const  {Userlogin,errors}= useContext(AuthContext)
+const  {Userlogin,errors,setShow,show,handleClose,handleShow}= useContext(AuthContext)
 
 const [email,setEmail]=useState('')
 const [password,setPassword]=useState('')
 
 const [empty,setEmpty]=useState(false)
+
+
+// const [show, setShow] = useState(false);
+// const handleClose = () => setShow(false);
+// const handleShow = () => {
+//   if (errors){
+//     console.log(errors)
+//     setShow(true)
+//     setTimeout(() => {
+//      setShow(false);
+//          }, 5000);
+//     // setShow(true)
+    
+//      }
+// }
+
+
 
 const checkEmail=(e)=>{
     console.log(e.target.value)
@@ -36,18 +53,40 @@ const checkPassword=(e)=>{
       console.log('values')
       setEmpty(false)
      Userlogin(email,password)   
+     if(errors){
+      console.log('error analo mone')
+     }
+     
    
      }
      else{
       setEmpty(true)
       console.log('noooooo')
-     }    
+     }   
+  
+    
     
  }
 
   return (
   
       <>
+    
+
+      <Modal show={show} onHide={handleClose} animation={false}>
+        <Modal.Header closeButton>
+          <Modal.Title>Modal heading</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>{errors}</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Close
+          </Button>
+          <Button variant="primary" onClick={handleClose}>
+            Save Changes
+          </Button>
+        </Modal.Footer>
+      </Modal>
 
    
     <Card style={{ backgroundColor:'#339966',borderRadius:'2rem'}}>     

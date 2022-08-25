@@ -13,6 +13,19 @@ export const AuthProvider=({children})=>{
 
     const navigate=useNavigate()
     
+    
+
+
+
+
+    const [show, setShow] = useState(false);
+
+    const handleClose = () => {setShow(false)};
+    const handleShow = () => {setShow(true)};
+
+
+
+
 
     const [errors,SetError]=useState(false)
 
@@ -38,11 +51,13 @@ export const AuthProvider=({children})=>{
               if(res.data.message){
                 console.log(res.data.message)
                 SetError(res.data.message)
+                handleShow()
                 setTimeout(() => {
-                    SetError(false);
+                    handleClose(false);
                        }, 5000);
 
               }
+
             }
             )  
         }
@@ -65,8 +80,13 @@ export const AuthProvider=({children})=>{
             authToken:authToken,
             mobile:mobile,
             setMobile:setMobile,   
-            errors:errors,        
-           
+            errors:errors,       
+            
+            
+            setShow:setShow,
+            handleClose:handleClose,
+            handleShow:handleShow,
+            show:show,
         }
         return(
             <AuthContext.Provider value={contextData}>
