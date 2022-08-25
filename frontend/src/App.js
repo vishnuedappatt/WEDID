@@ -5,10 +5,14 @@ import {AuthProvider} from './context/authcontext'
 import HomePage from "./pages/HomePage";
 import RegisterPage from "./pages/RegisterPage";
 import VerifyPage from "./pages/VerifyPage";
+import ForgotPage from "./pages/ForgotPage";
 
 function App() {
   return (
-    <div >
+    // <div >
+      <>
+
+      
 
       <BrowserRouter>
         <AuthProvider>
@@ -16,13 +20,14 @@ function App() {
               <Route path="/" element={<HomePage />} />
               <Route path="/login" element={<LoginPage />} />
               <Route path="/register" element={<RegisterPage />} />
-              <Route path="/verify" element={<VerifyPage />}/>                        
+              <Route path="/verify" element={<VerifyPage />}/> 
+              <Route path='/forgot_password' element={<ForgotPage/>}/>                       
             </Routes>
         </AuthProvider>
       </BrowserRouter>    
         
-     
-    </div>
+      </>
+    // {/* </div> */}
   );
 }
 

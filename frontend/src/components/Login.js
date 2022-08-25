@@ -46,15 +46,14 @@ const checkPassword=(e)=>{
  }
 
   return (
+  
+      <>
 
-    <div>
-         <Card style={{ width: '32rem',height:'35rem' ,backgroundColor:'#339966',borderRadius:'2rem'}}>
-      <Card.Img  />
-      <Card.Body>
-        {/* <Card.Title>LOGIN</Card.Title> */}
-        <Card.Text>
-         
-          <Form onSubmit={loginHandler} className=''>
+   
+    <Card style={{ backgroundColor:'#339966',borderRadius:'2rem'}}>     
+      <Card.Body>       
+     
+    <Form onSubmit={loginHandler} >
       <Form.Group className="mb-3 mt-5" controlId="formBasicEmail">
         <Form.Label>Email address</Form.Label>
         <Form.Control  style={{height:'4rem'}} type="text" placeholder="Enter email" name='email'  onChange={checkEmail} />
@@ -63,24 +62,34 @@ const checkPassword=(e)=>{
       </Form.Group>
       <Form.Group className="mb-3" controlId="formBasicPassword">
         <Form.Label>Password</Form.Label>
-        <Form.Control  style={{height:'4rem'}}  type="password" placeholder="Password" name='password'  onChange={checkPassword}/>
+        <Form.Control  style={{height:'4rem'}} autoComplete="true" type="password" placeholder="Password" name='password'  onChange={checkPassword}/>
       </Form.Group>   
       {errors?<span style={{color:'red'}}>{errors}</span>:''}
       {empty?<span style={{color:'red'}}>Fill the blanks to submit</span>:''}
-      <Button variant="dark" type="submit"    style={{textAlign:'center',height:'4rem',width:'15rem',marginLeft:'7rem',marginTop:'3rem'}}>
+      <div style={{textAlign:'center'}}>
+      <Button variant="dark" type="submit"  style={{width:'30%',height:'4rem'}} >
         Submit
-      </Button>
-      <Button variant="dark" type="submit"    style={{textAlign:'center',height:'4rem',width:'15rem',marginLeft:'7rem',marginTop:'3rem'}}><Link to='/register' style={{textDecoration:'none'}}> Create An Account</Link>
+      </Button><br></br><br></br>
+      <Link style={{textDecoration:'None',color:'black',marginTop:'2rem'}} to='/forgot_password'>forgotpassword ?</Link><br></br><br></br>
+      <Button variant="dark" type="submit"    style={{textAlign:'center',height:'4rem',width:'15rem',}}><Link to='/register' style={{textDecoration:'none'}}> Create An Account</Link>  </Button>
+
+      </div>
+   
+    
        
-      </Button>
+    
     </Form>     
-        </Card.Text>
+     
         {/* <Button variant="primary" style={{marginLeft:'25rem'}}>Forgot password</Button> */}
-        <Link style={{marginLeft:'20rem',textDecoration:'None',color:'black'}} to='/forgotpassword'>forgotpassword</Link>
+      
       </Card.Body>
     </Card>
    
-    </div>
+  
+       </>
+
+
+   
   )
 }
 

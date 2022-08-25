@@ -26,6 +26,7 @@ function Register() {
   const[numbererror,setNumberError]=useState(false)
   const [size,setSize]=useState(false)
   const [passworderror,setPasswordError]=useState(false)
+  const [empty,setEmpty]=useState(false)
 
 
     // validation
@@ -171,12 +172,16 @@ function Register() {
 
 
           }
+
           else{
             console.log('not oke')
           }
         }
         else{
           console.log('not okeyy')
+          setEmpty(true)
+          
+
         }
      
         // axios.post('user/register/',{
@@ -206,21 +211,21 @@ function Register() {
 
   return (
     <div>
-     <Card style={{ width: '32rem',height:'52rem' ,backgroundColor:'black',borderRadius:'2rem'}}>
+     <Card style={{ backgroundColor:'black',borderRadius:'2rem'}}>
       <Card.Img  />
       <Card.Body>
     
-        <Card.Text>
+     
          
     <Form onSubmit={registerHandler} className='mb-3'>
-    <Form.Group className="mb-3 " controlId="formBasicEmail">
+    <Form.Group className="mb-3 " controlId="formFirstName">
         <Form.Label style={{color:'white'}}>First Name</Form.Label>
         <Form.Control  style={{height:'4rem'}} type="text" placeholder="Enter firstname" value={fname} onChange={fnamecheck}  />
         {ferror?<span style={{color:'red'}}>it must be min 4 charector</span>:''}
         <Form.Text className="text-muted">        
         </Form.Text>
       </Form.Group>
-      <Form.Group className="mb-3 " controlId="formBasicEmail">
+      <Form.Group className="mb-3 " controlId="formLastName">
         <Form.Label style={{color:'white'}}>Last Name</Form.Label>
         <Form.Control  style={{height:'4rem'}} type="text" placeholder="Enter Lastname" value={lname} onChange={lnamecheck}  />
         {lerror?<span style={{color:'red'}}>it must be min 2 charecter</span>:''}
@@ -234,7 +239,7 @@ function Register() {
         <Form.Text className="text-muted">        
         </Form.Text>
       </Form.Group>
-      <Form.Group className="mb-3" controlId="formBasicEmail">
+      <Form.Group className="mb-3" controlId="formMobile">
         <Form.Label style={{color:'white'}}>Mobile</Form.Label>
         <Form.Control  style={{height:'4rem'}} type="text" placeholder="Enter Mobile no" value={mobile} onChange={mobilecheck} />
           {numbererror?<span style={{color:'red'}}>it should be contain only numbers</span>:''}
@@ -244,19 +249,26 @@ function Register() {
       </Form.Group>
       <Form.Group className="mb-3" controlId="formBasicPassword">
         <Form.Label style={{color:'white'}}>Password</Form.Label>
-        <Form.Control  style={{height:'4rem'}}  type="password" placeholder="Password" value={password} onChange={passwordcheck}  />
+        <Form.Control  style={{height:'4rem'}}  autoComplete="true" type="password" placeholder="Password" value={password} onChange={passwordcheck}  />
          {passworderror?<span style={{color:'red'}}>it should be contain min 6 charecter</span>:''}
       </Form.Group>   
-      <Form.Group className="mb-3" controlId="formBasicPassword">
+      <Form.Group className="mb-3" controlId="formConfirmPassword">
         <Form.Label style={{color:'white'}}>Confirm Password</Form.Label>
-        <Form.Control  style={{height:'4rem'}}  type="password" placeholder="Confirm Password" value={confpass}  onChange={confirmcheck} />
+        <Form.Control  style={{height:'4rem'}} autoComplete="true"  type="password" placeholder="Confirm Password" value={confpass}  onChange={confirmcheck} />
         {passworderror?<span style={{color:'red'}}>it should be contain min 6 charecter</span>:''}
+        {empty?<span style={{color:'red'}}>fill the blanks</span>:''}
       </Form.Group>   
-      <Button variant="dark" type="submit"    style={{textAlign:'center',height:'4rem',width:'15rem',marginLeft:'7rem',marginTop:'1rem'}}>
-        Register
-      </Button>
+      <div style={{textAlign:'center'}}>
+      <Button variant="dark" type="submit"  style={{width:'30%',height:'4rem'}} >
+        Submit
+      </Button><br></br><br></br>
+      <Link style={{textDecoration:'None',color:'white',marginTop:'2rem'}} to='/login'>Back ?</Link><br></br><br></br>
+     
+
+      </div>
+    
     </Form>     
-        </Card.Text>
+      
         {/* <Button variant="primary" style={{marginLeft:'25rem'}}>Forgot password</Button> */}
         <Link style={{marginLeft:'20rem',textDecoration:'None',color:'black'}} to='/login'>Back</Link>
       </Card.Body>

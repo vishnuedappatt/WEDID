@@ -1,5 +1,6 @@
 
 import datetime
+import re
 from django.shortcuts import render,redirect
 from rest_framework.decorators import api_view,permission_classes,authentication_classes
 
@@ -52,12 +53,8 @@ def Register(request):
             password=make_password(userpassword)
                 
     )   
-        mobile=data['mobile']
-        request.session['phone_number']=mobile
-        send(mobile)
-        vale=request.session['phone_number']
-        print(vale)
-        print(mobile)
+        mobile=data['mobile']        
+        send(mobile)        
         serializer=AccountSerializer(user ,many=False)
         return Response(serializer.data)
     except:
@@ -235,30 +232,47 @@ def forgotpassword(request):
         send_email=EmailMessage(mail_subject, message ,to=[to_email])
         print("here")
         send_email.send()
-        message={f'detail':'email sented to  {email}'}
+        message={f'detail':'email sented to your email'}
         return Response(message,status=status.HTTP_200_OK)
     else:
         message={'detail':'no account presented'}
         return Response(message,status=status.HTTP_400_BAD_REQUEST)
     
-@api_view(['POST'])
+    
+# @api_view(['POST'])
 def resetpassword_validate(request,uidb64,token):
-    try:
-        print('get in ittt')
+    if request.method=="POST":
+        try:
+            print('get in ittt')
+            uid=urlsafe_base64_decode(uidb64).decode()
+            user =Account._default_manager.get(pk=uid)
+        except(TypeError,ValueError,OverflowError,Account.DoesNotExist):
+            user=None
+        if user is not None and default_token_generator.check_token(user,token):
+            # request.session['uid']=uid
+            # return redirect('resetPassword')
+            print(uid)
+        data=request.POST
+        password =data['password']
+        confirm_password =data['confirm_password']
+        # uid =request.session.get('uid')
         uid=urlsafe_base64_decode(uidb64).decode()
-        user =Account._default_manager.get(pk=uid)
-    except(TypeError,ValueError,OverflowError,Account.DoesNotExist):
-      user=None
-    if user is not None and default_token_generator.check_token(user,token):
-        request.session['uid']=uid
-
-        # return redirect('resetPassword')
         print(uid)
-        message={'detail':'uid taken'}
-        return Response(message,status=status.HTTP_200_OK)
+        if password == confirm_password:
+            # uid =request.session['uid']
+            print(uid)
+            user=Account.objects.get(pk=uid)
+            user.set_password(password)
+            user.save()
+            return render(request,'user/success.html')
+            # message={'detail':'password reset successfully'}
+            # return Response(message,status=status.HTTP_200_OK)
+        
+        else:
+            message={'detail':'no account presented'}
+            return Response(message,status=status.HTTP_400_BAD_REQUEST)
     else:
-        message={'detail':'no account presented'}
-        return Response(message,status=status.HTTP_400_BAD_REQUEST)
+        return render(request,'user/reset_password.html')
     
     
 @api_view(['POST'])
