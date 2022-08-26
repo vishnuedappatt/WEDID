@@ -9,6 +9,7 @@ import axios  from '../axios';
 import AuthContext from '../context/authcontext';
 import Modal from 'react-bootstrap/Modal';
 
+import Spinner from 'react-bootstrap/Spinner';
 
 
 function Register() {
@@ -36,13 +37,21 @@ function Register() {
   // backend errors
   const [errors,setErrors]=useState('')
 
-
+  // for loading spinner
+  const [load,setLoad]=useState(false)
 
       // for modal
       const [show, setShow] = useState(false);
       const handleClose = () => {setShow(false)};
       const handleShow = () => {setShow(true)};
     
+
+
+      // const override: CSSProperties = {
+      //   display: "block",
+      //   margin: "0 auto",
+      //   borderColor: "red",
+      // };
   
 
     // validation
@@ -251,7 +260,7 @@ function Register() {
 
         if(!valid){
 
-
+          setLoad(true)
             axios.post('user/register/',{
             first_name:fname,
             last_name:lname,
@@ -261,15 +270,17 @@ function Register() {
             confirm_password:confpass,
         }).then((res)=>{
             console.log(res.data)
-
+            setLoad(false)
             if (res.data.error){
               console.log(res.data.error)
               setErrors(res.data.error)
               handleShow()
+            
 
           }
       
             if(res.data.mobile){
+              
                 console.log('get the mobile')
                 navigate('/verify',)
             }
@@ -334,9 +345,8 @@ function Register() {
      
         
         console.log('submitted')
-        
-
     }
+   
 
   return (
     <div>
@@ -354,6 +364,12 @@ function Register() {
           </Button>        
         </Modal.Footer>
       </Modal>
+
+    {/* spinner */}
+        
+
+
+
 
 
      <Card style={{ backgroundColor:'black',borderRadius:'2rem'}}>
@@ -388,6 +404,14 @@ function Register() {
          
         <Form.Text className="text-muted">        
         </Form.Text>
+          
+    {/* {load? <h1><Spinner animation="grow"  /></h1> :''} */}
+    <div style={{textAlign:'center'}}>
+    {load?<Spinner animation="border" role="status"  style={{ width: "10rem", height: "37rem" ,color:'blue'}}>
+   <span className="visually-hidden">Loading...</span>
+</Spinner>:''}
+    </div>
+ 
       </Form.Group>
       <Form.Group className="mb-3" controlId="formBasicPassword">
         <Form.Label style={{color:'white'}}>Password</Form.Label>
@@ -406,7 +430,8 @@ function Register() {
         Submit
       </Button><br></br><br></br>
       <Link style={{textDecoration:'None',color:'white',marginTop:'2rem'}} to='/login'>Back ?</Link><br></br><br></br>
-     
+   
+    
 
       </div>
     
