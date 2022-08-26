@@ -8,13 +8,14 @@ import AuthContext from '../context/authcontext';
 import Modal from 'react-bootstrap/Modal';
 function Login() {
 
-const  {Userlogin,errors,setShow,show,handleClose,handleShow}= useContext(AuthContext)
+const  {Userlogin,errors,show,handleClose,}= useContext(AuthContext)
 
 const [email,setEmail]=useState('')
 const [password,setPassword]=useState('')
 
-const [empty,setEmpty]=useState(false)
-
+// const [empty,setEmpty]=useState(false)
+const [mcheck,EmailChecker]=useState(false)
+const [pcheck,PasswordChecker]=useState(false)
 
 // const [show, setShow] = useState(false);
 // const handleClose = () => setShow(false);
@@ -49,24 +50,46 @@ const checkPassword=(e)=>{
 
  const loginHandler=(e)=>{
      e.preventDefault() 
-     if (email.trim().length !==0 &&  password.trim().length !==0){
-      console.log('values')
-      setEmpty(false)
-     Userlogin(email,password)   
-     if(errors){
-      console.log('error analo mone')
-     }
-     
-   
+     if (email.trim().length ===0 ){
+      console.log('empty')
+      EmailChecker(true)
+
      }
      else{
-      setEmpty(true)
-      console.log('noooooo')
-     }   
+      EmailChecker(false)
+      if ( password.trim().length !==0){
+        console.log('finallll')
+        Userlogin(email,password)   
+
+      
+      }
+
+     }
+    if ( password.trim().length ===0){
+      console.log('values')
+      PasswordChecker(true)
+    }else{
+      PasswordChecker(false)
+    }
+
+
+
+    
+  
+  
+      // setEmpty(false)
+   
+
+   
+     }
+    //  else{
+    //   setEmpty(true)
+    //   console.log('noooooo')
+    //  }   
   
     
     
- }
+ 
 
   return (
   
@@ -75,16 +98,16 @@ const checkPassword=(e)=>{
 
       <Modal show={show} onHide={handleClose} animation={false}>
         <Modal.Header closeButton>
-          <Modal.Title>Modal heading</Modal.Title>
+          <Modal.Title></Modal.Title>
         </Modal.Header>
         <Modal.Body>{errors}</Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button variant="primary" onClick={handleClose}>
+          {/* <Button variant="primary" onClick={handleClose}>
             Save Changes
-          </Button>
+          </Button> */}
         </Modal.Footer>
       </Modal>
 
@@ -96,6 +119,8 @@ const checkPassword=(e)=>{
       <Form.Group className="mb-3 mt-5" controlId="formBasicEmail">
         <Form.Label>Email address</Form.Label>
         <Form.Control  style={{height:'4rem'}} type="text" placeholder="Enter email" name='email'  onChange={checkEmail} />
+     
+        {mcheck?<span style={{color:'red'}}>* email field is required</span>:''}
         <Form.Text className="text-muted">        
         </Form.Text>
       </Form.Group>
@@ -103,14 +128,15 @@ const checkPassword=(e)=>{
         <Form.Label>Password</Form.Label>
         <Form.Control  style={{height:'4rem'}} autoComplete="true" type="password" placeholder="Password" name='password'  onChange={checkPassword}/>
       </Form.Group>   
-      {errors?<span style={{color:'red'}}>{errors}</span>:''}
-      {empty?<span style={{color:'red'}}>Fill the blanks to submit</span>:''}
+      {pcheck?<span style={{color:'red'}}>* password field is required</span>:''}
+     
+    
       <div style={{textAlign:'center'}}>
       <Button variant="dark" type="submit"  style={{width:'30%',height:'4rem'}} >
         Submit
       </Button><br></br><br></br>
       <Link style={{textDecoration:'None',color:'black',marginTop:'2rem'}} to='/forgot_password'>forgotpassword ?</Link><br></br><br></br>
-      <Button variant="dark" type="submit"    style={{textAlign:'center',height:'4rem',width:'15rem',}}><Link to='/register' style={{textDecoration:'none'}}> Create An Account</Link>  </Button>
+      <Button variant="dark" type=""    style={{textAlign:'center',height:'4rem',width:'15rem',}}><Link to='/register' style={{textDecoration:'none'}}> Create An Account</Link>  </Button>
 
       </div>
    

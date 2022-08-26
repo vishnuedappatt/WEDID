@@ -39,12 +39,28 @@ def Register(request):
         else:
             response=Response()
             response.data={
-            'passworderr':'password miss match'
+            'error':'password miss match'
             }
             return response
-            message={'detail':'password miss match'}
-            return Response(message,status=status.HTTP_400_BAD_REQUEST)
-            
+       
+        mobile=data['mobile']
+        email=data['email']
+        anonymous=Account.objects.filter(email=email).exists()
+        if anonymous:
+            response=Response()
+            response.data={
+            'error':'this mobile email is already taken choose another one'
+            }
+            return response
+        anonymous=Account.objects.filter(mobile=mobile).exists()
+        if anonymous:
+            response=Response()
+            response.data={
+            'error':'this mobile number is already taken choose another one'
+            }
+            return response
+     
+        
         user=Account.objects.create(
             first_name=data['first_name'],
             last_name=data['last_name'],
@@ -60,7 +76,7 @@ def Register(request):
     except:
         response=Response()
         response.data={
-            'emailerror':'user with this email already exists'
+            'error':'user with this email already exists'
         }
         return response
         # message={'detail':'user with this email already exists'}
@@ -89,7 +105,7 @@ def verification(request):
     else:
         response=Response()
         response.data={
-            'otp':'otp experied'
+            'error':'invalid otp !! give currect otp'
         }
         return response
         message={'detail':'otp is not valid'}
@@ -159,8 +175,8 @@ def Login(request):
 
 
 @api_view(['GET'])
-# @authentication_classes([JWTAuthentications])
-@authentication_classes([ADMINAuth])
+@authentication_classes([JWTAuthentications])
+# @authentication_classes([ADMINAuth])
 def alluser(request):
     user=Account.objects.all()
     serializer=AccountSerializer(user,many=True)    
@@ -233,11 +249,15 @@ def forgotpassword(request):
         send_email=EmailMessage(mail_subject, message ,to=[to_email])
         print("here")
         send_email.send()
-        message={f'detail':'email sented to your email'}
+        message={'success':'email sented to your email'}
         return Response(message,status=status.HTTP_200_OK)
     else:
-        message={'detail':'no account presented'}
-        return Response(message,status=status.HTTP_400_BAD_REQUEST)
+        response=Response()
+        response.data={
+            'error':'No account assosiate with this email'
+        }
+        return response
+     
     
     
 # @api_view(['POST'])
@@ -288,9 +308,9 @@ def resetPassword(request):
         user=Account.objects.get(pk=uid)
         user.set_password(password)
         user.save()
-        message={'detail':'password reset successfully'}
+        message={'success':'password reset successfully'}
         return Response(message,status=status.HTTP_200_OK)
 
     else:
-        message={'detail':'password missmatch'}
+        message={'error':'password missmatch'}
         return Response(message,status=status.HTTP_400_BAD_REQUEST)

@@ -7,6 +7,9 @@ import Card from 'react-bootstrap/Card'
 import { Link } from 'react-router-dom';
 import axios  from '../axios';
 import AuthContext from '../context/authcontext';
+import Modal from 'react-bootstrap/Modal';
+
+
 
 function Register() {
   const  {mobile,setMobile}= useContext(AuthContext)
@@ -20,25 +23,40 @@ function Register() {
     const navigate=useNavigate()
    
   // errorCapture
-  const [ferror, setFerror] = useState(false)
-  const [lerror,setLerror]=useState(false)
-  const [emailerror,setEmailError]=useState(false)   
-  const[numbererror,setNumberError]=useState(false)
-  const [size,setSize]=useState(false)
-  const [passworderror,setPasswordError]=useState(false)
-  const [empty,setEmpty]=useState(false)
+  const [ferror, setFerror] = useState('')
+  const [lerror,setLerror]=useState('')
+  const [emailerror,setEmailError]=useState('')   
+  const[numbererror,setNumberError]=useState(' ')
+  // const [size,setSize]=useState(false)
+  const [passworderror,setPasswordError]=useState('')
+  const[confpaserror,setConfPassword]=useState('')
+  const [valid,setValid]=useState(false)
 
+
+  // backend errors
+  const [errors,setErrors]=useState('')
+
+
+
+      // for modal
+      const [show, setShow] = useState(false);
+      const handleClose = () => {setShow(false)};
+      const handleShow = () => {setShow(true)};
+    
+  
 
     // validation
     const fnamecheck=(e)=>{       
         const value=e.target.value
-        if(value.length>3){    
+        if(value.length>2){    
           setFname(value)
-          setFerror(false)
+          setFerror('')
+          setValid(false)
         }
         else{
           setFname(value)
-          setFerror(true)
+          setFerror('*  name should contain min 3 charector ')
+          setValid(true)
           // setTimeout(() => {
           //  setFerror(false);
           //     }, 5000);            
@@ -46,17 +64,21 @@ function Register() {
     }
 
 
+    
+
     const lnamecheck=(e)=>{        
         const value=e.target.value
         if(value.length>1){        
           setLname(value)
-          setLerror(false)
+          setLerror('')
+          setValid(false)
         }
         else{
           setLname(value)
-          setLerror(true)                
+          setValid(true)
+          setLerror('* last name contains min 2 charecter')                
         }        
-        setLname(value)
+        // setLname(value)
     }
 
 
@@ -68,12 +90,14 @@ function Register() {
         let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
             if ( re.test(value) ) {
                 console.log('email field')
-                setEmailError(false)
+                setEmailError('')
                 setEmail(value)
+                setValid(false)
             }
             else{
-              setEmailError(true)
+              setEmailError('* this field should be a valid email address ')
               setEmail(value)  
+              setValid(true)
             }
            
     }
@@ -87,24 +111,29 @@ function Register() {
        
       console.log('its number')
         if (re.test(value))
-      {
+          {
           console.log('its number')
-          setSize(false)
+          // setNumberError('it should dfdffffdffdfdff only number')
           setMobile(value)
-          setNumberError(false)
-          if(value.length<11){
+          setNumberError(' ')
+          setValid(false)
+          
+          if(value.length>10){
             console.log('its value')
-            setSize(false)
+            // setSize('')
+            setNumberError('this field contain max 10 digit only')
+            setValid(true)
           }
+          else{   
+            setNumberError('')
+            setValid(false)
+          }
+         }    
           else{
-            console.log('10')
-            setSize(true)
-          }
-        }    
-        else{
           console.log('stringss')
-          setNumberError(true)
-          // setMobile(value)
+          setNumberError('it should contain only number')
+          setMobile('')
+          setValid(true)
         }        
     };
 
@@ -112,33 +141,46 @@ function Register() {
 
 
     const passwordcheck=(e)=>{
-      const value=e.target.value      
+      const value=e.target.value    
+      if(value.length !==0){  
           if (value.length>5){
             setPassword(value)
-            setPasswordError(false)
+            setPasswordError('')
+            setValid(false)
           }
           else{
             setPassword(value)
-            setPasswordError(true)
+            setPasswordError('it should contain min 6 charecter')
+            setValid(true)
           }
+        }
+        else{
+          setPassword(value)
+          setPasswordError('* password field is required')
+          setValid(true)
+        }
       
     }
 
     const confirmcheck=(e)=>{
-      const value=e.target.value  
-      console.log(value)    
-      setConfpass(value)
-      if (value.length>5){
-        setConfpass(value)
-        setPasswordError(false)
-      }
-      else{
-        setConfpass(value)
-        console.log(value)    
-        setPasswordError(true)
-      }
-  
-        
+      const value=e.target.value    
+      if(value.length !==0){  
+          if (value.length>5){
+            setConfpass(value)
+            setConfPassword('')
+            setValid(false)
+          }
+          else{
+            setConfpass(value)
+            setConfPassword('it should contain min 6 charecter')
+            setValid(true)
+          }
+        }
+        else{
+          setConfpass(value)
+          setConfPassword('* password field is required')
+          setValid(true)
+        }
     }
 
   
@@ -146,9 +188,70 @@ function Register() {
 
     const registerHandler=(e)=>{
         e.preventDefault()
-        if (email.length !==0 || fname.length !==0 || lname.length !==0 || mobile.length !==0 || password.length !==0 || confpass.length !==0){
-          if(!ferror && !lerror && !emailerror && !numbererror && !passworderror && !size){
-            console.log('okk')
+
+
+           // empty checking 
+        if(fname.length==0){
+          setFerror('* this name field is required')
+          setValid(true)
+        }
+        else{
+          setFerror('')
+          setValid(false)
+        }
+
+
+        if(lname.length==0){
+          setLerror('* this last name field is required')
+          setValid(true)
+        }
+        else{
+          setLerror('')
+          setValid(false)
+        }
+
+
+        if(email.length==0){
+          setEmailError('* this email field is required')
+          setValid(true)
+        }
+        else{
+          setEmailError('')
+          setValid(false)
+        }
+        if(password.length==0){
+          setPasswordError('* this password field is required')
+          setValid(true)
+        }else{
+          setPasswordError('')
+          setValid(false)
+        }
+        if(mobile.length==0){
+          setNumberError('* this mobile field is required')
+          // setMobile()
+          setValid(true)
+        }
+        else{
+          setNumberError('')
+          setValid(false)
+        }
+        if (confpass.length==0){
+          setConfPassword('* this password field is required')
+          setValid(true)
+        }else{
+          setConfPassword('')
+          setValid(false)
+          setValid(false)
+           // password matching
+          if(confpass == password){
+            console.log('currect')
+            setPasswordError(' ')
+            setConfPassword('')
+            setValid(false)
+
+        if(!valid){
+
+
             axios.post('user/register/',{
             first_name:fname,
             last_name:lname,
@@ -158,33 +261,43 @@ function Register() {
             confirm_password:confpass,
         }).then((res)=>{
             console.log(res.data)
+
+            if (res.data.error){
+              console.log(res.data.error)
+              setErrors(res.data.error)
+              handleShow()
+
+          }
+      
             if(res.data.mobile){
                 console.log('get the mobile')
                 navigate('/verify',)
             }
-            if (res.data.emailerr){
-                console.log('success')
-            }
-          if(res.data.passworderr){
-            console.log('password error')
-          }
+           
         })
 
 
-          }
 
-          else{
-            console.log('not oke')
-          }
-        }
-        else{
-          console.log('not okeyy')
-          setEmpty(true)
-          
-
+          console.log('successss')
         }
      
-        // axios.post('user/register/',{
+
+          }
+          else{
+            setPasswordError('password missmatch !!')
+            setConfPassword('password missmatch !!')
+            console.log('mismatch')
+            setValid(true)
+          }
+        }
+        
+       
+     
+        
+        // if (email.length !==0 || fname.length !==0 || lname.length !==0 || mobile.length !==0 || password.length !==0 || confpass.length !==0){
+        //   if(!ferror && !lerror && !emailerror && !numbererror && !passworderror && !size){
+        //     console.log('okk')
+        //     axios.post('user/register/',{
         //     first_name:fname,
         //     last_name:lname,
         //     email:email,
@@ -204,6 +317,22 @@ function Register() {
         //     console.log('password error')
         //   }
         // })
+
+
+        //   }
+
+        //   else{
+        //     console.log('not oke')
+        //   }
+        // }
+        // else{
+        //   console.log('not okeyy')
+        //   setEmpty(true)
+          
+
+        // }
+     
+        
         console.log('submitted')
         
 
@@ -211,52 +340,66 @@ function Register() {
 
   return (
     <div>
+
+      {/* for getting alert modal */}
+
+      <Modal show={show} onHide={handleClose} animation={false}>
+        <Modal.Header closeButton>
+          <Modal.Title></Modal.Title>
+        </Modal.Header>
+        <Modal.Body>{errors}</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Close
+          </Button>        
+        </Modal.Footer>
+      </Modal>
+
+
      <Card style={{ backgroundColor:'black',borderRadius:'2rem'}}>
       <Card.Img  />
-      <Card.Body>
-    
-     
-         
+      <Card.Body>  
     <Form onSubmit={registerHandler} className='mb-3'>
     <Form.Group className="mb-3 " controlId="formFirstName">
         <Form.Label style={{color:'white'}}>First Name</Form.Label>
-        <Form.Control  style={{height:'4rem'}} type="text" placeholder="Enter firstname" value={fname} onChange={fnamecheck}  />
-        {ferror?<span style={{color:'red'}}>it must be min 4 charector</span>:''}
+        <Form.Control  style={{height:'4rem'}} type="text" placeholder="Enter firstname" name='fname' value={fname} onChange={fnamecheck}  />
+        {ferror?<span style={{color:'red'}}>{ferror}</span>:''}
         <Form.Text className="text-muted">        
         </Form.Text>
       </Form.Group>
       <Form.Group className="mb-3 " controlId="formLastName">
         <Form.Label style={{color:'white'}}>Last Name</Form.Label>
-        <Form.Control  style={{height:'4rem'}} type="text" placeholder="Enter Lastname" value={lname} onChange={lnamecheck}  />
-        {lerror?<span style={{color:'red'}}>it must be min 2 charecter</span>:''}
+        <Form.Control  style={{height:'4rem'}} type="text" placeholder="Enter Lastname" name='lname' value={lname} onChange={lnamecheck}  />
+        {lerror?<span style={{color:'red'}}>{lerror}</span>:''}
         <Form.Text className="text-muted">        
         </Form.Text>
       </Form.Group>
       <Form.Group className="mb-3 " controlId="formBasicEmail">
         <Form.Label style={{color:'white'}}>Email address</Form.Label>
-        <Form.Control  style={{height:'4rem'}} type="text" placeholder="Enter email" value={email} onChange={emailcheck} />
-          {emailerror?<span style={{color:'red'}}>it should be a valid email address</span>:''}
+        <Form.Control  style={{height:'4rem'}} type="text" placeholder="Enter email" name='email' value={email} onChange={emailcheck} />
+          {emailerror?<span style={{color:'red'}}>{emailerror}</span>:''}
         <Form.Text className="text-muted">        
         </Form.Text>
       </Form.Group>
       <Form.Group className="mb-3" controlId="formMobile">
         <Form.Label style={{color:'white'}}>Mobile</Form.Label>
-        <Form.Control  style={{height:'4rem'}} type="text" placeholder="Enter Mobile no" value={mobile} onChange={mobilecheck} />
-          {numbererror?<span style={{color:'red'}}>it should be contain only numbers</span>:''}
-             {size?<span style={{color:'red'}}>it should  only 10 digit </span>:''}
+        <Form.Control  style={{height:'4rem'}} type="text" placeholder="Enter Mobile no"  name='mobile' value={mobile} onChange={mobilecheck} />
+          {numbererror?<span style={{color:'red'}}>{numbererror}</span>:''}
+         
         <Form.Text className="text-muted">        
         </Form.Text>
       </Form.Group>
       <Form.Group className="mb-3" controlId="formBasicPassword">
         <Form.Label style={{color:'white'}}>Password</Form.Label>
-        <Form.Control  style={{height:'4rem'}}  autoComplete="true" type="password" placeholder="Password" value={password} onChange={passwordcheck}  />
-         {passworderror?<span style={{color:'red'}}>it should be contain min 6 charecter</span>:''}
+        <Form.Control  style={{height:'4rem'}}  autoComplete="true" type="password" placeholder="Password" name='password' value={password} onChange={passwordcheck}  />
+         {passworderror?<span style={{color:'red'}}>{passworderror}</span>:''}
       </Form.Group>   
       <Form.Group className="mb-3" controlId="formConfirmPassword">
         <Form.Label style={{color:'white'}}>Confirm Password</Form.Label>
-        <Form.Control  style={{height:'4rem'}} autoComplete="true"  type="password" placeholder="Confirm Password" value={confpass}  onChange={confirmcheck} />
-        {passworderror?<span style={{color:'red'}}>it should be contain min 6 charecter</span>:''}
-        {empty?<span style={{color:'red'}}>fill the blanks</span>:''}
+        <Form.Control  style={{height:'4rem'}} autoComplete="true"  type="password" placeholder="Confirm Password" name='confirm_password' value={confpass}  onChange={confirmcheck} />
+   
+        {confpaserror?<span style={{color:'red'}}>{confpaserror}</span>:''}
+        {/* {valid?<span style={{color:'red'}}>fill the blanks</span>:''} */}
       </Form.Group>   
       <div style={{textAlign:'center'}}>
       <Button variant="dark" type="submit"  style={{width:'30%',height:'4rem'}} >
