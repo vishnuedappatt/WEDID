@@ -1,0 +1,86 @@
+/* .main-btn1{ */
+    /* width: 45%; */
+    /* max-width: 100%;
+     width: 100rem;
+     height: 400px; */
+/*    
+}
+.main-btn1:hover{
+    background-color: rgb(165, 73, 42);
+    font-size: 30px;
+    */
+/* } */
+
+.body{
+    margin: 0%;
+}
+*{
+    margin: 0%;
+}
+
+
+
+
+
+
+
+.main-btn1{
+    max-width: 100%;
+     height: 300px;
+     background-color: rgb(8, 10, 5);
+     margin: 5%;
+     color: white     ;
+}
+.main-btn1:hover{
+    background-color:rgba(11, 8, 8, 0.863);
+    font-size: 30px;
+    color: aqua     ;
+   
+}
+
+.main-btn2{
+    max-width: 100%;
+     height: 300px;
+     background-color:rgb(8, 10, 5);
+     margin: 5%;
+  
+     color: white     ;
+
+ 
+}
+.main-btn2:hover{
+    background-color:rgba(11, 8, 8, 0.863);
+    font-size: 30px;
+    color: aqua     ;
+   
+}
+
+
+
+
+.main-header1{
+    padding-top: 5rem;
+}
+
+.pic1{
+float: left;
+margin-top: 40px;
+max-width: 70%;
+max-height: 70%;
+margin-left: 2rem;
+
+ 
+}
+
+.clk-btn{
+    width: 8rem;
+    height: 4rem;
+    font-size: medium;
+}
+
+.clk-btn:hover{
+    width: 10rem;
+    height: 4rem;
+    font-size: large;
+
+}

@@ -190,8 +190,8 @@ def Login(request):
 
 
 @api_view(['GET'])
-@authentication_classes([JWTAuthentications])
-# @authentication_classes([ADMINAuth])
+# @authentication_classes([JWTAuthentications])
+@authentication_classes([ADMINAuth])
 def alluser(request):
     user=Account.objects.all()
     serializer=AccountSerializer(user,many=True)    
@@ -274,8 +274,7 @@ def forgotpassword(request):
         return response
      
     
-    
-# @api_view(['POST'])
+
 def resetpassword_validate(request,uidb64,token):
     if request.method=="POST":
         try:
@@ -284,25 +283,20 @@ def resetpassword_validate(request,uidb64,token):
             user =Account._default_manager.get(pk=uid)
         except(TypeError,ValueError,OverflowError,Account.DoesNotExist):
             user=None
-        if user is not None and default_token_generator.check_token(user,token):
-            # request.session['uid']=uid
-            # return redirect('resetPassword')
+        if user is not None and default_token_generator.check_token(user,token): 
             print(uid)
         data=request.POST
         password =data['password']
-        confirm_password =data['confirm_password']
-        # uid =request.session.get('uid')
+        confirm_password =data['confirm_password']      
         uid=urlsafe_base64_decode(uidb64).decode()
         print(uid)
-        if password == confirm_password:
-            # uid =request.session['uid']
+        if password == confirm_password:          
             print(uid)
             user=Account.objects.get(pk=uid)
             user.set_password(password)
             user.save()
             return render(request,'user/success.html')
-            # message={'detail':'password reset successfully'}
-            # return Response(message,status=status.HTTP_200_OK)
+           
         
         else:
             message={'detail':'no account presented'}

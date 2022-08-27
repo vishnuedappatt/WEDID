@@ -11,8 +11,8 @@ function HomePage() {
             <NavBar />
         </Row>
         <Row>
-            <Col className='justify-content-center mt-5 pt-5'>
-            <Home />
+            <Col lg={12} sm={12} >
+              <Home />
             </Col>
         </Row>
       

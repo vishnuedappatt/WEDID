@@ -200,7 +200,7 @@ function Register() {
 
 
            // empty checking 
-        if(fname.length==0){
+        if(fname.length===0){
           setFerror('* this name field is required')
           setValid(true)
         }
@@ -210,7 +210,7 @@ function Register() {
         }
 
 
-        if(lname.length==0){
+        if(lname.length===0){
           setLerror('* this last name field is required')
           setValid(true)
         }
@@ -220,7 +220,7 @@ function Register() {
         }
 
 
-        if(email.length==0){
+        if(email.length===0){
           setEmailError('* this email field is required')
           setValid(true)
         }
@@ -228,14 +228,14 @@ function Register() {
           setEmailError('')
           setValid(false)
         }
-        if(password.length==0){
+        if(password.length===0){
           setPasswordError('* this password field is required')
           setValid(true)
         }else{
           setPasswordError('')
           setValid(false)
         }
-        if(mobile.length==0){
+        if(mobile.length===0){
           setNumberError('* this mobile field is required')
           // setMobile()
           setValid(true)
@@ -244,7 +244,7 @@ function Register() {
           setNumberError('')
           setValid(false)
         }
-        if (confpass.length==0){
+        if (confpass.length===0){
           setConfPassword('* this password field is required')
           setValid(true)
         }else{
@@ -252,7 +252,7 @@ function Register() {
           setValid(false)
           setValid(false)
            // password matching
-          if(confpass == password){
+          if(confpass === password){
             console.log('currect')
             setPasswordError(' ')
             setConfPassword('')
