@@ -1,0 +1,36 @@
+.form{
+    margin: 3%;
+    max-width: 100%;
+    background-color: aqua;
+    padding: 1%;
+    
+}
+
+.field1{
+   
+    float: left;
+    background-color: blue;
+}
+
+/* .input1{
+    height: 4rem;
+    max-width: 100%;
+    width:50rem;
+    margin-left: 3rem;
+    margin: 1%;
+    background-color: rgb(0, 255, 68);
+} */
+
+/* .input1{ */
+    /* height: 4rem; */
+    /* max-width: 100%; */
+    /* width:55rem; */
+    /* margin-left: 3rem; */
+    /* background-color: rgb(0, 255, 68);
+} */
+
+/* .btn1{
+    width: 150px;
+    height: 80px;
+
+} */

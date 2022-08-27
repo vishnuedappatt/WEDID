@@ -1,4 +1,5 @@
 
+
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser,BaseUserManager
 
@@ -90,3 +91,38 @@ class UserToken(models.Model):
     
     # def __str__(self):
     #     return self.user_id
+
+
+
+class Categories(models.Model):
+    CAT=(
+        ('rent','rent'),
+        ('job','job'),
+        ('sell','sell'),
+    )
+    name=models.CharField(max_length=20)
+    category_of=models.CharField(choices=CAT,max_length=20)
+    image=models.ImageField(upload_to='category/',null=True,blank=True)
+    
+    def __str__(self):
+        return self.name
+    
+    
+class District(models.Model):
+    district=models.CharField(max_length=50)
+    
+    def __str__(self):
+        return self.district
+
+class City(models.Model):
+    district=models.ForeignKey(District,on_delete=models.SET_NULL,null=True)
+    city=models.CharField(max_length=50)
+    
+    def __str__(self):
+        return self.city
+
+
+
+    
+    
+    

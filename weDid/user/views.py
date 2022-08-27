@@ -1,11 +1,12 @@
 
 import datetime
 import re
+from unicodedata import category
 from django.shortcuts import render,redirect
 from rest_framework.decorators import api_view,permission_classes,authentication_classes
-
-from .models import Account,UserToken
-from .serializers import AccountSerializer,VerificationSerializer
+from rest_framework.permissions import IsAuthenticated
+from .models import Account,UserToken,Categories,City,District
+from .serializers import AccountSerializer,CategorySerializer
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated,IsAdminUser
 from rest_framework  import status
@@ -323,3 +324,26 @@ def resetPassword(request):
     else:
         message={'error':'password missmatch'}
         return Response(message,status=status.HTTP_400_BAD_REQUEST)
+
+
+# gettting rent categories
+
+# @api_view(['GET'])
+# @authentication_classes([JWTAuthentications])
+# def rentcategories(request):
+#     rent=Categories.objects.filter(category_of='rent')
+#     serializer=CategorySerializer(rent,many=True)
+#     return Response(serializer.data)
+
+
+
+
+# @api_view(['GET'])
+# @authentication_classes([JWTAuthentications])
+# # @permission_classes([IsAuthenticated])
+# def jobcategories(request):
+#     rent=Categories.objects.filter(category_of='job')
+#     serializer=CategorySerializer(rent,many=True)
+#     return Response(serializer.data)
+    
+    

@@ -27,7 +27,10 @@ function NavBar() {
             // setUser(res.data)
 
         }
-        )  
+        ).catch((err)=>{
+          console.log('error ann moneeeee moonjii')
+          console.log(err.data)
+        } ) 
     }
 
   return (
