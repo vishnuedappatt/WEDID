@@ -29,7 +29,7 @@ def rentcategories(request):
 
 
 @api_view(['GET'])
-@authentication_classes([JWTAuthentications])
+# @authentication_classes([JWTAuthentications])
 # @permission_classes([IsAuthenticated])
 def jobcategories(request):
     rent=Categories.objects.filter(category_of='job')
