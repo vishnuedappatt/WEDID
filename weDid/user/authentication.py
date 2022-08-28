@@ -14,7 +14,7 @@ def create_access_token(id):
         'user_id':id,
         'username':user.first_name,
         'email':user.email,
-        'exp':datetime.datetime.utcnow()+datetime.timedelta(seconds=30),
+        'exp':datetime.datetime.utcnow()+datetime.timedelta(minutes=5),
         'iat':datetime.datetime.utcnow(),
         
     },'access_secret',algorithm='HS256')

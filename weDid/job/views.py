@@ -29,7 +29,7 @@ def rentcategories(request):
 
 
 @api_view(['GET'])
-# @authentication_classes([JWTAuthentications])
+@authentication_classes([JWTAuthentications])
 # @permission_classes([IsAuthenticated])
 def jobcategories(request):
     rent=Categories.objects.filter(category_of='job')
@@ -40,6 +40,7 @@ def jobcategories(request):
 # showing all district
  
 @api_view(['GET'])
+@authentication_classes([JWTAuthentications])
 def getdistrict(request):   
     district=District.objects.all()
     serializer=DistrictSerializer(district,many=True)
@@ -48,8 +49,11 @@ def getdistrict(request):
 # showing the city as per disctrict
 
 @api_view(['GET'])
+@authentication_classes([JWTAuthentications])
 def getcity(request,id):
     district=District.objects.get(id=id)
     city=City.objects.filter(district=district)
     serializer=CitySerializer(city,many=True)
     return Response(serializer.data)
+
+

@@ -1,11 +1,13 @@
-import React,{useEffect,useState} from 'react'
+import React,{useEffect,useState,} from 'react'
 import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
 import './GivingService.css'
 import Dropdown from 'react-bootstrap/Dropdown';
 import axios from '../axios'
 
+
 function GivingService() {
+
+    // taking authtoken
 
     // for categorystate
     const [category,setCategory]=useState([])
@@ -15,22 +17,51 @@ function GivingService() {
 
     // for city
     const [city,setCity]=useState([])
+    const [view,setView]=useState(false)
+    const [counts,setCount]=useState('')
+  
 
 
+  useEffect(() => {      
 
-  useEffect(() => {
-    
     getCategory()
-    getDistrict()
+    getDistrict()   
+    userData()
+ 
+    
+
     return () => {
       
     }
   }, [])
-  
+
+
+
+  const userData=()=>{
+   
+    let request=(JSON.parse(localStorage.getItem('token')))  
+    axios.get('user/profile/',{
+        headers: {
+            Authorization:'Bearer '+ request
+          }
+    }).then((res)=>{
+        // setUser(res.data)
+        console.log(res.data,'evide work ann')
+        setCount(3-res.data.count)
+        if(res.data.count>2){
+            setView(true)
+        }
+    })
+}
+
 // getting all category
   const getCategory=()=>{
-   
-    axios.get('job/jobcate/').then((res)=>{
+    let request=(JSON.parse(localStorage.getItem('token')))  
+    axios.get('job/jobcate/',{
+        headers: {
+            Authorization:'Bearer '+ request
+          }
+    }).then((res)=>{
         console.log(res.data)
         setCategory(res.data)
 
@@ -40,7 +71,12 @@ function GivingService() {
 
 // for getting all district
   const getDistrict=()=>{
-    axios.get('job/showdistrict/').then((res)=>{
+    let request=(JSON.parse(localStorage.getItem('token')))  
+    axios.get('job/showdistrict/',{
+        headers: {
+            Authorization:'Bearer '+ request
+          }
+    }).then((res)=>{
         console.log(res.data)
         setDistrict(res.data)
     })
@@ -50,8 +86,13 @@ function GivingService() {
 
 //  getting category id and get and show
 
-  const cityGetting=(id)=>{   
-    axios.get(`job/showcity/${id}/`).then((res)=>{
+  const cityGetting=async(id)=>{   
+    let request=(JSON.parse(localStorage.getItem('token')))  
+   await axios.get(`job/showcity/${id}/`,{
+        headers: {
+            Authorization:'Bearer '+ request
+          }
+    }).then((res)=>{
         console.log(res.data)
         setCity(res.data)
         
@@ -118,46 +159,70 @@ function GivingService() {
                 </div>
                 <div className="col">
                     <div className="form-outline">                        
-                        <input type="text" id="form6Example3" className="form-control" />
-                        <label className="form-label" >Company name</label>
+                        <input type="text" id="form6Example3"placeholder="This number is not same as you registerd" className="form-control" />
+                        
+                        <label className="form-label"  >Alternative Mobile Number </label>
                     </div>
                 </div>
             </div>
 
             <div className="form-outline mb-4">
-                <input type="text" id="form6Example3" className="form-control" />
-                <label className="form-label">Company name</label>
+                <input type="text" id="form6Example3" placeholder='Titile of you job' className="form-control" />
+                <label className="form-label">Title</label>
             </div>
 
 
             <div className="form-outline mb-4">
-                <input type="text" id="form6Example4" className="form-control" />
+                {/* <input  type="textarea" id="form6Example4" placeholder='describe about your job role' className="form-control" /> */}
+                <textarea className='text' placeholder='describe about your job role'></textarea>
+                <label className="form-label" >Discription</label>
+            </div>
+            
+            <div className="form-outline mb-4">
+                <input type="text" id="form6Example6"  placeholder='Enter your Address ' className="form-control" />
                 <label className="form-label" >Address</label>
             </div>
 
 
-            <div className="form-outline mb-4">
-                <input type="email" id="form6Example5" className="form-control" />
-                <label className="form-label" >Email</label>
+            <div className="row mb-4  ">
+                <div className="col">
+                    <div className="form-outline">
+                        <div className="form-outline mb-4">                           
+                            <input type="text" id="form6Example5" placeholder='Enter your place' className="form-control" />                       
+                            <label className="form-label" >Place</label>
+                        </div>                                 
+                    </div>
+                </div>
+                <div className="col">                   
+                    <div className="form-outline mb-4">
+                        <input type="text" id="form6Example5" placeholder='Give a rate for this service' className="form-control" />
+                        <label className="form-label" >Rate</label>
+                    </div>
+                </div>
             </div>
+                    
 
 
-            <div className="form-outline mb-4">
-                <input type="number" id="form6Example6" className="form-control" />
-                <label className="form-label" >Phone</label>
-            </div>
 
 
-            <div className="form-outline mb-4">
-                <textarea className="form-control" id="form6Example7" rows="4"></textarea>
-                <label className="form-label" >Additional information</label>
-            </div>
+      
+            
+{ view ?  
+         <div className="main-payment mb-4">            
+            <Button className='payment-btn' variant="outline-warning">Make Payment</Button>{' '}
+           
+            </div> 
+            :  <div className="main-payment mb-4">    
+                 
+            <Button className='payment-btn' variant="success" disabled>You have {counts} free trail left</Button>{' '}
+           
+            </div> }
+
+          
 
 
-            <div className="form-check d-flex justify-content-center mb-4">
-                <input className="form-check-input me-2" type="checkbox" value="" id="form6Example8"  />
-                <label className="form-check-label" > Create an account? </label>
-            </div>
+
+
 
 
             <button type="submit" className="btn btn-primary btn-block mb-4">Place order</button>

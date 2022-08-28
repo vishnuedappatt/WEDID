@@ -74,6 +74,7 @@
 
 .form-label{
     font-size: large;
+    color: white;
 }
 
 /* .drop{
@@ -114,4 +115,25 @@ body{
     margin-top: 100px;
     margin-bottom: 0%;
     color: white;
+}
+
+
+.text{
+    width: 100%;
+    height: 8rem;
+    padding: 3%;
+}
+
+
+.payment-btn{
+    width: 20rem;
+    height: 5rem;
+    
+}
+
+
+.main-payment{
+    /* background-color: aqua; */
+    display: flex;
+    justify-content: center;
 }

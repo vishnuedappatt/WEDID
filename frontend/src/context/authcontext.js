@@ -13,18 +13,10 @@ export const AuthProvider=({children})=>{
 
     const navigate=useNavigate()
     
-    
-
-
-
-
     const [show, setShow] = useState(false);
 
     const handleClose = () => {setShow(false)};
     const handleShow = () => {setShow(true)};
-
-
-
 
 
     const [errors,SetError]=useState(false)
@@ -40,14 +32,15 @@ export const AuthProvider=({children})=>{
                 if (res.data.token){
                     console.log('valuess are herer')
                      localStorage.setItem('authToken',JSON.stringify(res.data))
+                     localStorage.setItem('token',JSON.stringify(res.data.token))
                      setAuthToken(res.data)
-                     console.log(res.data)
-                     setUser(res.data.token)
-                     console.log(res.data.token)
+                     setUser(res.data.token)     
+                    
                      SetError(res.data.message)
                     navigate('/')
 
                 }
+             
               if(res.data.message){
                 console.log(res.data.message)
                 SetError(res.data.message)
@@ -61,16 +54,23 @@ export const AuthProvider=({children})=>{
             }
             )  
         }
-        const value=user
+ 
         let logOut=()=>{
             axios.post('user/logout/').then((res)=>{
                 console.log(res.data)
             })
             localStorage.removeItem('authToken')
+            localStorage.removeItem('token')
             setUser(null)
             setAuthToken(null)
             navigate('/login')
         }
+
+
+
+
+
+
 
         const [mobile,setMobile]=useState('')
         let contextData={
@@ -87,6 +87,9 @@ export const AuthProvider=({children})=>{
             handleClose:handleClose,
             handleShow:handleShow,
             show:show,
+           
+          
+          
         }
         return(
             <AuthContext.Provider value={contextData}>

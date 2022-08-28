@@ -183,6 +183,7 @@ def Login(request):
         'last_name':user.last_name,
         'email':user.email,
         'password':user.password,
+        'count':user.count,
     }
     # serializer=AccountSerializer(user,many=False)
     # return Response(serializer.data)
@@ -191,8 +192,8 @@ def Login(request):
 
 
 @api_view(['GET'])
-# @authentication_classes([JWTAuthentications])
-@authentication_classes([ADMINAuth])
+@authentication_classes([JWTAuthentications])
+# @authentication_classes([ADMINAuth])
 def alluser(request):
     user=Account.objects.all()
     serializer=AccountSerializer(user,many=True)    
@@ -326,24 +327,14 @@ def resetPassword(request):
         return Response(message,status=status.HTTP_400_BAD_REQUEST)
 
 
-# gettting rent categories
 
-# @api_view(['GET'])
-# @authentication_classes([JWTAuthentications])
-# def rentcategories(request):
-#     rent=Categories.objects.filter(category_of='rent')
-#     serializer=CategorySerializer(rent,many=True)
-#     return Response(serializer.data)
-
-
-
-
-# @api_view(['GET'])
-# @authentication_classes([JWTAuthentications])
-# # @permission_classes([IsAuthenticated])
-# def jobcategories(request):
-#     rent=Categories.objects.filter(category_of='job')
-#     serializer=CategorySerializer(rent,many=True)
-#     return Response(serializer.data)
     
-    
+@api_view(['GET'])
+@authentication_classes([JWTAuthentications])
+def userdata(request):
+    print('ethiiittttp')
+    user=request.user
+    print(user,'fgdgfgs')
+    data=Account.objects.get(email=user)
+    serializer=AccountSerializer(data,many=False)
+    return Response(serializer.data)

@@ -11,27 +11,27 @@ import axios  from '../axios'
 
 function NavBar() {
   const {logOut,user}=useContext(AuthContext)
-  // const Alldata=(e)=>{
-  //   e.preventDefault()
-  //    axios.get('user/use/',{
-  //     headers: {
-  //       Authorization:'Bearer '+ user //the token is a variable which holds the token
-  //     }
-  //    }).then((res)=>{
-  //           console.log(res.data)
-  //           if (res.data){
-  //               console.log('valuess are herer')
+  const Alldata=(e)=>{
+    e.preventDefault()
+     axios.get('user/use/',{
+      headers: {
+        Authorization:'Bearer '+ user //the token is a variable which holds the token
+      }
+     }).then((res)=>{
+            console.log(res.data)
+            if (res.data){
+                console.log('valuess are herer')
              
 
-  //           }
-  //           // setUser(res.data)
+            }
+            // setUser(res.data)
 
-  //       }
-  //       ).catch((err)=>{
-  //         console.log('error ann moneeeee moonjii')
-  //         console.log(err.data)
-  //       } ) 
-  //   }
+        }
+        ).catch((err)=>{
+          console.log('error ann moneeeee moonjii')
+          console.log(err.data)
+        } ) 
+    }
 
   return (
     
@@ -63,7 +63,7 @@ function NavBar() {
             </Nav.Link>
            
           </Nav>
-          {/* <Form className="d-flex">
+          <Form className="d-flex">
             <Form.Control
               type="search"
               placeholder="Search"
@@ -72,7 +72,7 @@ function NavBar() {
             />
             <Button variant="outline-success" onClick={Alldata}>Search</Button>
             <Button variant="outline-success" onClick={logOut}>Logout</Button>
-          </Form> */}
+          </Form>
           <Button variant="outline-success" onClick={logOut}>Logout</Button>
         </Navbar.Collapse>
       </Container>
