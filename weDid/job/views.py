@@ -57,3 +57,62 @@ def getcity(request,id):
     return Response(serializer.data)
 
 
+
+
+
+@api_view(['POST'])
+@authentication_classes([JWTAuthentications])
+def jobpost(request):
+    data=request.data
+    user=request.user
+    count=user.count    
+    mobiles=user.mobile  
+    print(mobiles)
+    print(data)
+    if(count<=2):  
+        job= JobPortal.objects.create(
+            user=user,
+            mobile=mobiles,
+            district_id=data['district'],
+            city_id=data['city'],
+            title=data['title'],
+            category_id=data['category'],
+            discriptions=data['discription'],
+            sub_mobile=data['sub_mobile'],           
+            place=data['place'],
+            address=data['address'],
+            rate=data['rate'],
+            slug=data['slug'],
+            available=True,            
+        )   
+        user.count+=1
+        user.save()        
+        serializer=JobSerializer(job,many=False)
+        return Response(serializer.data)                                                                                                                           
+        
+        
+    else:       
+        payment=data['payment']
+        if payment=='true':
+            job= JobPortal.objects.create(
+            user=user,
+            mobile=mobiles,
+            district_id=data['district'],
+            city_id=data['city'],
+            title=data['title'],
+            category_id=data['category'],
+            discriptions=data['discription'],
+            sub_mobile=data['sub_mobile'],           
+            place=data['place'],
+            address=data['address'],
+            rate=data['rate'],
+            slug=data['slug'],
+            available=True,            
+        )  
+            serializer=JobSerializer(job,many=False)
+            return Response(serializer.data)     
+        else:
+            print('noo')
+    
+    serializer=JobSerializer(data,many=False)
+    return Response(serializer.data)

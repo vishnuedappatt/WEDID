@@ -21,7 +21,7 @@ from django.utils.http import urlsafe_base64_encode,urlsafe_base64_decode
 from django.utils.encoding import force_bytes
 from django.contrib.auth.tokens import default_token_generator
 from django.core.mail import EmailMessage
-
+from django.contrib import auth
 
 
 # Create your views here.
@@ -162,32 +162,41 @@ def Login(request):
         return response  
     
     
-    
-    access_token=create_access_token(user.id)
-    refresh_token=create_refresh_token(user.id)
-    print(user.id)
-    UserToken.objects.create(
-        user_id=user.id,
-        token=refresh_token,
-        expired_at=datetime.datetime.utcnow()+datetime.timedelta(days=7)
-        )
-    
-    
-    response=Response()
-    response.set_cookie(key='refresh_token',value=refresh_token,httponly=True)
-    response.data={
-        'token':access_token,
-        'refresh':refresh_token,
-        'id':user.id,
-        'first_name':user.first_name,
-        'last_name':user.last_name,
-        'email':user.email,
-        'password':user.password,
-        'count':user.count,
-    }
-    # serializer=AccountSerializer(user,many=False)
-    # return Response(serializer.data)
-    return response
+    users=auth.authenticate(email=email,password=password)
+    if users:
+        
+        access_token=create_access_token(user.id)
+        refresh_token=create_refresh_token(user.id)
+        print(user.id)
+        UserToken.objects.create(
+            user_id=user.id,
+            token=refresh_token,
+            expired_at=datetime.datetime.utcnow()+datetime.timedelta(days=7)
+            )
+        
+        
+        response=Response()
+        response.set_cookie(key='refresh_token',value=refresh_token,httponly=True)
+        response.data={
+            'token':access_token,
+            'refresh':refresh_token,
+            'id':user.id,
+            'first_name':user.first_name,
+            'last_name':user.last_name,
+            'email':user.email,
+            'password':user.password,
+            'count':user.count,
+        }
+        # serializer=AccountSerializer(user,many=False)
+        # return Response(serializer.data)
+        return response
+    else:
+        response=Response()
+        response.data={
+            'message':'authtification fail failed '
+        }
+        return response  
+        
 
 
 

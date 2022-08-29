@@ -60,6 +60,7 @@
 } */
 .form-outline{
     padding: 1%;
+    /* background-color: aqua; */
 }
 
 
@@ -126,8 +127,8 @@ body{
 
 
 .payment-btn{
-    width: 20rem;
-    height: 5rem;
+    width: 25rem;
+    height: 8rem;
     
 }
 
@@ -136,4 +137,85 @@ body{
     /* background-color: aqua; */
     display: flex;
     justify-content: center;
+    text-align: center;
+
 }
+
+.submit-btn{
+
+    width: 15rem;
+    height: 4rem;
+
+}
+
+.submit{
+    display: flex;
+    justify-content: right;
+    /* background-color: black; */
+}
+
+.checkbox{
+    width: 20px;
+    margin-right: 80px;
+    height: 2rem;
+    /* margin:1%; */
+    /* margin-top: 200px; */
+    
+}
+.free1{
+    color: white;
+    font-size:20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.free2{
+    color: white;
+    font-size:20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin-top: -20px;
+}
+
+.check-text{
+    color:white;
+    /* margin-bottom: 100px; */
+    font-size: 15px;
+
+}
+
+@media (max-width: 600px) {
+    .payment-btn{
+        width: 15rem;
+        height: 5rem;        
+    }
+    .free1{
+        color: white;
+        font-size:10px;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    .free2{
+        color: white;
+        font-size:10px;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    .submit{
+        /* display: flex; */
+        justify-content: center;
+        /* background-color: black; */
+    }
+    .checkbox{
+       
+        width: 20px;
+        margin-right: 30px;
+        height: 1rem;
+        /* margin:1%; */
+        margin-top: 20px;
+        
+    }
+    .check-text{
+        color:white;
+        margin-bottom: 100px;
+        font-size: 10px;
+    }
+    }
+    
