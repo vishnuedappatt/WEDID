@@ -69,6 +69,14 @@ def jobpost(request):
     mobiles=user.mobile  
     print(mobiles)
     print(data)
+    yr= int(datetime.date.today().strftime('%Y'))
+    dt= int(datetime.date.today().strftime('%d'))
+    mt= int(datetime.date.today().strftime('%m'))
+    d=datetime.date(yr,mt,dt)
+    current_date =d.strftime("%Y%m%d")
+    order_number=current_date +str(user.id)
+    print(order_number)
+   
     if(count<=2):  
         job= JobPortal.objects.create(
             user=user,
@@ -83,7 +91,8 @@ def jobpost(request):
             address=data['address'],
             rate=data['rate'],
             slug=data['slug'],
-            available=True,            
+            available=True,
+            ordernumber=order_number,            
         )   
         user.count+=1
         user.save()        

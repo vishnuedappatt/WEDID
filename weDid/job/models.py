@@ -18,6 +18,7 @@ class JobPortal(models.Model):
     rate=models.IntegerField()
     available=models.BooleanField(default=False)    
     slug=models.SlugField(max_length=30)
+    ordernumber=models.CharField(max_length=30)
     
     
     def __str__(self):
