@@ -26,5 +26,5 @@ class CitySerializer(serializers.ModelSerializer):
 class JobSerializer(serializers.ModelSerializer):
     class Meta :
         model=JobPortal
-        fields='__all__'
+        fields="__all__"
         

@@ -162,8 +162,8 @@ def Login(request):
         return response  
     
     
-    users=auth.authenticate(email=email,password=password)
-    if users:
+    user_verified=auth.authenticate(email=email,password=password)
+    if user_verified:
         
         access_token=create_access_token(user.id)
         refresh_token=create_refresh_token(user.id)
@@ -183,8 +183,7 @@ def Login(request):
             'id':user.id,
             'first_name':user.first_name,
             'last_name':user.last_name,
-            'email':user.email,
-            'password':user.password,
+            'email':user.email,       
             'count':user.count,
         }
         # serializer=AccountSerializer(user,many=False)

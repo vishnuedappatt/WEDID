@@ -46,6 +46,7 @@ def getdistrict(request):
     serializer=DistrictSerializer(district,many=True)
     return Response(serializer.data)    
 
+
 # showing the city as per disctrict
 
 @api_view(['GET'])
@@ -101,27 +102,24 @@ def jobpost(request):
         
         
     else:       
-        payment=data['payment']
-        if payment=='true':
-            job= JobPortal.objects.create(
-            user=user,
-            mobile=mobiles,
-            district_id=data['district'],
-            city_id=data['city'],
-            title=data['title'],
-            category_id=data['category'],
-            discriptions=data['discription'],
-            sub_mobile=data['sub_mobile'],           
-            place=data['place'],
-            address=data['address'],
-            rate=data['rate'],
-            slug=data['slug'],
-            available=True,            
-        )  
-            serializer=JobSerializer(job,many=False)
-            return Response(serializer.data)     
-        else:
-            print('noo')
     
-    serializer=JobSerializer(data,many=False)
-    return Response(serializer.data)
+        job= JobPortal.objects.create(
+        user=user,
+        mobile=mobiles,
+        district_id=data['district'],
+        city_id=data['city'],
+        title=data['title'],
+        category_id=data['category'],
+        discriptions=data['discription'],
+        sub_mobile=data['sub_mobile'],           
+        place=data['place'],
+        address=data['address'],
+        rate=data['rate'],
+        slug=data['slug'],
+        available=True,     
+        ordernumber=order_number,       
+    )  
+        serializer=JobSerializer(job,many=False)
+        return Response(serializer.data)     
+   
+

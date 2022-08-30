@@ -35,7 +35,7 @@ def decode_access_token(token):
         
     except Exception as e:
         print(e)
-        raise exceptions.AuthenticationFailed('unauthenticated') 
+        raise exceptions.AuthenticationFailed('unauthenticateduuuu') 
     
     
 def decode_refresh_token(token):
@@ -70,7 +70,7 @@ class JWTAuthentications(BaseAuthentication):
             user=Account.objects.get(id=id)
             print(user)           
             return (user,None)           
-        raise exceptions.AuthenticationFailed('unauthenticated')
+        raise exceptions.AuthenticationFailed('unauthenticatedddddd')
         
         
 class ADMINAuth(BaseAuthentication):
