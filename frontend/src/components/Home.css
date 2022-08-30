@@ -84,3 +84,17 @@ margin-left: 2rem;
     font-size: large;
 
 }
+
+.wedid{
+    font-weight: 900;
+    font-size: 100px;
+    margin-top: 50px;
+}
+
+@media (max-width:600px){
+    .wedid{
+        font-weight: 700;
+        font-size: 60px;
+        margin-top: 30px;
+    }
+}

@@ -127,17 +127,20 @@ body{
 
 
 .payment-btn{
-    width: 25rem;
-    height: 8rem;
+    width: 17rem;
+    height: 6rem;   
     
 }
 
 
 .main-payment{
     /* background-color: aqua; */
+    flex-direction: column; 
     display: flex;
     justify-content: center;
     text-align: center;
+   padding-left: 40%;
+   
 
 }
 
@@ -181,16 +184,43 @@ body{
     font-size: 15px;
 
 }
+.sub-heading{
+    font-size: medium;
+}
 
-@media (max-width: 600px) {
+
+.payment-btn1{
+    width: 16rem;
+    height: 6rem;   
+    float: left;   
+    margin-top: 10px;
+  
+}
+
+
+.main-payment1{
+    /* background-color: aqua; */
+    /* flex-direction: column;  */
+    display: flex;
+    justify-content: center;
+    text-align: center;
+   /* padding-left: 40%; */
+   
+
+}
+
+@media (max-width: 700px) {
     .payment-btn{
-        width: 15rem;
-        height: 5rem;        
+        width: 8rem;
+        height: 4rem;     
+        margin-left: -20px;   
+        margin-top: 10px;
     }
     .free1{
         color: white;
         font-size:10px;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+       
+      
     }
     
     .free2{
@@ -199,23 +229,35 @@ body{
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
     .submit{
-        /* display: flex; */
+   
         justify-content: center;
-        /* background-color: black; */
+        
+
     }
     .checkbox{
        
         width: 20px;
         margin-right: 30px;
-        height: 1rem;
-        /* margin:1%; */
+        height: 1rem;      
         margin-top: 20px;
         
     }
+    
     .check-text{
         color:white;
         margin-bottom: 100px;
         font-size: 10px;
+    }
+    .sub-heading{
+        display: none;
+    }
+    .payment-btn1{
+        width: 8rem;
+        height: 4rem;   
+        float: left;   
+        margin-top: 10px;
+        margin-left: -20px;   
+        margin-bottom: 40px;
     }
     }
     

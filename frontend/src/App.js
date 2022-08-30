@@ -7,23 +7,31 @@ import RegisterPage from "./pages/RegisterPage";
 import VerifyPage from "./pages/VerifyPage";
 import ForgotPage from "./pages/ForgotPage";
 import PosingJobPage from "./pages/PosingJobPage";
+import LoginProtect from "./PrivetRouters/LoginProtect";
+import CaseOfReverse from "./PrivetRouters/CaseOfReverse";
+
 
 function App() {
   return (
     // <div >
       <>
 
-      
+     
 
       <BrowserRouter>
         <AuthProvider>
             <Routes>
               <Route path="/" element={<HomePage />} />
-              <Route path="/login" element={<LoginPage />} />
-              <Route path="/register" element={<RegisterPage />} />
-              <Route path="/verify" element={<VerifyPage />}/> 
-              <Route path='/forgot_password' element={<ForgotPage/>}/>      
-              <Route path="/postjob" element={<PosingJobPage />} />                 
+              <Route element={<CaseOfReverse />}>
+               
+                <Route path="/login" element={<LoginPage />} />
+                <Route path="/register" element={<RegisterPage />} />
+                <Route path="/verify" element={<VerifyPage />}/> 
+                <Route path='/forgot_password' element={<ForgotPage/>}/>  
+              </Route>
+              <Route element={<LoginProtect/>}>
+                <Route path="/postjob" element={<PosingJobPage />} />                 
+              </Route>    
             </Routes>
         </AuthProvider>
       </BrowserRouter>    

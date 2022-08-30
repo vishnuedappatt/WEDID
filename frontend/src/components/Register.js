@@ -203,8 +203,7 @@ function Register() {
         if(fname.length===0){
           setFerror('* this name field is required')
           setValid(true)
-        }
-        else{
+        }else{
           setFerror('')
           setValid(false)
         }
@@ -213,8 +212,7 @@ function Register() {
         if(lname.length===0){
           setLerror('* this last name field is required')
           setValid(true)
-        }
-        else{
+        }else{
           setLerror('')
           setValid(false)
         }
@@ -223,8 +221,7 @@ function Register() {
         if(email.length===0){
           setEmailError('* this email field is required')
           setValid(true)
-        }
-        else{
+        } else{
           setEmailError('')
           setValid(false)
         }

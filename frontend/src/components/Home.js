@@ -6,12 +6,18 @@ import { Link } from 'react-router-dom';
 function Home() {
   return (
     <div align='center ' >
+      <div style={{backgroundColor:'gray'}}>
+            <h2>ABOUT US</h2>
+            {/* <h4>ആരാണ്  WEDID  ? എന്താണ് ഞങ്ങൾ നിങ്ങൾക്കായി ചെയ്യുന്നത്  ? ഒരേഒരു ഉത്തരമേ ഉള്ളോ ഞങ്ങൾ നിങ്ങളിൽ ഒരാൾ ആണ്  </h4> */}
+            <p className='wedid'>WEDID</p>
+            <p style={{marginTop:'70px'}}>wedidsolutions@gmail.com</p>
+      </div>
      <div  className='main-btn1 mt-5 textAlign:center'>
       
         <img className='pic1' src='https://as2.ftcdn.net/v2/jpg/03/66/03/87/1000_F_366038737_36EAv6suOflplUQlHAhOlAxI3OYloJmi.jpg' alt=' nothing inside' />
         
         <h1 className='main-header1'> LOOKING FOR A BETTER OPPORTUNITY ? </h1>
-        <h5>Are you giving a service here ?are you want a job then click the button </h5>   
+        <p className='sub-heading'>Are you giving a service here ?are you want a job then click the button </p>   
         <Button className='clk-btn'><Link to='/postjob' style={{textDecoration:'None',color:'white '}}>Click here</Link></Button>
      </div>     
      
@@ -40,7 +46,12 @@ function Home() {
       {/* <br></br> */}
       {/* <Button className='main-btn1 mt-5'>Wow</Button>
       <Button className='main-btn2 mt-5 ml-3'>Wow</Button> */}
-
+        <div style={{backgroundColor:'gray'}}>
+            <h2>ABOUT US</h2>
+            {/* <h4>ആരാണ്  WEDID  ? എന്താണ് ഞങ്ങൾ നിങ്ങൾക്കായി ചെയ്യുന്നത്  ? ഒരേഒരു ഉത്തരമേ ഉള്ളോ ഞങ്ങൾ നിങ്ങളിൽ ഒരാൾ ആണ്  </h4> */}
+            <p className='wedid'>WEDID</p>
+            <p style={{marginTop:'70px'}}>wedidsolutions@gmail.com</p>
+      </div>
       </div>
   )
 }

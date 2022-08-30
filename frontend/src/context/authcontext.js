@@ -30,7 +30,7 @@ export const AuthProvider=({children})=>{
                 console.log(res.data.message)
 
                 if (res.data.token){
-                    console.log('valuess are herer')
+                 
                      localStorage.setItem('authToken',JSON.stringify(res.data))
                      localStorage.setItem('token',JSON.stringify(res.data.token))
                      setAuthToken(res.data)
@@ -41,14 +41,12 @@ export const AuthProvider=({children})=>{
 
                 }
              
-              if(res.data.message){
-                console.log(res.data.message)
+              if(res.data.message){              
                 SetError(res.data.message)
                 handleShow()
                 setTimeout(() => {
                     handleClose(false);
                        }, 5000);
-
               }
 
             }
