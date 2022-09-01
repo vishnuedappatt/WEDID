@@ -102,19 +102,19 @@ def verification(request):
         user.is_active=True
         email=user.email
         user.save()
-        current_site = get_current_site(request)
-        mail_subject ='Welcome Tag'
-        message= render_to_string('user/welcome.html',{
-                'user':user,
-                'domain': current_site,
-                'uid':urlsafe_base64_encode(force_bytes(user.id)),
-                'token':default_token_generator.make_token(user),
+        # current_site = get_current_site(request)
+        # mail_subject ='Welcome Tag'
+        # message= render_to_string('user/welcome.html',{
+        #         'user':user,
+        #         'domain': current_site,
+        #         'uid':urlsafe_base64_encode(force_bytes(user.id)),
+        #         'token':default_token_generator.make_token(user),
 
-                    })
-        to_email = email
-        send_email=EmailMessage(mail_subject, message ,to=[to_email])
-        print("here")
-        send_email.send()
+        #             })
+        # to_email = email
+        # send_email=EmailMessage(mail_subject, message ,to=[to_email])
+        # print("here")
+        # send_email.send()
         
         serializer=AccountSerializer(user,many=False)
         return Response(serializer.data)

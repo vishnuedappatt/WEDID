@@ -11,7 +11,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated,IsAdminUser
 
 from user.authentication import ADMINAuth, JWTAuthentications, create_access_token,create_refresh_token,decode_access_token,decode_refresh_token
-from .serializer import CategorySerializer,CitySerializer,DistrictSerializer,JobSerializer
+from .serializer import CategorySerializer,CitySerializer,DistrictSerializer,JobSerializer,EditJobSerializer
 
 # Create your views here.
 
@@ -123,3 +123,37 @@ def jobpost(request):
         return Response(serializer.data)     
    
 
+
+
+# all job view
+
+@api_view(['GET'])
+def getallpost(request):
+    job=JobPortal.objects.all()
+    serializer=JobSerializer(job,many=True)
+    return Response(serializer.data)
+
+
+@api_view(['GET'])
+def singlejobview(request,id):
+    job=JobPortal.objects.get(id=id)
+    serializer=JobSerializer(job,many=False)
+    return Response(serializer.data)
+
+
+@api_view(['PUT'])
+def editingjob(request,id):
+    try:
+        print('d111211')
+        job=JobPortal.objects.get(id=id)
+        edit=EditJobSerializer(instance=job,data=request.data)
+        if edit.is_valid():
+            print('dfdf')
+            edit.save()
+        return Response(edit.data)
+    except:
+        response=Response()
+        response.data={
+            'message':'password miss match '
+        }
+        return response  

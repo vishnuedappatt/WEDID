@@ -9,6 +9,7 @@ import ForgotPage from "./pages/ForgotPage";
 import PosingJobPage from "./pages/PosingJobPage";
 import LoginProtect from "./PrivetRouters/LoginProtect";
 import CaseOfReverse from "./PrivetRouters/CaseOfReverse";
+import JobHomePage from "./pages/JobHomePage";
 
 
 function App() {
@@ -30,7 +31,8 @@ function App() {
                 <Route path='/forgot_password' element={<ForgotPage/>}/>  
               </Route>
               <Route element={<LoginProtect/>}>
-                <Route path="/postjob" element={<PosingJobPage />} />                 
+                <Route path="/postjob" element={<PosingJobPage />} />  
+                <Route path='/jobhome' element={<JobHomePage />}/>f               
               </Route>    
             </Routes>
         </AuthProvider>

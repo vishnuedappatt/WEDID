@@ -98,19 +98,21 @@ function GivingService() {
 //  getting category id and get and show
 
   const cityGetting=async(id)=>{  
-         setDisCheck(id) 
-         setErrorDistrict('')
-    let request=(JSON.parse(localStorage.getItem('token')))  
-   await axios.get(`job/showcity/${id}/`,{
-        headers: {
-            Authorization:'Bearer '+ request
-          }
-    }).then((res)=>{
-        console.log(res.data)
-        setCity(res.data)
-        
-    })
-  }
+    setDisCheck(id) 
+    setErrorDistrict('')
+        let request=(JSON.parse(localStorage.getItem('token')))  
+    await axios.get(`job/showcity/${id}/`,{
+            headers: {
+                Authorization:'Bearer '+ request
+            }
+        }).then((res)=>{
+            console.log(res.data)
+            setCity(res.data)
+            
+        }).catch((err)=>{
+            console.log(err.res.data)
+        })
+    }
 
 
 //   validations
@@ -301,15 +303,16 @@ const [altnumb,setAltNumb]=useState('')
    
    const [paymetzone,setPayZone]=useState(false)
 
-
+   const [val,setVal]=useState(false)
 
    const submitHandler=async(e)=>{
     e.preventDefault()
     console.log(view,'this is vieww')
     // for category
-    if(ccat.length==0){
+    if(ccat.length===0){
         // setValid(true)        
         setErrorCat('* this category field is required')
+        setVal(true)
 
        
     }else{
@@ -319,7 +322,7 @@ const [altnumb,setAltNumb]=useState('')
     }
 
     // for district
-    if(cdistrict.length==0){
+    if(cdistrict.length===0){
         
         setErrorDistrict('* this district field is required')
         
@@ -329,7 +332,7 @@ const [altnumb,setAltNumb]=useState('')
     }
 
     // for city
-    if(ccity.length==0){
+    if(ccity.length===0){
         setValid(true)
         setErrorCity('* this city field is required')
         
@@ -339,7 +342,7 @@ const [altnumb,setAltNumb]=useState('')
     }
 
     // altnumber
-    if(altnumb.length==0){
+    if(altnumb.length===0){
           setValid(true)  
         setCatError('* this sub number field is required') 
       
@@ -347,9 +350,9 @@ const [altnumb,setAltNumb]=useState('')
         setCatError('')   
         setValid(false)
     }
-
+console.log(val,'this is the value')
 // title
-    if(title.length==0){
+    if(title.length===0){
         setErrorTitle('* this title field is required')
         setValid(true)  
     }else{
@@ -359,7 +362,7 @@ const [altnumb,setAltNumb]=useState('')
 
 
     // distription
-    if(discription.length==0){
+    if(discription.length===0){
         setErrDis('* this discriptiion field is required')
         setValid(true)  
     }else{
@@ -368,7 +371,7 @@ const [altnumb,setAltNumb]=useState('')
     }
 
     // address
-    if(address.length==0){
+    if(address.length===0){
         setAddError('* this address field is required')
         setValid(true)
     }else{
@@ -378,7 +381,7 @@ const [altnumb,setAltNumb]=useState('')
     
 
     // place
-    if(place.length==0){
+    if(place.length===0){
         setPlaceError('* this place field is required')
        
     }else{
@@ -388,70 +391,58 @@ const [altnumb,setAltNumb]=useState('')
 
 
     // rate
-    if(rate.length==0){
+    if(rate.length===0){
         setRateError('* this rate field is required')
        
-    }
-    else{
+    }else{
         setRateError('')
      
     }
 
 
-    if(ccat.length!==0){    
-        if(cdistrict.length!==0){      
-            if(cdistrict.length!==0){    
-                if(ccity.length!==0){ 
-                    if(altnumb.length!==0){
-                        if(title.length!==0){
-                            if(discription.length!==0){
-                                if(address.length!==0){
-                                    if(place.length!==0){
-                                        if(rate.length!==0){                                                                  
-                                            console.log('final submitt')
-                                                let request=(JSON.parse(localStorage.getItem('token')))  
+    // if(ccat.length!==0){    
+    //     if(cdistrict.length!==0){      
+    //         if(cdistrict.length!==0){    
+    //             if(ccity.length!==0){ 
+    //                 if(altnumb.length!==0){
+    //                     if(title.length!==0){
+    //                         if(discription.length!==0){
+    //                             if(address.length!==0){
+    //                                 if(place.length!==0){
+    //                                     if(rate.length!==0){                                                                  
+    //                                         console.log('final submitt')
+    //                                             let request=(JSON.parse(localStorage.getItem('token')))  
     
-                                                     await  axios.post('job/jobpost/',{
-                                                        category:ccat,
-                                                        district:cdistrict,
-                                                        city:ccity,
-                                                        sub_mobile:altnumb,
-                                                        title:title,
-                                                        discription:discription,
-                                                        address:address,
-                                                        place:place,
-                                                        rate:rate,                                                      
-                                                        slug:title,
-                                                        mobile:mobile,
-                                                        order_number:mobile,
+    //                                                  await  axios.post('job/jobpost/',{
+    //                                                     category:ccat,
+    //                                                     district:cdistrict,
+    //                                                     city:ccity,
+    //                                                     sub_mobile:altnumb,
+    //                                                     title:title,
+    //                                                     discription:discription,
+    //                                                     address:address,
+    //                                                     place:place,
+    //                                                     rate:rate,                                                      
+    //                                                     slug:title,
+    //                                                     mobile:mobile,
+    //                                                     order_number:mobile,
                                                 
-                                                    },{
-                                                        headers: {
-                                                            Authorization:'Bearer '+ request
-                                                          }
-                                                    }).then((res)=>{
-                                                        console.log(res.data)
-                                                        if (res.data.ordernumber){
-                                                            setFirstSubmit(res.data.ordernumber)
-                                                            localStorage.setItem('token',JSON.stringify(res.data.ordernumber))
-                                                            setPayZone(true)
+    //                                                 },{
+    //                                                     headers: {
+    //                                                         Authorization:'Bearer '+ request
+    //                                                       }
+    //                                                 }).then((res)=>{
+    //                                                     console.log(res.data)
+    //                                                     if (res.data.ordernumber){
+    //                                                         setFirstSubmit(res.data.ordernumber)
+    //                                                         localStorage.setItem('token',JSON.stringify(res.data.ordernumber))
+    //                                                         setPayZone(true)
                                                 
-                                                        }
-                                                    })
-                                                 }}}}}}}}}} 
+    //                                                     }
+    //                                                 })
+    //                                              }}}}}}}}}} 
 
     console.log(firstsubmit,'after amean while')
-
-
-   
-
-
-
-
-   
-
-
-
 
     console.log(isvalid)
    

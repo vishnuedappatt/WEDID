@@ -87,14 +87,14 @@ margin-left: 2rem;
 
 .wedid{
     font-weight: 900;
-    font-size: 100px;
+    font-size: 80px;
     margin-top: 50px;
 }
 
 @media (max-width:600px){
     .wedid{
         font-weight: 700;
-        font-size: 60px;
+        font-size: 40px;
         margin-top: 30px;
     }
 }

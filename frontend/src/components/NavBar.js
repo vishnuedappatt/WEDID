@@ -54,6 +54,7 @@ function NavBar() {
             {val? '':<Link to='/register'><Button className='ms-5' variant="outline-dark" >REGISTER</Button></Link>}
        
             {val? <Link to='/profile'><Button className='ms-5' variant="outline-dark" >PROFILE</Button></Link>:''}
+            <Link to='/profile'><Button className='ms-5' variant="outline-dark" >CONTACT</Button></Link>
             {/* <Nav.Link href="#action2">Link</Nav.Link>
             <NavDropdown title="Link" id="navbarScrollingDropdown">
               <NavDropdown.Item href="#action3">Action</NavDropdown.Item>

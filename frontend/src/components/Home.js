@@ -7,10 +7,13 @@ function Home() {
   return (
     <div align='center ' >
       <div style={{backgroundColor:'gray'}}>
-            <h2>ABOUT US</h2>
+      <p >wedidsolutions@gmail.com</p>
+            {/* <h2>ABOUT US</h2> */}
             {/* <h4>ആരാണ്  WEDID  ? എന്താണ് ഞങ്ങൾ നിങ്ങൾക്കായി ചെയ്യുന്നത്  ? ഒരേഒരു ഉത്തരമേ ഉള്ളോ ഞങ്ങൾ നിങ്ങളിൽ ഒരാൾ ആണ്  </h4> */}
+            {/* <h2>If oppurtunity doesn't knock , build a door</h2> */}
+            <h4>IF OPPURTUNITY DOESN'T KNOCK , BUILD A DOOR</h4>
             <p className='wedid'>WEDID</p>
-            <p style={{marginTop:'70px'}}>wedidsolutions@gmail.com</p>
+           
       </div>
      <div  className='main-btn1 mt-5 textAlign:center'>
       
@@ -47,7 +50,7 @@ function Home() {
       {/* <Button className='main-btn1 mt-5'>Wow</Button>
       <Button className='main-btn2 mt-5 ml-3'>Wow</Button> */}
         <div style={{backgroundColor:'gray'}}>
-            <h2>ABOUT US</h2>
+           
             {/* <h4>ആരാണ്  WEDID  ? എന്താണ് ഞങ്ങൾ നിങ്ങൾക്കായി ചെയ്യുന്നത്  ? ഒരേഒരു ഉത്തരമേ ഉള്ളോ ഞങ്ങൾ നിങ്ങളിൽ ഒരാൾ ആണ്  </h4> */}
             <p className='wedid'>WEDID</p>
             <p style={{marginTop:'70px'}}>wedidsolutions@gmail.com</p>
