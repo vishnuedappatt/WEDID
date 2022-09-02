@@ -70,7 +70,7 @@ class JWTAuthentications(BaseAuthentication):
             user=Account.objects.get(id=id)
             print(user)           
             return (user,None)           
-        raise exceptions.AuthenticationFailed('unauthenticatedddddd')
+        raise exceptions.AuthenticationFailed('unauthenticatedjwt')
         
         
 class ADMINAuth(BaseAuthentication):

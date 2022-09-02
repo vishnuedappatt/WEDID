@@ -1,40 +1,37 @@
-import React,{useEffect,useState,useContext} from 'react'
+import React,{useEffect,useState} from 'react'
 import Button from 'react-bootstrap/Button';
 import './GivingService.css'
 import Dropdown from 'react-bootstrap/Dropdown';
 import axios from '../axios'
-import Form from 'react-bootstrap/Form';
-import AuthContext from '../context/authcontext';
+
 
 
 function GivingService() {
-    const [isvalid,setValid]=useState(false)
-    // taking authtoken
-    const {}=useContext(AuthContext)
+
+    const[getcat,setGetCat]=useState([])
+    const[getdis,setGetDis]=useState([])
+    const[getcity,setGetCity]=useState([])
 
     // for categorystate
-    const [category,setCategory]=useState([])
-
-    // for district
-    const [district,setDistrict]=useState([])
-
-    // for city
-    const [city,setCity]=useState([])
-    const [view,setView]=useState(false)
-    const [counts,setCount]=useState('')   
-    const [mobile,setMobile]=useState('')
+    const [category,setCategory]=useState('') 
+    const [district,setDistrict]=useState('')  
+    const [city,setCity]=useState('')
+    const [title, setTile] = useState('')
+    const [sub_mobile, setSubMobile] = useState('')
+    const [discription,setDiscription]= useState('')
+    const [address,setAddress]= useState('')
+    const [place,setPlace]=useState('')
+    const [rate,setRate]=useState('')
 
   useEffect(() => {      
-    let request=(JSON.parse(localStorage.getItem('authToken')))  
-    // setMobile(request.mobile)
-
-    
+    let request=(JSON.parse(localStorage.getItem('authToken')))      
     getCategory()
     getDistrict()   
-    userData()
- 
-    
-
+    userData()   
+   let val=(JSON.parse(localStorage.getItem('order_number')))   
+    if (val){
+        setSubmit(true)
+    }       
     return () => {
       
     }
@@ -42,8 +39,7 @@ function GivingService() {
 
 // user datas
 
-  const userData=async()=>{
-   
+  const userData=async()=>{   
     let request=(JSON.parse(localStorage.getItem('token')))  
    await axios.get('user/profile/',{
         headers: {
@@ -52,17 +48,12 @@ function GivingService() {
     }).then((res)=>{
         // setUser(res.data)
         console.log(res.data,'evide work ann')
-        setMobile(res.data.mobile)
-        setCount(3-res.data.count)
-        if(res.data.count>2){
-            setView(true)
+            if(res.data.count>2){            
         }
     }).catch((err)=>{
         console.log(err.data.detail,'dfdfdf ')
     })
 }
-
-
 
 
 // getting all category
@@ -74,7 +65,7 @@ function GivingService() {
           }
     }).then((res)=>{
         console.log(res.data)
-        setCategory(res.data)
+        setGetCat(res.data)
 
     
     })
@@ -89,7 +80,7 @@ function GivingService() {
           }
     }).then((res)=>{
         console.log(res.data)
-        setDistrict(res.data)
+        setGetDis(res.data)
     })
   }
 
@@ -97,9 +88,8 @@ function GivingService() {
 
 //  getting category id and get and show
 
-  const cityGetting=async(id)=>{  
-    setDisCheck(id) 
-    setErrorDistrict('')
+  const cityGetting=async(id)=>{   
+            setDistrict(id)
         let request=(JSON.parse(localStorage.getItem('token')))  
     await axios.get(`job/showcity/${id}/`,{
             headers: {
@@ -107,7 +97,7 @@ function GivingService() {
             }
         }).then((res)=>{
             console.log(res.data)
-            setCity(res.data)
+            setGetCity(res.data)
             
         }).catch((err)=>{
             console.log(err.res.data)
@@ -115,421 +105,184 @@ function GivingService() {
     }
 
 
+
 //   validations
 
 // ---------------------------------------
 
-  const [ccat,setCatCheck]=useState('')
+ const[disErr, setDisErr] = useState({})
+  const [cityErr,setCityErr] = useState({})
+  const [cateErr, setCateErr] = useState({})
+  const [titleErr, setTitleErr] = useState({})
+  const [discriptionErr,setDiscriptionErr] = useState({})
+  const [subMobileErr, setSubMobileErr] = useState({})
+  const [addressErr, setAddressErr] = useState({})
+  const [placeErr, setPlaceErr] = useState({})
+  const [rateErr, setRateError] = useState({})
 
 
-// category
- 
- 
-  const [errorcat,setErrorCat]=useState('')
-
-    const checkCategory=(id)=>{
-        console.log(id)
-        setCatCheck(id)  
-        setErrorCat('')  
-           
+    const checkCate=(id)=>{
+        setCategory(id)
     }
 
-// city
-const [cdistrict,setDisCheck]=useState('')
-const [ccity,setCityCheck]=useState('')
-// error
-const [errordistrict,setErrorDistrict]=useState('')
-
-const [errorcity,setErrorCity]=useState('')
-    const checkCity=(id)=>{
-        console.log(id)
-        setCityCheck(id)
-        setErrorCity(' ')
+    const checkCity=(id)=>{        
+        setCity(id)
+        console.log(district,'dissssss')
     }
 
-//  alt mobile number
-// //   for error
-const [caterror,setCatError]=useState('')
 
-const [altnumb,setAltNumb]=useState('')
-
-    const checkaltNumber=(e)=>{       
-        let number=e.target.value
-        const re = /^[0-9\b]+$/;  
-        
-      if (re.test(number))
-        {    
-        setAltNumb(number) 
-        setCatError('')      
-        if(number.length>10){
-         setCatError(' * this field contain max 10 digit only')  
-        //  setValid(true)   
-          setAltNumb(number)         
-        }
-        else{             
-            setAltNumb(number)
-         
-        }
-       }    
-        else{
-        console.log('stringss') 
-        setCatError('* it should contain only numbers')  
-        // setValid(true)        
-      }        
-        
-    }
-
-    // title
-    const [title,setTitle]=useState('')
-    // errors
-    const [errtitle,setErrorTitle]=useState('')
-    const checkTile=(e)=>{
-        let title=e.target.value 
-     
-        if (title.length>3){           
-            setTitle(title)
-            setErrorTitle('')
-            setValid(false)
-        }       
-        else{
-            setTitle(title)
-            setErrorTitle('minimun 3 charecter for title')
-            setValid(true)
-        }
-        
-        
-    }
-
-    // discription
-    const [discription,setDiscription]=useState('')
-    // error
-    const [errdis,setErrDis]=useState('')
-    const checkDiscription=(e)=>{     
-       let dis=e.target.value
-       if (dis.length>15){           
-        setDiscription(dis)
-        setErrDis('')
-        setValid(false)
-       
-    }       
-    else{
-        setDiscription(dis)
-        setValid(true)
-        setErrDis('minimun 15 charecter for title')
-      
-    }
     
-      
-     
-    }
+    const [submit,setSubmit]=useState(false)
+  // api call for submit job
 
-    // address
-    
-    const [address,setAddress]=useState('')
-    // error
-    const [adderror,setAddError]=useState('')
-
-    const checkAddress=(e)=>{
-        let add=e.target.value
-        console.log(add)
-        if (add.length>10){           
-            setAddress(add)
-            setAddError('')
-            setValid(false)
-        }       
-        else{
-            setValid(true)
-            setAddress(add)
-            setAddError('minimun 10 charecter for title')
-           
-        }
-        
-    }
-
-    // place
-
-    const [place,setPlace]=useState('')
-    // error
-    const [placeerr,setPlaceError]=useState('')
-
-    const checkPlace=(e)=>{
-       let  value=e.target.value
-        console.log(value)
-        if (value.length>5){           
-            setPlace(value)
-            setPlaceError('')
-            setValid(false)
-        }       
-        else{
-           
-            setPlace(value)
-            setValid(true)
-            setPlaceError('place have minimun 5 charecter for title')
-            
-        }
-        
-
-    }
-    // rate
-
-    const [rate,setRate]=useState('')
-    // error
-    const [rateerror,setRateError]=useState('')
-    const checkRate=(e)=>{
-       let value=e.target.value
-       console.log(value)    
-       const re = /^[0-9\b]+$/;  
-       
-     if (re.test(value))
-       {    
-        setRateError('')  
-        setRate(value)
-        setValid(false)
-      }    
-       else{
-      
-       setRateError('Rate field is contain only a valid wage rate')
-       // setAltNumb('')     
-       setRate('')          
-       setValid(true)
-     }        
-       
-   }
-
-
-
-// submitting sections
-   const [firstsubmit,setFirstSubmit]=useState('')
-   
-   const [paymetzone,setPayZone]=useState(false)
-
-   const [val,setVal]=useState(false)
-
-   const submitHandler=async(e)=>{
+  const submitHandler = async(e)=>{
     e.preventDefault()
-    console.log(view,'this is vieww')
-    // for category
-    if(ccat.length===0){
-        // setValid(true)        
-        setErrorCat('* this category field is required')
-        setVal(true)
+    let request=(JSON.parse(localStorage.getItem('token'))) 
+    console.log(request)
+    const isValid = formValidation()
+    if (isValid){
+        await axios.post('job/jobpost/',{
 
-       
-    }else{
-        setValid(false)
-        setErrorCat('')
-       
-    }
-
-    // for district
-    if(cdistrict.length===0){
-        
-        setErrorDistrict('* this district field is required')
-        
-    }else{
-        setErrorDistrict('')
-       
-    }
-
-    // for city
-    if(ccity.length===0){
-        setValid(true)
-        setErrorCity('* this city field is required')
-        
-    }else{
-        setErrorCity('')
-       
-    }
-
-    // altnumber
-    if(altnumb.length===0){
-          setValid(true)  
-        setCatError('* this sub number field is required') 
-      
-    }else{
-        setCatError('')   
-        setValid(false)
-    }
-console.log(val,'this is the value')
-// title
-    if(title.length===0){
-        setErrorTitle('* this title field is required')
-        setValid(true)  
-    }else{
-        setErrorTitle('')
-        setValid(false)
-    }
+                category:category,
+                district:district,
+                city:city,
+                title:title,
+                discription:discription,
+                sub_mobile:sub_mobile,
+                address:address, 
+                place:place,
+                rate:rate,
+                slug:title,
+          
+              },{
+            headers: {
+                Authorization:'Bearer  '+ request
+            }
+        }).then((res)=>{
+            console.log(res.data)
+            if (res.data.ordernumber){
+            localStorage.setItem('order_number',JSON.stringify(res.data.ordernumber))
+            setSubmit(true)
+          }}).catch((err)=>{
+            console.log(err.response.data.detail)
+           
+          })
+        }}
 
 
-    // distription
-    if(discription.length===0){
-        setErrDis('* this discriptiion field is required')
-        setValid(true)  
-    }else{
-        setErrDis('')
-        setValid(false)
-    }
 
-    // address
-    if(address.length===0){
-        setAddError('* this address field is required')
-        setValid(true)
-    }else{
-        setAddError('')
-        setValid(false)
-    }
+
+
+
+
+
+const formValidation=()=>{ 
     
+    const titleErr={}
+    const discriptionErr ={}
+    const subMobileErr={}
+    const addressErr={}
+    const placeErr={}
+    const rateErr={}
+    const disErr={}
+    const cityErr={}
+    const cateErr={}
+    let isValid = true
 
-    // place
-    if(place.length===0){
-        setPlaceError('* this place field is required')
-       
-    }else{
-        setPlaceError('')
-        setValid(false)
+    if (!category){
+        cateErr.short_fname = '* category is a required field'
+        isValid = false
+      }
+    if (!district){
+    disErr.short_fname = '* district is a required field'
+    isValid = false
     }
-
-
-    // rate
-    if(rate.length===0){
-        setRateError('* this rate field is required')
-       
-    }else{
-        setRateError('')
+    if (!city){
+    console.log('yesssssssss')
+    cityErr.short_fname = '* city is a required field'
+    isValid = false
+    }
      
+      
+    if (!title){
+        titleErr.short_fname = '*title name is a required field'
+         isValid = false
+    }else if(title.trim().length <3){
+        titleErr.short_fname = '*title is too short  '
+      isValid = false
     }
 
+    if (!sub_mobile){
+        subMobileErr.short_lname = '* sub mobile field is a required field'
+        isValid = false
+  }else{
+      if(sub_mobile.trim().length <9){
+        subMobileErr.short_lname = '* mobile number contain min 10 number'
+        isValid = false
+      }
+      else if(sub_mobile.trim().length >10){
+        subMobileErr.short_lname = '* mobile number contain only 10 numbers'
+        isValid = false
+      }
+  }
+ 
 
-    // if(ccat.length!==0){    
-    //     if(cdistrict.length!==0){      
-    //         if(cdistrict.length!==0){    
-    //             if(ccity.length!==0){ 
-    //                 if(altnumb.length!==0){
-    //                     if(title.length!==0){
-    //                         if(discription.length!==0){
-    //                             if(address.length!==0){
-    //                                 if(place.length!==0){
-    //                                     if(rate.length!==0){                                                                  
-    //                                         console.log('final submitt')
-    //                                             let request=(JSON.parse(localStorage.getItem('token')))  
-    
-    //                                                  await  axios.post('job/jobpost/',{
-    //                                                     category:ccat,
-    //                                                     district:cdistrict,
-    //                                                     city:ccity,
-    //                                                     sub_mobile:altnumb,
-    //                                                     title:title,
-    //                                                     discription:discription,
-    //                                                     address:address,
-    //                                                     place:place,
-    //                                                     rate:rate,                                                      
-    //                                                     slug:title,
-    //                                                     mobile:mobile,
-    //                                                     order_number:mobile,
-                                                
-    //                                                 },{
-    //                                                     headers: {
-    //                                                         Authorization:'Bearer '+ request
-    //                                                       }
-    //                                                 }).then((res)=>{
-    //                                                     console.log(res.data)
-    //                                                     if (res.data.ordernumber){
-    //                                                         setFirstSubmit(res.data.ordernumber)
-    //                                                         localStorage.setItem('token',JSON.stringify(res.data.ordernumber))
-    //                                                         setPayZone(true)
-                                                
-    //                                                     }
-    //                                                 })
-    //                                              }}}}}}}}}} 
+  if (!discription){
+    discriptionErr.short_email= '* this discription field is required'
+    isValid = false
+  }
+  else if(discription.trim().length<10)
+  {
+    discriptionErr.short_email= '* this discription field contain min 5 words'
+    isValid = false
+  }
+  if (!address){
+    addressErr.short_email= '* this address field is required'
+    isValid = false
+  }
+  else if(discription.trim().length<10)
+  {
+    addressErr.short_email= '* this address field contain min 5 words'
+    isValid = false
+  }
 
-    console.log(firstsubmit,'after amean while')
 
-    console.log(isvalid)
-   
-    if (!isvalid){
-        console.log(isvalid)
-        console.log('valuess')
-        if (view){
-    //         console.log('happy anne')
-    //         // console.log('submitted')
-    //       await  axios.post('job/jobpost/',{
-    //     category:ccat,
-    //     district:cdistrict,
-    //     city:ccity,
-    //     sub_mobile:altnumb,
-    //     title:title,
-    //     discription:discription,
-    //     address:address,
-    //     place:place,
-    //     rate:rate,
-    //     payment:payment,
-    //     slug:title,
-    //     mobile:mobile,
-    //     order_number:mobile,
+  if (!place){
+    placeErr.short_email= '* this place field is required'
+    isValid = false
+  }
+  else if(address.trim().length<5)
+  {
+    placeErr.short_email= '* this place field contain min 5 charector'
+    isValid = false
+  }
+  
 
-    // },{
-    //     headers: {
-    //         Authorization:'Bearer '+ request
-    //       }
-    // }).then((res)=>{
-    //     console.log(res.data)
-    //     if (res.data.ordernumber){
-    //         setFirstSubmit(res.data.ordernumber)
 
-    //     }
-    // })
-    console.log('its finee')
+   if(!rate){
+    rateErr.short_cpassword= '*rate  required field!'
+    isValid = false
+  }
 
-        }
-        else{
-    //         console.log('happy anne')
-    //         // console.log('submitted')
-    //       await  axios.post('job/jobpost/',{
-    //     category:ccat,
-    //     district:cdistrict,
-    //     city:ccity,
-    //     sub_mobile:altnumb,
-    //     title:title,
-    //     discription:discription,
-    //     address:address,
-    //     place:place,
-    //     rate:rate,
-    //     slug:title,
-    //     mobile:mobile,
-    //     order_number:mobile,
+  setDisErr(disErr)
+  setCityErr(cityErr)
+  setCateErr(cateErr)
+  setTitleErr(titleErr)
+  setDiscriptionErr(discriptionErr)
+  setSubMobileErr(subMobileErr)
+  setAddressErr(addressErr)
+  setPlaceErr(placeErr)
+  setRateError(rateErr)
 
-    // },{
-    //     headers: {
-    //         Authorization:'Bearer '+ request
-    //       }
-    // }).then((res)=>{
-    //     console.log(res.data)
-    //     if (res.data.ordernumber){
-    //         setFirstSubmit(res.data.ordernumber)
-
-    //     }
-    // })
-    //         console.log('njn cheta annn')
-    //     }
-    
-
-    // }
-console.log('this is also fine')
-
-   }
-   
-    }else{
-        console.log('noooooooo')
-    }
-   
-    console.log(paymetzone,'')
-    
+  return isValid
 }
+
+
 
   return (
     <div >       
-        <h1 className='heading'>APPLY FOR MORE OPPERTUNITY</h1>
-        <form onSubmit={submitHandler} className='main'>
+        <h1 className='heading'>APPLY FOR AN OPPORTUNITY</h1>
+       {submit?'': <form onSubmit={submitHandler}   className='main'>
             <div className="row mb-4  ">
                 <div className="col">
                     <div className="form-outline">
@@ -540,13 +293,14 @@ console.log('this is also fine')
                             </Dropdown.Toggle>
 
                             <Dropdown.Menu className='fields'>
-                                {category? category.map((obj)=>                            
+                                {getcat? getcat.map((obj,key)=>                            
                                
-                                <Dropdown.Item href="#/action-1"  key={obj.id} onClick={()=>checkCategory(obj.id)} >{obj.name}</Dropdown.Item>  )   :' '}    
+                                <Dropdown.Item href="#/action-1"  key={obj.id}   onClick={()=>checkCate(obj.id)}>{obj.name}</Dropdown.Item>  )   :' '}    
                               
                             </Dropdown.Menu>
                         </Dropdown>   
-                        {errorcat? <span style={{color:'red',fontSize:'18px'}}>{errorcat}</span> :''}  
+                        {Object.keys(cateErr).map((key)=>{
+                                 return <div style={{color:'red'}} >{cateErr[key]}</div> })}
                     </div>
                 </div>
                 <div className="col">
@@ -558,13 +312,14 @@ console.log('this is also fine')
                             </Dropdown.Toggle>
 
                             <Dropdown.Menu className='fields'>
-                            {district? district.map((obj)=>                            
+                            {getdis? getdis.map((obj,key)=>                            
                                
                                <Dropdown.Item href="#/action-1"  key={obj.id}  onClick={()=>cityGetting(obj.id)}>{obj.district}</Dropdown.Item>  )   :' '}  
                                 
                             </Dropdown.Menu>
                         </Dropdown> 
-                        {errordistrict? <span style={{color:'red',fontSize:'18px'}}>{errordistrict}</span> :''}    
+                        {Object.keys(disErr).map((key)=>{
+                                 return <div style={{color:'red'}} >{disErr[key]}</div> })}
                         
                     </div>
                 </div>
@@ -581,30 +336,33 @@ console.log('this is also fine')
                             </Dropdown.Toggle>
 
                             <Dropdown.Menu className='fields'>
-                            {city? city.map((obj)=>                            
+                            {getcity? getcity.map((obj,key)=>                            
                                
-                               <Dropdown.Item href="#/action-1"  key={obj.id}  onClick={()=>checkCity(obj.id)} >{obj.city}</Dropdown.Item>  )   :' '}                                 
+                               <Dropdown.Item href="#/action-1"  key={obj.id} onClick={()=>checkCity(obj.id)}  >{obj.city}</Dropdown.Item>  )   :' '}                                 
                                
                             </Dropdown.Menu>
                         </Dropdown>   
-                        {errorcity? <span style={{color:'red',fontSize:'18px'}}>{errorcity}</span> :''}                   
+                        {Object.keys(cityErr).map((key)=>{
+                                 return <div style={{color:'red'}} >{cityErr[key]}</div> })}
                     </div>
                 </div>
                 <div className="col">
                     <div className="form-outline">       
-                    <label className="form-label"  >Alternative Mobile Number </label>                 
-                        <input type="text" id="form6Example3" value={altnumb} placeholder="This number is not same as you registerd" onChange={checkaltNumber}  className="form-control" />
+                    <label className="form-label"  >Sub Mobile Number </label>                 
+                        <input type="text" id="form6Example3"  placeholder="This number is not same as you registerd"  onChange={(e)=>setSubMobile(e.target.value)} value={sub_mobile}   className="form-control" />
                         
-                      
-                        {caterror? <span style={{color:'red',fontSize:'18px'}}>{caterror}</span> :''}  
+                        {Object.keys(subMobileErr).map((key)=>{
+                                 return <div style={{color:'red'}} >{subMobileErr[key]}</div> })}
+                       
                     </div>
                 </div>
             </div>
 
             <div className="form-outline mb-4">
                  <label className="form-label">Title</label>
-                <input type="text" id="form6Example3" onChange={checkTile} placeholder='Titile of you job' className="form-control" />
-                {errtitle? <span style={{color:'red',fontSize:'18px'}}>{errtitle}</span> :''}  
+                <input type="text" id="form6Example3"  placeholder='Titile of you job'  onChange={(e)=>setTile(e.target.value)} value={title} className="form-control" />
+                {Object.keys(titleErr).map((key)=>{
+                                 return <div style={{color:'red'}} >{titleErr[key]}</div> })}
                
             </div>
 
@@ -612,14 +370,16 @@ console.log('this is also fine')
             <div className="form-outline mb-4">
                 {/* <input  type="textarea" id="form6Example4" placeholder='describe about your job role' className="form-control" /> */}
                 <label className="form-label" >Discription</label>
-                <textarea className='text' onChange={checkDiscription}  placeholder='describe about your job role'></textarea>                
-                {errdis? <span style={{color:'red',fontSize:'18px'}}>{errdis}</span> :''}  
+                <textarea className='text'  onChange={(e)=>setDiscription(e.target.value)} value={discription}   placeholder='describe about your job role'></textarea>                
+                {Object.keys(discriptionErr).map((key)=>{
+                                 return <div style={{color:'red'}} >{discriptionErr[key]}</div> })}
             </div>
             
             <div className="form-outline mb-4">
                  <label className="form-label" >Address</label>
-                <input type="text" id="form6Example6" onChange={checkAddress}  placeholder='Enter your Address ' className="form-control" />               
-                {adderror? <span style={{color:'red',fontSize:'18px'}}>{adderror}</span> :''}  
+                <input type="text" id="form6Example6"   onChange={(e)=>setAddress(e.target.value)} value={address}  placeholder='Enter your Address ' className="form-control" />               
+                {Object.keys(addressErr).map((key)=>{
+                                 return <div style={{color:'red'}} >{addressErr[key]}</div> })}
             </div>
 
 
@@ -628,62 +388,42 @@ console.log('this is also fine')
                     <div className="form-outline">
                         <div className="form-outline mb-4">         
                         <label className="form-label" >Place</label>
-                            <input type="text" id="form6Example5" onChange={checkPlace}  placeholder='Enter your place' className="form-control" />   
-                            {placeerr? <span style={{color:'red',fontSize:'18px'}}>{placeerr}</span> :''}  
+                            <input type="text" id="form6Example5"  onChange={(e)=>setPlace(e.target.value)} value={place}  placeholder='Enter your place' className="form-control" />   
+                            {Object.keys(placeErr).map((key)=>{
+                                 return <div style={{color:'red'}} >{placeErr[key]}</div> })}
                         </div>                                 
                     </div>
                 </div>
                 <div className="col">                   
                     <div className="form-outline mb-4">
                     <label className="form-label" >Rate</label>
-                        <input type="text" id="form6Example5" onChange={checkRate} placeholder='Give a rate for this service' value={rate} className="form-control" />
-                    
-                        {rateerror? <span style={{color:'red',fontSize:'18px'}}>{rateerror}</span> :''}  
+                        <input type="text" id="form6Example5"  onChange={(e)=>setRate(e.target.value)} value={rate}  placeholder='Give a rate for this service'  className="form-control" />
+                        {Object.keys(rateErr).map((key)=>{
+                                 return <div style={{color:'red'}} >{rateErr[key]}</div> })}                
                     </div>
                 </div>
             </div>
-
-            
-    { view ?  
     
          <div className="main-payment  mb-4">   
-          <Button className='payment-btn' variant="success"  type='submit'><p>Clik here to continue</p></Button>{' '}       <br></br>
-         
-            <Button className='payment-btn1' variant="outline-warning"><p>Make Payment</p></Button>{' '}
-                
-                
+         {submit ? <Button className='payment-btn1' variant="outline-warning"><p>Make Payment</p></Button>  :<Button className='payment-btn' variant="success"  type='submit'><p>Clik here to continue</p></Button>      } 
            
             </div> 
-
-            :
-
-              <div className="main-payment1  mb-4"> 
-                    <div>
-                        <p className='free1' >You have {counts} free trail left</p>
-                        <p className='free2'>No payment for this post sharing </p>
-                        <Button className='payment-btn' variant="success"  type='submit'><p>Clik here to continue</p></Button>{' '}
-                    </div>              
-            </div>
-            }
-            
-             
-          
-            </form>
-            {/* <form align='center'>
-            <div className="form-outline mb-4">
-                <input type="checkbox" id="form6Example5" placeholder='Give a rate for this service' required className="checkbox" /><span className='check-text' >You are awate of our company policy</span>
-            </div>
-            <div className="form-outline mb-4">
-                <input type="checkbox" id="form6Example5" placeholder='Give a rate for this service' required className="checkbox" /><span className='check-text' >You are awate of our company policy</span>
-            </div>
-            
-        <div className='submit '>
-
-          
-            <Button className='submit-btn' type='submit' variant="outline-success">Make Payment</Button>{' '}
-        </div>
-          
-            </form> */}
+             {/* <div className="main-payment1  mb-4"> 
+                 <div>
+                    <Button className='payment-btn' variant="success"  type='submit'><p>Clik here to continue</p></Button>{' '}
+                </div>              
+            </div> */}
+            </form> }
+            <div className="main-payment ">   
+         {submit ?
+         <form>
+              <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike" required></input>
+              <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike" required />
+             <Button className='payment-btn2' type='submit' variant="outline-warning"><p>Make Payment</p></Button>
+         </form>
+           :'  '      } 
+           
+            </div> 
             
     </div>
   )

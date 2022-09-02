@@ -10,6 +10,7 @@ import PosingJobPage from "./pages/PosingJobPage";
 import LoginProtect from "./PrivetRouters/LoginProtect";
 import CaseOfReverse from "./PrivetRouters/CaseOfReverse";
 import JobHomePage from "./pages/JobHomePage";
+import Payment from "./components/Payment";
 
 
 function App() {
@@ -32,7 +33,8 @@ function App() {
               </Route>
               <Route element={<LoginProtect/>}>
                 <Route path="/postjob" element={<PosingJobPage />} />  
-                <Route path='/jobhome' element={<JobHomePage />}/>f               
+                <Route path='/jobhome' element={<JobHomePage />}/>    
+                <Route path='/payment' element={<Payment />}/>               
               </Route>    
             </Routes>
         </AuthProvider>

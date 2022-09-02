@@ -196,6 +196,13 @@ body{
     margin-top: 10px;
   
 }
+.payment-btn2{
+    width: 22rem;
+    height: 6rem;   
+    float: left;   
+    margin-top: 90px;
+  
+}
 
 
 .main-payment1{
@@ -208,6 +215,7 @@ body{
    
 
 }
+
 
 @media (max-width: 700px) {
     .payment-btn{
@@ -257,6 +265,14 @@ body{
         float: left;   
         margin-top: 10px;
         margin-left: -20px;   
+        margin-bottom: 40px;
+    }
+    .payment-btn2{
+        width: 10rem;
+        height: 4rem;   
+        float: left;   
+        margin-top: 90px;
+        margin-left: -40px;   
         margin-bottom: 40px;
     }
     }
