@@ -7,39 +7,10 @@
     justify-content:left;
     
 }
-
-/* .field1{
-   
- 
-    background-color: blue;
-    width: 50rem;
-} */
-
-/* .input1{
-    height: 4rem;
-    max-width: 100%;
-    width:50%;
-    margin-left: 3rem;
-    margin: 1%;
-    background-color: rgb(0, 255, 68);
-    float: left;
- 
-    
-} */
-
-/* .input1{ */
-    /* height: 4rem; */
-    /* max-width: 100%; */
-    /* width:55rem; */
-    /* margin-left: 3rem; */
-    /* background-color: rgb(0, 255, 68);
-} */
-
-/* .btn1{
-    width: 150px;
-    height: 80px;
-
-} */
+body {
+    /* overflow-y: hidden;  */
+    overflow-x: hidden; /* Hide horizontal scrollbar */
+  }
 
 
 .form-control{
@@ -78,9 +49,6 @@
     color: white;
 }
 
-/* .drop{
-    width: 100vh;
-} */
 
 
 
@@ -159,12 +127,12 @@ body{
 
 .checkbox{
     width: 20px;
-    margin-right: 80px;
     height: 2rem;
-    /* margin:1%; */
-    /* margin-top: 200px; */
-    
+    margin-left: 0%;
+    margin-right:30rem;
+    margin-top: 3rem;      
 }
+
 .free1{
     color: white;
     font-size:20px;
@@ -206,18 +174,32 @@ body{
 
 
 .main-payment1{
-    /* background-color: aqua; */
-    /* flex-direction: column;  */
     display: flex;
     justify-content: center;
     text-align: center;
-   /* padding-left: 40%; */
-   
-
 }
 
+.check-heading{   
+    color: white;  
+    margin-top: -35px;
+}
 
-@media (max-width: 700px) {
+.check-main{
+    width: 100%;
+    margin-left: -400px;
+    margin-top: 5rem;
+}
+
+.payment-btn4{
+    width: 10rem;
+    height: 4rem;   
+    float: left;   
+    margin-top: 10px;
+    margin-left: 100px;   
+    margin-bottom: 40px;
+}
+
+@media (max-width: 900px) {
     .payment-btn{
         width: 8rem;
         height: 4rem;     
@@ -243,11 +225,10 @@ body{
 
     }
     .checkbox{
-       
         width: 20px;
-        margin-right: 30px;
-        height: 1rem;      
-        margin-top: 20px;
+        height: 1rem;
+        margin-right:120rem;
+        margin-top: 1rem;  
         
     }
     
@@ -271,9 +252,34 @@ body{
         width: 10rem;
         height: 4rem;   
         float: left;   
-        margin-top: 90px;
+        margin-top: 50px;
         margin-left: -40px;   
         margin-bottom: 40px;
     }
+
+    .check-main{
+        /* background-color:black; */
+        margin-left: -6rem;
+        margin-top: 5rem;          
     }
+
+    .check-heading{   
+        color: white;  
+        margin-top: 1px;
+        font-size: small;
+    }
+
+    .payment-btn4{
+        width: 10rem;
+        height: 4rem;   
+        float: left;   
+        margin-top: 10px;
+        margin-left: -40px;   
+        margin-bottom: 40px;
+    }
+
+    }
+    
+
+
     

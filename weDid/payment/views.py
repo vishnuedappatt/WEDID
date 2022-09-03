@@ -13,9 +13,7 @@ from user.authentication import JWTAuthentications
 @authentication_classes([JWTAuthentications])
 def start_payment(request):   
     amount = request.data['amount']
-    name = request.data['name']
- 
-    
+    name = request.data['name']    
    
     client = razorpay.Client(auth=(settings.RAZORPAY_PUBLIC_KEY,settings.RAZORPAY_SECRET_KEY))
 
@@ -57,6 +55,7 @@ def handle_payment_success(request):
     # request.data is coming from frontend
     # res = json.loads(request.data["response"])
     res=request.data['response']
+    print(res,'response is hweww')
 
     """res will be:
     {'razorpay_payment_id': 'pay_G3NivgSZLx7I9e', 
@@ -73,11 +72,13 @@ def handle_payment_success(request):
     for key in res.keys():
         if key == 'razorpay_order_id':
             ord_id = res[key]
+            print(ord_id,'order id')
         elif key == 'razorpay_payment_id':
             raz_pay_id = res[key]
+            print(raz_pay_id,'pay id')
         elif key == 'razorpay_signature':
             raz_signature = res[key]
-
+            print(raz_signature ,'signature')
     # get order by payment_id which we've created earlier with isPaid=False
     order = Order.objects.get(order_payment_id=ord_id)
     print(order,'order')
@@ -95,17 +96,25 @@ def handle_payment_success(request):
     # razorpay client if it is "valid" then check will return None
     check = client.utility.verify_payment_signature(data)
     print(44)
-    # if check is not None:
-    #     print("Redirect to error url or error page")
-    #     return Response({'error': 'Something went wrong'})
+    print(check)
+    if check is  None:
+        print("Redirect to error url or error page")
+        response=Response()
+        response.data = {
+            'error': 'payment successfully received!'
+        }
+        return response
     print(55)
     # if payment is successful that means check is None then we will turn isPaid=True
-    order = Order.objects.get(order_payment_id=ord_id)
-    order.isPaid = True
-    order.save()
+    ord= Order.objects.get(order_payment_id=ord_id)
+    print(ord)
+    ord.isPaid =True 
+    ord.save()
+    
     print(66)
-    res_data = {
-        'message': 'payment successfully received!'
+    response=Response()
+    response.data = {
+        'message': 'payment successfully completed'
     }
     print(77)
-    return Response(res_data)
+    return response

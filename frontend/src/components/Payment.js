@@ -23,7 +23,9 @@ function Payment() {
               Authorization:'Bearer '+ request
             }
       }).then((res) => {
+        console.log(res)
         console.log("Everything is OK!");
+        console.log(res.data.message)
         setName("");
         setAmount("");
       })
@@ -44,7 +46,6 @@ function Payment() {
 
   const showRazorpay = async () => {
     const res = await loadScript();
-
     let bodyData = new FormData();
 
     // we will pass the amount and product name to the backend using form data
@@ -61,10 +62,8 @@ function Payment() {
           }
     }).then((res) => {
       console.log(res.data)
-      console.log(res.data.order.order_payment_id)
-      
+      console.log(res.data.order.order_payment_id)      
       setPaymentId(res.data.order.order_payment_id)
-
       return res;
     });
     console.log(data,'isthedata')

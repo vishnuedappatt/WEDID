@@ -3,11 +3,19 @@ import Button from 'react-bootstrap/Button';
 import './GivingService.css'
 import Dropdown from 'react-bootstrap/Dropdown';
 import axios from '../axios'
+import {useNavigate} from 'react-router-dom';
 
+// material ui
+// import Button from '@mui/material/Button';
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
 
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 function GivingService() {
-
+    const navigate=useNavigate()
     const[getcat,setGetCat]=useState([])
     const[getdis,setGetDis]=useState([])
     const[getcity,setGetCity]=useState([])
@@ -36,6 +44,25 @@ function GivingService() {
       
     }
   }, [])
+
+
+
+
+
+  // mui state and function
+  const [open, setOpen] = React.useState(false);
+
+  const handleClick = () => {
+    setOpen(true);
+  };
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpen(false);
+  };
 
 // user datas
 
@@ -84,8 +111,6 @@ function GivingService() {
     })
   }
 
- 
-
 //  getting category id and get and show
 
   const cityGetting=async(id)=>{   
@@ -103,8 +128,6 @@ function GivingService() {
             console.log(err.res.data)
         })
     }
-
-
 
 //   validations
 
@@ -127,13 +150,18 @@ function GivingService() {
 
     const checkCity=(id)=>{        
         setCity(id)
-        console.log(district,'dissssss')
     }
-
-
-    
     const [submit,setSubmit]=useState(false)
+
   // api call for submit job
+  const cancelHandler=(e)=>{
+    e.preventDefault()
+    localStorage.removeItem('order_number')
+    navigate('/')
+
+  }
+
+
 
   const submitHandler = async(e)=>{
     e.preventDefault()
@@ -162,7 +190,9 @@ function GivingService() {
             console.log(res.data)
             if (res.data.ordernumber){
             localStorage.setItem('order_number',JSON.stringify(res.data.ordernumber))
+            localStorage.setItem('rate',JSON.stringify(rate))
             setSubmit(true)
+            handleClick()
           }}).catch((err)=>{
             console.log(err.response.data.detail)
            
@@ -170,14 +200,10 @@ function GivingService() {
         }}
 
 
-
-
-
-
-
+// validation function
 
 const formValidation=()=>{ 
-    
+
     const titleErr={}
     const discriptionErr ={}
     const subMobileErr={}
@@ -258,7 +284,6 @@ const formValidation=()=>{
   }
   
 
-
    if(!rate){
     rateErr.short_cpassword= '*rate  required field!'
     isValid = false
@@ -278,6 +303,125 @@ const formValidation=()=>{
 }
 
 
+
+// payment section
+const [salary,setSalary]=useState('')
+const [name, setName] = useState("");
+const [amount, setAmount] = useState("");
+const [payment_id,setPaymentId]=useState("")
+// this function will handel payment when user submit his/her money
+// and it will confim if payment is successfull or not
+const handlePaymentSuccess = async (response) => {
+  try {
+    let bodyData = new FormData();
+    console.log(response,'its response')
+    // we will send the response we've got from razorpay to the backend to validate the payment
+    bodyData.append("response", JSON.stringify(response));
+    console.log(response,'its response')
+    let request=(JSON.parse(localStorage.getItem('token')))  
+    axios.post('payment/payment/success/',{
+      response:response
+    },{
+        headers: {
+            Authorization:'Bearer '+ request
+          }
+    }).then((res) => {
+      console.log(res)
+      console.log("Everything is OK!");
+      handleClick()
+      console.log(res.data.message)
+      setName("");
+      setAmount("");
+    })
+    .catch((err) => {
+      console.log(err);
+        });
+    } catch (error) {
+      console.log(console.error());
+    }
+  };
+
+
+const loadScript = () => {
+  const script = document.createElement("script");
+  script.src = "https://checkout.razorpay.com/v1/checkout.js";
+  document.body.appendChild(script);
+};
+
+const showRazorpay = async (e) => {
+  e.preventDefault()
+  const res = await loadScript();
+  let bodyData = new FormData();
+
+  // we will pass the amount and product name to the backend using form data
+  bodyData.append("amount", amount.toString());
+  bodyData.append("name", name);
+  let rate=(JSON.parse(localStorage.getItem('rate'))) 
+  console.log(rate,'its rate')
+  if (rate>500){
+    const sum=parseInt(rate)+parseInt(rate*.1)
+    console.log(sum)
+    setSalary(sum)
+  }else if(rate<500){
+    const sum=parseInt(rate)+parseInt(rate*.05)
+    console.log(sum)
+    setSalary(sum)
+  }else{
+    const sum=parseInt(rate)+parseInt(rate*1.5)
+    console.log(sum)
+    setSalary(sum)
+  }
+
+  let request=(JSON.parse(localStorage.getItem('token')))  
+  let order_number=(JSON.parse(localStorage.getItem('order_number'))) 
+
+
+ 
+  const data = axios.post('payment/pay/',{
+    name:order_number ,
+    amount:salary,
+  },{
+      headers: {
+          Authorization:'Bearer '+ request
+        }
+  }).then((res) => {
+    console.log(res.data)
+    console.log(res.data.order.order_payment_id)      
+    setPaymentId(res.data.order.order_payment_id)
+    return res;
+  });
+  console.log(data)
+
+ 
+  var options = {
+    key_id:'rzp_test_xzSR2pt2eeMFXF' , 
+    key_secret:'GP3DxufqQIsdwOTTaTdR1OuS',
+    amount: amount,
+    currency: "INR",
+    name: "Org. Name",
+    description: "Test teansaction",
+    image: "", 
+    order_id:payment_id,  
+    handler: function (response) {
+      // we will handle success by calling handlePaymentSuccess method and
+      // will pass the response that we've got from razorpay
+      handlePaymentSuccess(response);
+    },
+    prefill: {
+      name: "User's name",
+      email: "User's email",
+      contact: "User's phone",
+    },
+    notes: {
+      address: "Razorpay Corporate Office",
+    },
+    theme: {
+      color: "#3399cc",
+    },
+  };
+  var rzp1 = new window.Razorpay(options);
+  rzp1.open();
+};
 
   return (
     <div >       
@@ -319,8 +463,7 @@ const formValidation=()=>{
                             </Dropdown.Menu>
                         </Dropdown> 
                         {Object.keys(disErr).map((key)=>{
-                                 return <div style={{color:'red'}} >{disErr[key]}</div> })}
-                        
+                                 return <div style={{color:'red'}} >{disErr[key]}</div> })}                        
                     </div>
                 </div>
             </div>
@@ -367,8 +510,7 @@ const formValidation=()=>{
             </div>
 
 
-            <div className="form-outline mb-4">
-                {/* <input  type="textarea" id="form6Example4" placeholder='describe about your job role' className="form-control" /> */}
+            <div className="form-outline mb-4">               
                 <label className="form-label" >Discription</label>
                 <textarea className='text'  onChange={(e)=>setDiscription(e.target.value)} value={discription}   placeholder='describe about your job role'></textarea>                
                 {Object.keys(discriptionErr).map((key)=>{
@@ -407,21 +549,31 @@ const formValidation=()=>{
          <div className="main-payment  mb-4">   
          {submit ? <Button className='payment-btn1' variant="outline-warning"><p>Make Payment</p></Button>  :<Button className='payment-btn' variant="success"  type='submit'><p>Clik here to continue</p></Button>      } 
            
-            </div> 
-             {/* <div className="main-payment1  mb-4"> 
-                 <div>
-                    <Button className='payment-btn' variant="success"  type='submit'><p>Clik here to continue</p></Button>{' '}
-                </div>              
-            </div> */}
+            </div>             
             </form> }
             <div className="main-payment ">   
          {submit ?
-         <form>
-              <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike" required></input>
-              <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike" required />
-             <Button className='payment-btn2' type='submit' variant="outline-warning"><p>Make Payment</p></Button>
+         <form className='form-payment'>
+          <div className='check-main'>
+            <input type="checkbox" className='checkbox' id="vehicle1" name="vehicle1" value="Bike" required></input><p className='check-heading' >Accept all terms & conditions for wedid solutions</p>
+              <input type="checkbox" className='checkbox' id="vehicle1" name="vehicle1" value="Bike" required /><p  className='check-heading'>Accept all terms & conditions from Razorpay payment system</p>
+          </div>
+           
+             <Button className='payment-btn2' type='submit' variant="outline-warning" onClick={showRazorpay}><p>Make Payment with razorpay</p></Button><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br>
+             <Button className='payment-btn4' type='' onClick={cancelHandler} variant="outline-danger"><p>cancel</p></Button>
+
+             {/* <Button variant="outlined" onClick={handleClick}>
+                Open success snackbar
+              </Button> */}
+              {/* <Button className='payment-btn4' type='' onClick={handleClick} variant="outline-danger"><p>snap</p></Button>
+              <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+                <Alert onClose={handleClose} severity="success"  >
+                  This is a success message!
+                </Alert>
+              </Snackbar> */}
          </form>
-           :'  '      } 
+         
+           :'  '     } 
            
             </div> 
             
