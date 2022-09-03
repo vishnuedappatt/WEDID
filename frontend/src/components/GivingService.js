@@ -36,10 +36,14 @@ function GivingService() {
     getCategory()
     getDistrict()   
     userData()   
-   let val=(JSON.parse(localStorage.getItem('order_number')))   
+    let val=(JSON.parse(localStorage.getItem('order_number')))   
     if (val){
         setSubmit(true)
     }       
+    let message=(JSON.parse(localStorage.getItem('message')))
+    if (message){
+      setPayed(true)
+    }
     return () => {
       
     }
@@ -63,6 +67,23 @@ function GivingService() {
 
     setOpen(false);
   };
+
+
+
+  const [opens, setOpens] = React.useState(false);
+
+  const handleClicks = () => {
+    setOpens(true);
+  };
+
+  const handleCloses = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpens(false);
+  };
+
 
 // user datas
 
@@ -151,8 +172,10 @@ function GivingService() {
     const checkCity=(id)=>{        
         setCity(id)
     }
-    const [submit,setSubmit]=useState(false)
 
+    // for submitting
+    const [submit,setSubmit]=useState(false)
+    const [payed,setPayed]=useState(false)
   // api call for submit job
   const cancelHandler=(e)=>{
     e.preventDefault()
@@ -161,6 +184,8 @@ function GivingService() {
 
   }
 
+
+  
 
 
   const submitHandler = async(e)=>{
@@ -304,6 +329,7 @@ const formValidation=()=>{
 
 
 
+
 // payment section
 const [salary,setSalary]=useState('')
 const [name, setName] = useState("");
@@ -328,8 +354,11 @@ const handlePaymentSuccess = async (response) => {
     }).then((res) => {
       console.log(res)
       console.log("Everything is OK!");
-      handleClick()
+      handleClicks()
       console.log(res.data.message)
+      localStorage.setItem('message',JSON.stringify(res.data.message))
+      setPayed(true)
+      setSubmit(false)
       setName("");
       setAmount("");
     })
@@ -423,10 +452,29 @@ const showRazorpay = async (e) => {
   rzp1.open();
 };
 
+
+// for final view 
+  const lastSubmitHandler=(e)=>{
+    e.preventDefault()
+    let order_number=(JSON.parse(localStorage.getItem('order_number'))) 
+    axios.post('job/payedjob/',{
+      order_number:order_number
+    }).then((res)=>{
+      if(res.data){
+        localStorage.removeItem('order_number')
+        localStorage.removeItem('rate')
+        localStorage.removeItem('message')
+        navigate('/joblook')
+
+      }
+     
+    })
+  }
+
   return (
     <div >       
         <h1 className='heading'>APPLY FOR AN OPPORTUNITY</h1>
-       {submit?'': <form onSubmit={submitHandler}   className='main'>
+       {submit || payed ?'': <form onSubmit={submitHandler}   className='main'>
             <div className="row mb-4  ">
                 <div className="col">
                     <div className="form-outline">
@@ -524,7 +572,6 @@ const showRazorpay = async (e) => {
                                  return <div style={{color:'red'}} >{addressErr[key]}</div> })}
             </div>
 
-
             <div className="row mb-4  ">
                 <div className="col">
                     <div className="form-outline">
@@ -554,23 +601,47 @@ const showRazorpay = async (e) => {
             <div className="main-payment ">   
          {submit ?
          <form className='form-payment'>
+            <div className='check-main'>
+              <input type="checkbox" className='checkbox' id="vehicle1" name="vehicle1" value="Bike" required></input><p className='check-heading' >Accept all terms & conditions for wedid solutions</p>
+                <input type="checkbox" className='checkbox' id="vehicle1" name="vehicle1" value="Bike" required /><p  className='check-heading'>Accept all terms & conditions from Razorpay payment system</p>                
+            </div>
+            
+             <Button className='payment-btn2' type='submit' variant="outline-warning" onClick={showRazorpay}><p>Make Payment with razorpay</p></Button><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br>
+             <Button className='payment-btn4' type='' onClick={cancelHandler} variant="outline-danger"><p>cancel</p></Button>
+              <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+                <div  style={{width:'40rem',marginTop:'-40rem',marginLeft:'40rem'}}>
+                <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }} >
+                  Successfully register your post
+                </Alert>
+                </div>               
+              </Snackbar>
+         </form>
+         
+           :'  '     } 
+
+
+
+{payed ?
+         <form className='form-payment'>
           <div className='check-main'>
-            <input type="checkbox" className='checkbox' id="vehicle1" name="vehicle1" value="Bike" required></input><p className='check-heading' >Accept all terms & conditions for wedid solutions</p>
-              <input type="checkbox" className='checkbox' id="vehicle1" name="vehicle1" value="Bike" required /><p  className='check-heading'>Accept all terms & conditions from Razorpay payment system</p>
+       
+            <p  className='check-heading'>Accept all terms & conditions from Razorpay payment system</p>
           </div>
            
-             <Button className='payment-btn2' type='submit' variant="outline-warning" onClick={showRazorpay}><p>Make Payment with razorpay</p></Button><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br>
+             <Button className='payment-btn2' type='submit' variant="outline-warning" onClick={lastSubmitHandler}><p>SHARE THE POST </p></Button><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br>
              <Button className='payment-btn4' type='' onClick={cancelHandler} variant="outline-danger"><p>cancel</p></Button>
 
              {/* <Button variant="outlined" onClick={handleClick}>
                 Open success snackbar
               </Button> */}
-              {/* <Button className='payment-btn4' type='' onClick={handleClick} variant="outline-danger"><p>snap</p></Button>
-              <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-                <Alert onClose={handleClose} severity="success"  >
-                  This is a success message!
+                  <Snackbar open={opens} autoHideDuration={6000} onClose={handleCloses}>
+                <div  style={{width:'40rem',marginTop:'-40rem',marginLeft:'40rem'}}>
+                <Alert onClose={handleCloses} severity="success" sx={{ width: '100%' }} >
+                  payment done successfully 
                 </Alert>
-              </Snackbar> */}
+                </div>               
+              </Snackbar>
+            
          </form>
          
            :'  '     } 

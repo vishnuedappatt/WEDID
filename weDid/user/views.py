@@ -305,8 +305,7 @@ def resetpassword_validate(request,uidb64,token):
             user=Account.objects.get(pk=uid)
             user.set_password(password)
             user.save()
-            return render(request,'user/success.html')
-           
+            return render(request,'user/success.html')           
         
         else:
             message={'detail':'no account presented'}
@@ -346,3 +345,6 @@ def userdata(request):
     data=Account.objects.get(email=user)
     serializer=AccountSerializer(data,many=False)
     return Response(serializer.data)
+
+
+

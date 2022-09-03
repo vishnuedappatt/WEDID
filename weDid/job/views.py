@@ -6,12 +6,12 @@ from rest_framework.decorators import api_view,permission_classes,authentication
 from rest_framework.permissions import IsAuthenticated
 from user.models import Account,UserToken,Categories,District,City
 from .models import JobPortal
-
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated,IsAdminUser
-
+import random
 from user.authentication import ADMINAuth, JWTAuthentications, create_access_token,create_refresh_token,decode_access_token,decode_refresh_token
 from .serializer import CategorySerializer,CitySerializer,DistrictSerializer,JobSerializer,EditJobSerializer
+
 
 # Create your views here.
 
@@ -75,35 +75,14 @@ def jobpost(request):
     mt= int(datetime.date.today().strftime('%m'))
     d=datetime.date(yr,mt,dt)
     current_date =d.strftime("%Y%m%d")
-    order_number=current_date +str(user.id)
+   
+
+    val=(random.randint(1, 99))
+    order_number=current_date +str(user.id)+str(val)
     print(order_number)
    
-    if(count<=2):  
-        job= JobPortal.objects.create(
-            user=user,
-            mobile=mobiles,
-            district_id=data['district'],
-            city_id=data['city'],
-            title=data['title'],
-            category_id=data['category'],
-            discriptions=data['discription'],
-            sub_mobile=data['sub_mobile'],           
-            place=data['place'],
-            address=data['address'],
-            rate=data['rate'],
-            slug=data['slug'],
-            available=True,
-            ordernumber=order_number,            
-        )   
-        user.count+=1
-        user.save()        
-        serializer=JobSerializer(job,many=False)
-        return Response(serializer.data)                                                                                                                           
-        
-        
-    else:       
-    
-        job= JobPortal.objects.create(
+   
+    job= JobPortal.objects.create(
         user=user,
         mobile=mobiles,
         district_id=data['district'],
@@ -116,12 +95,15 @@ def jobpost(request):
         address=data['address'],
         rate=data['rate'],
         slug=data['slug'],
-        available=True,     
-        ordernumber=order_number,       
-    )  
-        serializer=JobSerializer(job,many=False)
-        return Response(serializer.data)     
-   
+        available=True,
+        ordernumber=order_number,            
+    )   
+    user.count+=1
+    user.save()        
+    serializer=JobSerializer(job,many=False)
+    return Response(serializer.data)                                                                                                                           
+        
+    
 
 
 
@@ -157,3 +139,61 @@ def editingjob(request,id):
             'message':'password miss match '
         }
         return response  
+    
+    
+# for compliting the post and showing on posted surface
+@api_view(['POST'])
+def paymentdone(request):
+    # try:
+    data=request.data
+    orderid=data['order_number']
+    print(orderid)
+    job=JobPortal.objects.filter(ordernumber=orderid).exists()
+    print(job,'dfffd')
+    if not job:
+        response=Response()
+        response.data={
+            'error':'this item is not present '
+        }
+        return response 
+    else:
+        job=JobPortal.objects.get(ordernumber=orderid)
+        job.payment=True
+        job.save()
+        serializer=JobSerializer(job,many=False)
+        return Response(serializer.data)
+    
+ 
+ 
+@api_view(['GET'])
+def showjob(request,id,cid):
+    try:
+        category=Categories.objects.get(id=id)
+        print(category)
+        city=City.objects.get(id=cid)
+        print(city)
+        job=JobPortal.objects.filter(category=category,city=city,payment='True')
+        serializer=JobSerializer(job,many=True)
+        return Response(serializer.data)
+    except:
+        response=Response()
+        response.data={
+            'error':'error in request'
+        }
+        return response 
+   
+    
+@api_view(['GET'])
+def disctrict_job_show(request,id):
+    try:
+        district=District.objects.get(id=id)
+        print(district)
+        job=JobPortal.objects.filter(district=district,payment='True')
+        serializer=JobSerializer(job,many=True)
+        return Response(serializer.data)
+    except:
+        response=Response()
+        response.data={
+            'error':'error in request'
+        }
+        return response 

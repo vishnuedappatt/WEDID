@@ -6,30 +6,39 @@ import Card from 'react-bootstrap/Card'
 import { Link } from 'react-router-dom';
 import AuthContext from '../context/authcontext';
 import Modal from 'react-bootstrap/Modal';
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
+
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
+
+
 function Login() {
 
 const  {Userlogin,errors,show,handleClose,}= useContext(AuthContext)
 
 const [email,setEmail]=useState('')
 const [password,setPassword]=useState('')
-
-// const [empty,setEmpty]=useState(false)
 const [mcheck,EmailChecker]=useState(false)
 const [pcheck,PasswordChecker]=useState(false)
 
-// const [show, setShow] = useState(false);
-// const handleClose = () => setShow(false);
-// const handleShow = () => {
-//   if (errors){
-//     console.log(errors)
-//     setShow(true)
-//     setTimeout(() => {
-//      setShow(false);
-//          }, 5000);
-//     // setShow(true)
-    
-//      }
-// }
+
+const [opens, setOpens] = React.useState(false);
+
+const handleClicks = () => {
+  setOpens(true);
+};
+
+const handleCloses = (event, reason) => {
+  if (reason === 'clickaway') {
+    return;
+  }
+
+  setOpens(false);
+};
+
+
 
 
 
@@ -44,7 +53,6 @@ const checkPassword=(e)=>{
     console.log(e.target.value)
     let pass=e.target.value
     setPassword(pass)
-
 }
 
 
@@ -53,17 +61,13 @@ const checkPassword=(e)=>{
      if (email.trim().length ===0 ){
       console.log('empty')
       EmailChecker(true)
-
      }
      else{
       EmailChecker(false)
       if ( password.trim().length !==0){
         console.log('finallll')
-        Userlogin(email,password)   
-
-      
+        Userlogin(email,password)  
       }
-
      }
     if ( password.trim().length ===0){
       console.log('values')
@@ -71,26 +75,7 @@ const checkPassword=(e)=>{
     }else{
       PasswordChecker(false)
     }
-
-
-
-    
-  
-  
-      // setEmpty(false)
-   
-
-   
      }
-    //  else{
-    //   setEmpty(true)
-    //   console.log('noooooo')
-    //  }   
-  
-    
-    
- 
-
   return (
   
       <>
@@ -105,11 +90,15 @@ const checkPassword=(e)=>{
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          {/* <Button variant="primary" onClick={handleClose}>
-            Save Changes
-          </Button> */}
         </Modal.Footer>
       </Modal>
+      <Snackbar open={opens} autoHideDuration={6000} onClose={handleCloses}>
+                <div  style={{width:'40rem',marginTop:'-40rem',marginLeft:'40rem'}}>
+                <Alert onClose={handleCloses} severity="success" sx={{ width: '100%' }} >
+                 {errors}
+                </Alert>
+                </div>               
+              </Snackbar>
 
    
     <Card style={{ backgroundColor:'#339966',borderRadius:'2rem'}}>     
@@ -137,16 +126,8 @@ const checkPassword=(e)=>{
       </Button><br></br><br></br>
       <Link style={{textDecoration:'None',color:'black',marginTop:'2rem'}} to='/forgot_password'>forgotpassword ?</Link><br></br><br></br>
       <Button variant="dark" type=""    style={{textAlign:'center',height:'4rem',width:'15rem',}}><Link to='/register' style={{textDecoration:'none'}}> Create An Account</Link>  </Button>
-
-      </div>
-   
-    
-       
-    
-    </Form>     
-     
-        {/* <Button variant="primary" style={{marginLeft:'25rem'}}>Forgot password</Button> */}
-      
+   </div>
+    </Form>      
       </Card.Body>
     </Card>
    

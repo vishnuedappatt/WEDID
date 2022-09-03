@@ -12,4 +12,7 @@ urlpatterns = [
     path('alljob/',views.getallpost,name="alljob"),
     path('singlejob/<int:id>/',views.singlejobview,name="singleviewjob"),
     path('editjob/<int:id>/',views.editingjob,name='editjob'),
+    path('payedjob/',views.paymentdone,name='payedjob'),
+    path('viewjob/<int:id>/<int:cid>/',views.showjob,name="showjob"),
+    path('dis_job_view/<int:id>/',views.disctrict_job_show,name="district_job_show"),
     ]
