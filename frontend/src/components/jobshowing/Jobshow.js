@@ -2,19 +2,24 @@ import React,{useEffect,useState} from 'react'
 import { Link } from 'react-router-dom';
 import './jobshow.css'
 import Table from 'react-bootstrap/Table';
-import Button from '@mui/material/Button';
+// import Button from '@mui/material/Button';
 import axios from '../../axios'
+import Button from 'react-bootstrap/Button';
+
 
 function Jobshow() {
 
   // all job post data
   const[alldata,setAllData]=useState([])
+  const[catege,setCatatege]=useState([])
+  const[dist,setDistrict]=useState([])
 
   useEffect(() => {
     getalljob()
-  
-    return () => {
-      
+    getCategory()
+    getDistrict()
+
+    return () => {    
     }
   }, [])
   
@@ -28,23 +33,54 @@ function Jobshow() {
           }
     }).then((res)=>{
         console.log(res.data)
-        setAllData(res.data)
-
-    
+        setAllData(res.data)    
     })
   }
+
+
+
+// getting all category
+const getCategory=()=>{
+  let request=(JSON.parse(localStorage.getItem('token')))  
+  axios.get('job/jobcate/',{
+      headers: {
+          Authorization:'Bearer '+ request
+        }
+  }).then((res)=>{
+      console.log(res.data)
+      setCatatege(res.data)    
+     
+  })
+}
   
+
+// for getting all district
+const getDistrict=()=>{
+  let request=(JSON.parse(localStorage.getItem('token')))  
+  axios.get('job/showdistrict/',{
+      headers: {
+          Authorization:'Bearer '+ request
+        }
+  }).then((res)=>{
+      console.log(res.data)
+      setDistrict(res.data)
+  })
+}
+
+
   return (
     <div>       
       <div align='center ' style={{backgroundColor:'gray'}}>
       <p >wedidsolutions@gmail.com</p>
             <h4>IF OPPURTUNITY DOESN'T KNOCK , BUILD A DOOR</h4>
             <p className='wedid'>WEDID</p>
-        <Button style={{width:'10rem',marginBottom:'3rem',border:'3px green solid'}} variant="outlined" color="success">
+            <Button className='ms-5 w-25' variant="outline-dark" >PROFILE</Button>
+        {/* <Button variant="outlined" color="success">
           <p style={{color:'black'}}>SEARCH</p>        
-      </Button>
+      </Button> */}
       </div>
-    {alldata? <div  className='main-div m-5'>   
+    {alldata ? alldata.map((obj,key)=>
+    <div  className='main-div m-5'>   
      <Table striped borderless hover>
       <thead>
         <tr style={{backgroundColor:'gray'}}>          
@@ -57,18 +93,36 @@ function Jobshow() {
       </thead>
       <tbody>
         <tr style={{height:'8rem',}}>
-          <td style={{textDecoration:'None',color:'white '}} className='pt-5 '>1</td>
-          <td style={{textDecoration:'None',color:'white '}} className='pt-5 '> Mark</td>
-          <td style={{textDecoration:'None',color:'white '}}  className='pt-5 '>Otto</td>
-          <td style={{textDecoration:'None',color:'white '}} className='pt-5 '>@mdo</td>
-         <td className='pt-5 '><Link to='' style={{textDecoration:'None',color:'white '}}>View and Pay</Link></td> 
+            <td  style={{color:'white'}} className='column pt-5 '>{
+              catege.map((objs)=>{
+                console.log(objs.id,obj.category,'djflkjfkljldf')
+                if(objs.id===obj.category){
+                  console.log(objs.name,'ites bak')
+                   return objs.name                      
+                }
+              }
+              )
+            }
+             </td>
+          <td  style={{color:'white'}}  className='column pt-5 '> {
+              dist.map((objs)=>{
+                console.log(objs.id,obj.district)
+                if(objs.id===obj.district){
+                  console.log(objs.district,'ites bak')
+                   return objs.district                      
+                }
+              }
+              )
+            }</td>
+          <td  style={{color:'white'}}    className='column pt-5 bg-danger'>{obj.title}</td>
+          <td  style={{color:'white'}}  className='column pt-5 '>{obj.rate}</td>
+         <td className=' pay-btn pt-5 '> <Button variant="outline-success">view and pay</Button></td> 
         </tr>
         
       </tbody>
     </Table>
-
-
-       </div> :''}
+       </div>)
+        :"" }
      
     
     </div>

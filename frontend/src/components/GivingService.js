@@ -114,9 +114,7 @@ function GivingService() {
           }
     }).then((res)=>{
         console.log(res.data)
-        setGetCat(res.data)
-
-    
+        setGetCat(res.data)    
     })
   }
 
