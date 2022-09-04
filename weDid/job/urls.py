@@ -9,10 +9,11 @@ urlpatterns = [
     path('showcity/<int:id>/',views.getcity,name='get-city'),
     path('showdistrict/',views.getdistrict,name='get-district'),
     path('jobpost/',views.jobpost,name='jobpost'),
-    path('alljob/',views.getallpost,name="alljob"),
+    # path('alljob/',views.getallpost,name="alljob"),
     path('singlejob/<int:id>/',views.singlejobview,name="singleviewjob"),
     path('editjob/<int:id>/',views.editingjob,name='editjob'),
     path('payedjob/',views.paymentdone,name='payedjob'),
     path('viewjob/<int:id>/<int:cid>/',views.showjob,name="showjob"),
     path('dis_job_view/<int:id>/',views.disctrict_job_show,name="district_job_show"),
+    path('all_job/',views.all_job_show,name="alljob"),
     ]

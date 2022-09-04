@@ -164,7 +164,7 @@ def paymentdone(request):
         return Response(serializer.data)
     
  
- 
+#  filter with category and place
 @api_view(['GET'])
 def showjob(request,id,cid):
     try:
@@ -172,7 +172,7 @@ def showjob(request,id,cid):
         print(category)
         city=City.objects.get(id=cid)
         print(city)
-        job=JobPortal.objects.filter(category=category,city=city,payment='True')
+        job=JobPortal.objects.filter(category=category,city=city,payment='True',booked='False')
         serializer=JobSerializer(job,many=True)
         return Response(serializer.data)
     except:
@@ -181,14 +181,35 @@ def showjob(request,id,cid):
             'error':'error in request'
         }
         return response 
-   
-    
+
+
+#filter with district 
+ 
 @api_view(['GET'])
 def disctrict_job_show(request,id):
     try:
+        
         district=District.objects.get(id=id)
         print(district)
-        job=JobPortal.objects.filter(district=district,payment='True')
+        job=JobPortal.objects.filter(district=district,payment='True',booked='False')
+        serializer=JobSerializer(job,many=True)
+        return Response(serializer.data)
+    except:
+        response=Response()
+        response.data={
+            'error':'error in request'
+        }
+        return response 
+    
+    
+# all data
+@api_view(['GET'])
+def all_job_show(request):
+    try:
+        
+        district=District.objects.all()
+        print(district)
+        job=JobPortal.objects.filter(payment='True',booked='False')
         serializer=JobSerializer(job,many=True)
         return Response(serializer.data)
     except:

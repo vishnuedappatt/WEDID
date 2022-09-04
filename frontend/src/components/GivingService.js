@@ -4,6 +4,7 @@ import './GivingService.css'
 import Dropdown from 'react-bootstrap/Dropdown';
 import axios from '../axios'
 import {useNavigate} from 'react-router-dom';
+import './materalui.css'
 
 // material ui
 // import Button from '@mui/material/Button';
@@ -609,15 +610,13 @@ const showRazorpay = async (e) => {
              <Button className='payment-btn2' type='submit' variant="outline-warning" onClick={showRazorpay}><p>Make Payment with razorpay</p></Button><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br>
              <Button className='payment-btn4' type='' onClick={cancelHandler} variant="outline-danger"><p>cancel</p></Button>
               <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-                <div  style={{width:'40rem',marginTop:'-40rem',marginLeft:'40rem'}}>
+                <div className='box'  >
                 <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }} >
                   Successfully register your post
                 </Alert>
                 </div>               
               </Snackbar>
-         </form>
-         
-           :'  '     } 
+         </form>:'  '  } 
 
 
 
@@ -630,12 +629,8 @@ const showRazorpay = async (e) => {
            
              <Button className='payment-btn2' type='submit' variant="outline-warning" onClick={lastSubmitHandler}><p>SHARE THE POST </p></Button><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br>
              <Button className='payment-btn4' type='' onClick={cancelHandler} variant="outline-danger"><p>cancel</p></Button>
-
-             {/* <Button variant="outlined" onClick={handleClick}>
-                Open success snackbar
-              </Button> */}
-                  <Snackbar open={opens} autoHideDuration={6000} onClose={handleCloses}>
-                <div  style={{width:'40rem',marginTop:'-40rem',marginLeft:'40rem'}}>
+                <Snackbar open={opens} autoHideDuration={6000} onClose={handleCloses}>
+                <div className='box'>
                 <Alert onClose={handleCloses} severity="success" sx={{ width: '100%' }} >
                   payment done successfully 
                 </Alert>

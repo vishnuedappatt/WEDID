@@ -1,0 +1,14 @@
+.box{
+    width: 40rem;
+    margin-top: -40rem;
+    margin-left: 40rem;
+    
+}
+
+
+@media (max-width:800px){
+    .box{
+        margin-left: 0%;
+        margin-top: 0%;
+    }
+}

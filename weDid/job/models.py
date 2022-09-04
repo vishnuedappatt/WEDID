@@ -1,3 +1,4 @@
+from email.policy import default
 from django.db import models
 from user.models import City,Categories,District,Account
 # Create your models here.
@@ -19,6 +20,8 @@ class JobPortal(models.Model):
     available=models.BooleanField(default=False)    
     slug=models.SlugField(max_length=30)
     ordernumber=models.CharField(max_length=30)
+    booked=models.BooleanField(default=False)
+    booked_person=models.ForeignKey(Account, related_name="booked_person", on_delete=models.SET_NULL,null=True)
     
     
     def __str__(self):

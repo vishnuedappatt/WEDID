@@ -8,6 +8,9 @@ import AuthContext from '../context/authcontext';
 import Modal from 'react-bootstrap/Modal';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
+import './materalui.css'
+
+
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -16,28 +19,12 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 
 function Login() {
 
-const  {Userlogin,errors,show,handleClose,}= useContext(AuthContext)
+const  {Userlogin,errors,show,handleClose,handleCloses,opens}= useContext(AuthContext)
 
 const [email,setEmail]=useState('')
 const [password,setPassword]=useState('')
 const [mcheck,EmailChecker]=useState(false)
 const [pcheck,PasswordChecker]=useState(false)
-
-
-const [opens, setOpens] = React.useState(false);
-
-const handleClicks = () => {
-  setOpens(true);
-};
-
-const handleCloses = (event, reason) => {
-  if (reason === 'clickaway') {
-    return;
-  }
-
-  setOpens(false);
-};
-
 
 
 
@@ -93,8 +80,8 @@ const checkPassword=(e)=>{
         </Modal.Footer>
       </Modal>
       <Snackbar open={opens} autoHideDuration={6000} onClose={handleCloses}>
-                <div  style={{width:'40rem',marginTop:'-40rem',marginLeft:'40rem'}}>
-                <Alert onClose={handleCloses} severity="success" sx={{ width: '100%' }} >
+                <div className='box' >
+                <Alert onClose={handleCloses} severity="error" sx={{ width: '100%' }} >
                  {errors}
                 </Alert>
                 </div>               

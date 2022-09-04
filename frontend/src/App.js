@@ -33,7 +33,7 @@ function App() {
               </Route>
               <Route element={<LoginProtect/>}>
                 <Route path="/postjob" element={<PosingJobPage />} />  
-                <Route path='/jobhome' element={<JobHomePage />}/>    
+                <Route path='/joblook' element={<JobHomePage />}/>    
                 <Route path='/payment' element={<Payment />}/>               
               </Route>    
             </Routes>

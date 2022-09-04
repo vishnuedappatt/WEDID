@@ -20,7 +20,20 @@ export const AuthProvider=({children})=>{
 
 
     const [errors,SetError]=useState(false)
-
+// react
+const [opens, setOpens] = useState(false);
+const handleClicks = () => {
+    setOpens(true);
+  };
+  
+  const handleCloses = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+  
+    setOpens(false);
+  };
+  
 
     const Userlogin=async(email,password)=>{
         // e.preventDefault()
@@ -44,6 +57,7 @@ export const AuthProvider=({children})=>{
               if(res.data.message){              
                 SetError(res.data.message)
                 handleShow()
+                handleClicks()
                 setTimeout(() => {
                     handleClose(false);
                        }, 5000);
@@ -85,6 +99,8 @@ export const AuthProvider=({children})=>{
             handleClose:handleClose,
             handleShow:handleShow,
             show:show,
+            handleCloses:handleCloses,
+            opens:opens,
            
           
           

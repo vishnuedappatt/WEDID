@@ -2,7 +2,7 @@ import React from 'react'
 import NavBar from '../components/NavBar'
 import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
-import JobHome from '../components/JobHome'
+import Jobshow from '../components/jobshowing/Jobshow'
 
 function JobHomePage() {
   return (
@@ -12,7 +12,7 @@ function JobHomePage() {
         </Row>     
         <Row>
             <Col lg={12} sm={12} >
-             <JobHome />
+             <Jobshow />
             </Col>
         </Row>
     </div>
