@@ -21,6 +21,9 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import Form from 'react-bootstrap/Form';
 
+import Pagination from '@mui/material/Pagination';
+import Stack from '@mui/material/Stack'
+
 const style = {
   position: 'absolute',
   top: '50%',
@@ -111,7 +114,7 @@ await axios.get(`job/showcity/${id}/`,{
         Authorization:'Bearer '+ request
     }
 }).then((res)=>{
-  if (res.status==200){
+  if (res.status===200){
     console.log(res.data)
     setCity(res.data)
   }    
@@ -141,7 +144,7 @@ const districtFilter=async(e)=>{
           Authorization:'Bearer '+ request
       }
   }).then((res)=>{
-    if (res.status==200){
+    if (res.status===200){
       console.log(res.data)
       // setCity(res.data)
       setAllData(res.data) 
@@ -183,7 +186,7 @@ const CatCityFilter=async(e)=>{
           Authorization:'Bearer '+ request
       }
   }).then((res)=>{
-    if (res.status==200){
+    if (res.status===200){
       // setCity(res.data)
       setAllData(res.data)   
       handleClose()
@@ -370,9 +373,12 @@ const CatCityFilter=async(e)=>{
         
       </tbody>
     </Table>
+  
        </div>)
         :''
-      }
+      }  <Stack fullWidth spacing={2}>
+      <Pagination count={10} />
+    </Stack>
 
         {empty? 
         <div align='center'>
