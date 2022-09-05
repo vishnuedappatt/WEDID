@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'user',
     'rest_framework',
     "corsheaders",
-    'job',
+    'jobportal',
     'payment',
 ]
 

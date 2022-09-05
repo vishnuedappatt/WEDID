@@ -74,7 +74,7 @@ def Register(request):
         send(mobile)        
         serializer=AccountSerializer(user ,many=False)
         return Response(serializer.data)
-    except:
+    except:        
         response=Response()
         response.data={
             'error':'user with this email already exists'
@@ -295,20 +295,23 @@ def resetpassword_validate(request,uidb64,token):
             user=None
         if user is not None and default_token_generator.check_token(user,token): 
             print(uid)
-        data=request.POST
-        password =data['password']
-        confirm_password =data['confirm_password']      
-        uid=urlsafe_base64_decode(uidb64).decode()
-        print(uid)
-        if password == confirm_password:          
+            data=request.POST
+            password =data['password']
+            confirm_password =data['confirm_password']      
+            uid=urlsafe_base64_decode(uidb64).decode()
             print(uid)
-            user=Account.objects.get(pk=uid)
-            user.set_password(password)
-            user.save()
-            return render(request,'user/success.html')           
-        
+            if password == confirm_password:          
+                print(uid)
+                user=Account.objects.get(pk=uid)
+                user.set_password(password)
+                user.save()
+                return render(request,'user/success.html')           
+            
+            else:
+                message={'detail':'password miss match'}
+                return Response(message,status=status.HTTP_400_BAD_REQUEST)
         else:
-            message={'detail':'no account presented'}
+            message={'detail':'error found'}
             return Response(message,status=status.HTTP_400_BAD_REQUEST)
     else:
         return render(request,'user/reset_password.html')

@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from user.models import Categories,District,City
-from .models import JobPortal
+from .models import Job_Detail
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -23,12 +23,12 @@ class CitySerializer(serializers.ModelSerializer):
 
 class JobSerializer(serializers.ModelSerializer):
     class Meta :
-        model=JobPortal
+        model=Job_Detail
         fields="__all__"
 
 class EditJobSerializer(serializers.ModelSerializer):
     class Meta:
-        model=JobPortal
+        model=Job_Detail
         fields=['title','category','district','city','discriptions','sub_mobile','address','place','rate']
         
         

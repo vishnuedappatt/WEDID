@@ -1,4 +1,4 @@
 from django.contrib import admin
-from .models import JobPortal
+from .models import Job_Detail
 # Register your models here.
-admin.site.register(JobPortal)
+admin.site.register(Job_Detail)

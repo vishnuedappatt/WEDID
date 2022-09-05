@@ -5,7 +5,7 @@ from django.shortcuts import render,redirect
 from rest_framework.decorators import api_view,permission_classes,authentication_classes
 from rest_framework.permissions import IsAuthenticated
 from user.models import Account,UserToken,Categories,District,City
-from .models import JobPortal
+from .models import Job_Detail
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated,IsAdminUser
 import random
@@ -82,7 +82,7 @@ def jobpost(request):
     print(order_number)
    
    
-    job= JobPortal.objects.create(
+    job= Job_Detail.objects.create(
         user=user,
         mobile=mobiles,
         district_id=data['district'],
@@ -111,14 +111,14 @@ def jobpost(request):
 
 @api_view(['GET'])
 def getallpost(request):
-    job=JobPortal.objects.all()
+    job=Job_Detail.objects.all()
     serializer=JobSerializer(job,many=True)
     return Response(serializer.data)
 
 
 @api_view(['GET'])
 def singlejobview(request,id):
-    job=JobPortal.objects.get(id=id)
+    job=Job_Detail.objects.get(id=id)
     serializer=JobSerializer(job,many=False)
     return Response(serializer.data)
 
@@ -127,7 +127,7 @@ def singlejobview(request,id):
 def editingjob(request,id):
     try:
         print('d111211')
-        job=JobPortal.objects.get(id=id)
+        job=Job_Detail.objects.get(id=id)
         edit=EditJobSerializer(instance=job,data=request.data)
         if edit.is_valid():
             print('dfdf')
@@ -148,7 +148,7 @@ def paymentdone(request):
     data=request.data
     orderid=data['order_number']
     print(orderid)
-    job=JobPortal.objects.filter(ordernumber=orderid).exists()
+    job=Job_Detail.objects.filter(ordernumber=orderid).exists()
     print(job,'dfffd')
     if not job:
         response=Response()
@@ -157,7 +157,7 @@ def paymentdone(request):
         }
         return response 
     else:
-        job=JobPortal.objects.get(ordernumber=orderid)
+        job=Job_Detail.objects.get(ordernumber=orderid)
         job.payment=True
         job.save()
         serializer=JobSerializer(job,many=False)
@@ -172,7 +172,7 @@ def showjob(request,id,cid):
         print(category)
         city=City.objects.get(id=cid)
         print(city)
-        job=JobPortal.objects.filter(category=category,city=city,payment='True',booked='False')
+        job=Job_Detail.objects.filter(category=category,city=city,payment='True',booked='False',available='True')
         serializer=JobSerializer(job,many=True)
         return Response(serializer.data)
     except:
@@ -187,11 +187,10 @@ def showjob(request,id,cid):
  
 @api_view(['GET'])
 def disctrict_job_show(request,id):
-    try:
-        
+    try:        
         district=District.objects.get(id=id)
         print(district)
-        job=JobPortal.objects.filter(district=district,payment='True',booked='False')
+        job=Job_Detail.objects.filter(district=district,payment='True',booked='False',available='True')
         serializer=JobSerializer(job,many=True)
         return Response(serializer.data)
     except:
@@ -205,11 +204,10 @@ def disctrict_job_show(request,id):
 # all data
 @api_view(['GET'])
 def all_job_show(request):
-    try:
-        
+    try:        
         district=District.objects.all()
         print(district)
-        job=JobPortal.objects.filter(payment='True',booked='False')
+        job=Job_Detail.objects.filter(payment='True',booked='False',available='True')
         serializer=JobSerializer(job,many=True)
         return Response(serializer.data)
     except:

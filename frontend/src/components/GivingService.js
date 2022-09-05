@@ -413,7 +413,7 @@ const showRazorpay = async (e) => {
           Authorization:'Bearer '+ request
         }
   }).then((res) => {
-    console.log(res.data)
+    console.log(res.data,'its data')
     console.log(res.data.order.order_payment_id)      
     setPaymentId(res.data.order.order_payment_id)
     return res;

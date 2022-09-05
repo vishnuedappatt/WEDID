@@ -5,14 +5,45 @@ import Table from 'react-bootstrap/Table';
 // import Button from '@mui/material/Button';
 import axios from '../../axios'
 import Button from 'react-bootstrap/Button';
+import Typography from '@mui/material/Typography';
+import Modal from '@mui/material/Modal';
+import Box from '@mui/material/Box';
+
+import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+
+
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+import Form from 'react-bootstrap/Form';
+
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+};
 
 
 function Jobshow() {
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   // all job post data
   const[alldata,setAllData]=useState([])
   const[catege,setCatatege]=useState([])
   const[dist,setDistrict]=useState([])
+  const[city,setCity]=useState([])
 
   useEffect(() => {
     getalljob()
@@ -54,6 +85,7 @@ const getCategory=()=>{
 }
   
 
+
 // for getting all district
 const getDistrict=()=>{
   let request=(JSON.parse(localStorage.getItem('token')))  
@@ -63,10 +95,109 @@ const getDistrict=()=>{
         }
   }).then((res)=>{
       console.log(res.data)
+     
       setDistrict(res.data)
   })
 }
 
+
+
+
+// get city
+const getcity=async(id)=>{
+let request=(JSON.parse(localStorage.getItem('token')))  
+await axios.get(`job/showcity/${id}/`,{
+    headers: {
+        Authorization:'Bearer '+ request
+    }
+}).then((res)=>{
+  if (res.status==200){
+    console.log(res.data)
+    setCity(res.data)
+  }    
+}).catch((err)=>{
+    console.log(err.res.data)
+})
+}
+
+
+
+
+// filter value of district
+const [fil_dis,setFilter]=useState('')
+ const handler=(e)=>{
+  console.log(e.target.value)
+  setFilter(e.target.value)
+ }
+
+
+//  filter by district
+
+const districtFilter=async(e)=>{
+  e.preventDefault()
+  let request=(JSON.parse(localStorage.getItem('token')))  
+  await axios.get(`job/dis_job_view/${fil_dis}/`,{
+      headers: {
+          Authorization:'Bearer '+ request
+      }
+  }).then((res)=>{
+    if (res.status==200){
+      console.log(res.data)
+      // setCity(res.data)
+      setAllData(res.data) 
+      if(res.data.length===0){
+        console.log('ok ann')
+        setEmpty(true)
+      }  
+      handleClose()
+    }    
+  }).catch((err)=>{
+      console.log(err.res.data)
+  })
+  }
+
+
+//filter with district city category
+ const [fil_cat,setFilterCat]=useState('')
+ const [fil_city,setFilterCity]=useState('') 
+const [empty,setEmpty]=useState(false)
+
+//  category handler
+ const categoryHandler=(e)=>{
+  setFilterCat(e.target.value)
+ }
+
+//  city handler
+const cityHandler=(e)=>{
+  setFilterCity(e.target.value)
+}
+
+// category city filter
+
+const CatCityFilter=async(e)=>{
+       e.preventDefault()
+  // console.log(fil_cat,fil_city,'randu, indd')
+  let request=(JSON.parse(localStorage.getItem('token')))  
+  await axios.get(`job/viewjob/${fil_cat}/${fil_city}/`,{
+      headers: {
+          Authorization:'Bearer '+ request
+      }
+  }).then((res)=>{
+    if (res.status==200){
+      // setCity(res.data)
+      setAllData(res.data)   
+      handleClose()
+      if(res.data.length===0){
+        console.log('ok ann')
+        setEmpty(true)
+      }
+    }    
+  }).catch((err)=>{
+      console.log(err.res.data,'fjdfdfkfdf')
+  })
+
+
+}
 
   return (
     <div>       
@@ -74,11 +205,129 @@ const getDistrict=()=>{
       <p >wedidsolutions@gmail.com</p>
             <h4>IF OPPURTUNITY DOESN'T KNOCK , BUILD A DOOR</h4>
             <p className='wedid'>WEDID</p>
-            <Button className='ms-5 w-25' variant="outline-dark" >PROFILE</Button>
-        {/* <Button variant="outlined" color="success">
-          <p style={{color:'black'}}>SEARCH</p>        
-      </Button> */}
+            <Button className='ms-5 w-25 mb-3' variant="outline-dark" onClick={handleOpen} >FILTER</Button>
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description">
+        <Box sx={style}>
+          <Typography id="modal-modal-title" variant="h6" component="h2">    
+            <Accordion className='bg-dark mt-3'>
+              <AccordionSummary      
+              expandIcon={<ExpandMoreIcon />}          
+                aria-controls="panel1a-content"
+                id="panel1a-header"
+              >
+                <Typography style={{color:'white'}} >Filter by district </Typography>
+              </AccordionSummary>              
+              <AccordionDetails>
+                <Typography>
+                <Accordion>
+              <AccordionDetails>
+          <Typography>               
+            <Box sx={{ minWidth: 120 }}>
+            <Form onSubmit={districtFilter}>
+
+            
+          <FormControl  className='mt-2' fullWidth>
+        <InputLabel id="demo-simple-select-label">District</InputLabel>
+        <Select
+          labelId="demo-simple-select-label"
+          id="demo-simple-select"
+          value={fil_dis}
+          label="district"
+          onChange={handler}
+        >
+          { dist ? dist.map((obj)=>
+          <MenuItem   value={obj.id}>{obj.district}</MenuItem> ):''}         
+        </Select>   
+        <Button className='mt-5 mb-3' type='submit' variant="outline-dark" >FILTER</Button>
+      </FormControl>
+      </Form>
+     </Box>
+        </Typography>
+        </AccordionDetails>
+            </Accordion>   
+                </Typography>
+              </AccordionDetails>
+            </Accordion> 
+          </Typography>
+          <Typography id="modal-modal-title" variant="h6" component="h2">                  
+            
+              <Accordion className='bg-dark mt-3'>
+                <AccordionSummary       
+                expandIcon={<ExpandMoreIcon />}          
+                  aria-controls="panel1a-content"
+                  id="panel1a-header"
+                >
+                  <Typography style={{color:'white'}} >Filter by place and category</Typography>
+                </AccordionSummary>
+                
+                <AccordionDetails>
+                  <Typography>
+                  <Accordion>
+                <AccordionDetails>
+            <Typography>               
+              <Box sx={{ minWidth: 120 }}>
+
+            <Form onSubmit={CatCityFilter}>
+            <FormControl className='mt-2' fullWidth>
+          <InputLabel id="demo-simple-select-label">category</InputLabel>
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            value={fil_cat}
+            label="category"
+            onChange={categoryHandler}
+          > 
+          { catege ? catege.map((obj)=>
+            <MenuItem value={obj.id}>{obj.name}</MenuItem> ):''}
+           
+          </Select>
+        </FormControl>
+        <FormControl className='mt-2' fullWidth>
+          <InputLabel id="demo-simple-select-label">District</InputLabel>
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            value={fil_dis}
+            label="district" 
+            onChange={handler}
+          >
+           { dist ? dist.map((obj)=>
+          <MenuItem value={obj.id} onClick={()=>getcity(obj.id)}>{obj.district}</MenuItem> ):''}
+          
+          </Select>
+        </FormControl>
+        <FormControl className='mt-2' fullWidth>
+          <InputLabel id="demo-simple-select-label">City</InputLabel>
+          <Select 
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            value={fil_city}
+            label="city"
+            onChange={cityHandler}
+          >
+             { city ? city.map((obj)=>
+          <MenuItem value={obj.id}>{obj.city}  </MenuItem> ):''}
+           
+          </Select>
+          <Button className='mt-5 mb-3' type='submit' variant="outline-dark" >FILTER</Button>
+        </FormControl>
+        </Form>
+       </Box>
+          </Typography>
+          </AccordionDetails>
+              </Accordion>   
+                  </Typography>
+                </AccordionDetails>
+              </Accordion> 
+            </Typography>
+        </Box>
+      </Modal>
       </div>
+
     {alldata ? alldata.map((obj,key)=>
     <div  className='main-div m-5'>   
      <Table striped borderless hover>
@@ -92,9 +341,9 @@ const getDistrict=()=>{
         </tr>
       </thead>
       <tbody>
-        <tr style={{height:'8rem',}}>
+        <tr style={{height:'8rem',border:'1px white solid'}}>
             <td  style={{color:'white'}} className='column pt-5 '>{
-              catege.map((objs)=>{
+              catege.map((objs,key)=>{
                 console.log(objs.id,obj.category,'djflkjfkljldf')
                 if(objs.id===obj.category){
                   console.log(objs.name,'ites bak')
@@ -114,7 +363,7 @@ const getDistrict=()=>{
               }
               )
             }</td>
-          <td  style={{color:'white'}}    className='column pt-5 bg-danger'>{obj.title}</td>
+          <td  style={{color:'white'}}    className='column pt-5 '>{obj.title}</td>
           <td  style={{color:'white'}}  className='column pt-5 '>{obj.rate}</td>
          <td className=' pay-btn pt-5 '> <Button variant="outline-success">view and pay</Button></td> 
         </tr>
@@ -122,7 +371,14 @@ const getDistrict=()=>{
       </tbody>
     </Table>
        </div>)
-        :"" }
+        :''
+      }
+
+        {empty? 
+        <div align='center'>
+              <h1 style={{color:'white',marginTop:'100px'}}>No matches Found</h1>
+        </div>
+         :''}
      
     
     </div>
