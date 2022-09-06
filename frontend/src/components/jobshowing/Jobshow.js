@@ -1,5 +1,5 @@
 import React,{useEffect,useState} from 'react'
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import './jobshow.css'
 import Table from 'react-bootstrap/Table';
 // import Button from '@mui/material/Button';
@@ -38,6 +38,7 @@ const style = {
 
 
 function Jobshow() {
+
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -47,6 +48,9 @@ function Jobshow() {
   const[catege,setCatatege]=useState([])
   const[dist,setDistrict]=useState([])
   const[city,setCity]=useState([])
+
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     getalljob()
@@ -368,7 +372,7 @@ const CatCityFilter=async(e)=>{
             }</td>
           <td  style={{color:'white'}}    className='column pt-5 '>{obj.title}</td>
           <td  style={{color:'white'}}  className='column pt-5 '>{obj.rate}</td>
-         <td className=' pay-btn pt-5 '> <Button variant="outline-success">view and pay</Button></td> 
+         <td className=' pay-btn pt-5 '> <Button variant="outline-success" onClick={()=>navigate(`/singlejob/${obj.id}`)} >view and pay</Button></td> 
         </tr>
         
       </tbody>

@@ -110,6 +110,7 @@ def jobpost(request):
 # all job view
 
 @api_view(['GET'])
+@authentication_classes([JWTAuthentications])
 def getallpost(request):
     job=Job_Detail.objects.all()
     serializer=JobSerializer(job,many=True)
@@ -117,6 +118,7 @@ def getallpost(request):
 
 
 @api_view(['GET'])
+@authentication_classes([JWTAuthentications])
 def singlejobview(request,id):
     job=Job_Detail.objects.get(id=id)
     serializer=JobSerializer(job,many=False)
@@ -124,6 +126,7 @@ def singlejobview(request,id):
 
 
 @api_view(['PUT'])
+@authentication_classes([JWTAuthentications])
 def editingjob(request,id):
     try:
         print('d111211')
@@ -143,6 +146,7 @@ def editingjob(request,id):
     
 # for compliting the post and showing on posted surface
 @api_view(['POST'])
+# @authentication_classes([JWTAuthentications])
 def paymentdone(request):
     # try:
     data=request.data
@@ -166,6 +170,7 @@ def paymentdone(request):
  
 #  filter with category and place
 @api_view(['GET'])
+@authentication_classes([JWTAuthentications])
 def showjob(request,id,cid):
     try:
         category=Categories.objects.get(id=id)
@@ -186,6 +191,7 @@ def showjob(request,id,cid):
 #filter with district 
  
 @api_view(['GET'])
+@authentication_classes([JWTAuthentications])
 def disctrict_job_show(request,id):
     try:        
         district=District.objects.get(id=id)
@@ -203,6 +209,7 @@ def disctrict_job_show(request,id):
     
 # all data
 @api_view(['GET'])
+@authentication_classes([JWTAuthentications])
 def all_job_show(request):
     try:        
         district=District.objects.all()
