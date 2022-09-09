@@ -68,7 +68,7 @@ const checkPassword=(e)=>{
       <>
     
 
-      <Modal show={show} onHide={handleClose} animation={false}>
+      {/* <Modal show={show} onHide={handleClose} animation={false}>
         <Modal.Header closeButton>
           <Modal.Title></Modal.Title>
         </Modal.Header>
@@ -78,7 +78,7 @@ const checkPassword=(e)=>{
             Close
           </Button>
         </Modal.Footer>
-      </Modal>
+      </Modal> */}
       <Snackbar open={opens} autoHideDuration={6000} onClose={handleCloses}>
                 <div className='box' >
                 <Alert onClose={handleCloses} severity="error" sx={{ width: '100%' }} >

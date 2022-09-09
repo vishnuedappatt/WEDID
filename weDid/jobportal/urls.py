@@ -8,6 +8,7 @@ urlpatterns = [
     path('jobcate/',views.jobcategories,name='rentcategory'),
     path('showcity/<int:id>/',views.getcity,name='get-city'),
     path('showdistrict/',views.getdistrict,name='get-district'),
+    path('allcity/',views.getallcity,name='get-city'),
     path('jobpost/',views.jobpost,name='jobpost'),
     # path('alljob/',views.getallpost,name="alljob"),
     path('singlejob/<int:id>/',views.singlejobview,name="singleviewjob"),

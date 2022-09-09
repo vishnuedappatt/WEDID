@@ -58,6 +58,15 @@ def getcity(request,id):
     return Response(serializer.data)
 
 
+# showing all the city as per disctrict
+
+@api_view(['GET'])
+@authentication_classes([JWTAuthentications])
+def getallcity(request):
+    city=City.objects.all()
+    serializer=CitySerializer(city,many=True)
+    return Response(serializer.data)
+
 
 
 

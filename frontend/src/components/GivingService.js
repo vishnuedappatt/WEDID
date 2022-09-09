@@ -602,8 +602,13 @@ const showRazorpay = async (e) => {
          <form className='form-payment'>
             <div className='check-main'>
               <input type="checkbox" className='checkbox' id="vehicle1" name="vehicle1" value="Bike" required></input><p className='check-heading' >Accept all terms & conditions for wedid solutions</p>
-                <input type="checkbox" className='checkbox' id="vehicle1" name="vehicle1" value="Bike" required /><p  className='check-heading'>Accept all terms & conditions from Razorpay payment system</p>                
+                <input type="checkbox" className='checkbox' id="vehicle1" name="vehicle1" value="Bike" required /><p  className='check-heading'>Accept all terms & conditions from Razorpay payment system</p>           
+                <p style={{color:'yellow',marginTop:'4rem'}}>** charges applied</p>
+                <p  style={{color:'red'}}>**  your our rate is less than 500 you should pay 5%,</p>    
+            <p  style={{color:'red'}}>**  your our rate is greater  than 500 you should pay 10%,</p>
+            <p  style={{color:'red'}}>**  your our rate is greater 1000 you should pay 15%,</p>     
             </div>
+           
             
              <Button className='payment-btn2' type='submit' variant="outline-warning" onClick={showRazorpay}><p>Make Payment with razorpay</p></Button><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br>
              <Button className='payment-btn4' type='' onClick={cancelHandler} variant="outline-danger"><p>cancel</p></Button>
