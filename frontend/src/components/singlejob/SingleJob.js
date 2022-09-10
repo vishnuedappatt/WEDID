@@ -1,28 +1,33 @@
 import axios from '../../axios';
 import React,{useEffect,useState} from 'react'
 import {useParams} from 'react-router-dom'
-import Table from  'react-bootstrap/Table'
 import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
 import { useNavigate } from 'react-router-dom';
 import Card from 'react-bootstrap/Card'
-import { Link } from 'react-router-dom';
 import './singlejob.css'
+import GetCategory from '../common/Category/Category';
+import GetDistrict from '../common/District/District';
+import GetCity from '../common/City/City';
+
+
+
 function SingleJob() {
     const parms=useParams();
-    console.log(parms,'paramss')
     let id=parms.id
    
 const [job,setJob]=useState([])
-
+// const values=AllDatas.getCategory(setCatatege)
 const[catege,setCatatege]=useState([])
 const[dist,setDistrict]=useState([])
 const[city,setCity]=useState([])
     useEffect(() => {      
       getsinglejob()    
-      getCategory()
-      getDistrict()
-      getcity()
+      // getCategory()
+     GetCategory({setCatatege})
+      // getDistrict()
+      GetDistrict({setDistrict})
+      // getcity()
+      GetCity({setCity})
     
     },[])
     
@@ -35,7 +40,6 @@ const[city,setCity]=useState([])
           }
       }).then((res)=>{
         if(res.status===200){
-          console.log(res.data,'single')
           setJob(res.data)
         }
       })
@@ -44,101 +48,91 @@ const[city,setCity]=useState([])
 
 
 // getting all category
-const getCategory=()=>{
-  let request=(JSON.parse(localStorage.getItem('token')))  
-  axios.get('job/jobcate/',{
-      headers: {
-          Authorization:'Bearer '+ request
-        }
-  }).then((res)=>{
-      console.log(res.data)
-      setCatatege(res.data)    
+// const getCategory=()=>{
+//   let request=(JSON.parse(localStorage.getItem('token')))  
+//   axios.get('job/jobcate/',{
+//       headers: {
+//           Authorization:'Bearer '+ request
+//         }
+//   }).then((res)=>{
+//       console.log(res.data)
+//       setCatatege(res.data)    
      
-  })
-}
+//   })
+// }
 
 
 
 
 // for getting all district
-const getDistrict=()=>{
-  let request=(JSON.parse(localStorage.getItem('token')))  
-  axios.get('job/showdistrict/',{
-      headers: {
-          Authorization:'Bearer '+ request
-        }
-  }).then((res)=>{
-      console.log(res.data)
-     
-      setDistrict(res.data)
-  })
-}
+// const getDistrict=()=>{
+//   let request=(JSON.parse(localStorage.getItem('token')))  
+//   axios.get('job/showdistrict/',{
+//       headers: {
+//           Authorization:'Bearer '+ request
+//         }
+//   }).then((res)=>{
+//         setDistrict(res.data)
+//   })
+// }
 
 
 // get city
-const getcity=async(id)=>{
-  let request=(JSON.parse(localStorage.getItem('token')))  
-  await axios.get('job/allcity/',{
-      headers: {
-          Authorization:'Bearer '+ request
-      }
-  }).then((res)=>{
-    if (res.status===200){
-      console.log(res.data)
-      setCity(res.data)
-    }    
-  }).catch((err)=>{
-      console.log(err.res.data)
-  })
-  }
+// const getcity=async(id)=>{
+//   let request=(JSON.parse(localStorage.getItem('token')))  
+//   await axios.get('job/allcity/',{
+//       headers: {
+//           Authorization:'Bearer '+ request
+//       }
+//   }).then((res)=>{
+//     if (res.status===200){
+//       setCity(res.data)
+//     }    
+//   }).catch((err)=>{
+//       console.log(err.res.data)
+//   })
+//   }
   
   
 
   return (
 
-  <div >     
- 
+  <div >      
        <Card style={{ backgroundColor:'black',borderRadius:'2rem'}}>
       <Card.Img  />
       <Card.Body> 
       <div style={{paddingLeft:'100px'}}>
-      <span style={{color:'wheat',}}>CATEGORY</span> <h1 style={{color:'white',marginLeft:'60px'}}>{
-              catege.map((obj,key)=>{
-                console.log(obj.id,job.category,'djflkjfkljldf')
-                if(obj.id===job.category){
-                  console.log(obj.name,'ites bak')
+      <span style={{color:'wheat',}}>CATEGORY</span> <h2 style={{color:'white',marginLeft:'60px',marginTop:'20px'}}>{
+              catege.map((obj,key)=>{              
+                if(obj.id===job.category){               
                    return obj.name                      
                 }
               }
               )
-            }</h1>
-      <span style={{color:'wheat',}}>DISTRICT</span> <h3 style={{color:'white',marginLeft:'60px'}}>{
-              dist.map((obj)=>{
-                console.log(obj.id,job.district)
+            }</h2>
+      <span style={{color:'wheat',}}>DISTRICT</span> <h3 style={{color:'white',marginLeft:'60px',marginTop:'20px'}}>{
+              dist.map((obj)=>{             
                 if(obj.id===job.district){
-                  console.log(obj.district,'ites bak')
                    return obj.district                      
                 }
               }
               )
             }</h3>      
-      <span style={{color:'wheat',}}>CITY</span> <h3 style={{color:'white',marginLeft:'60px'}}>{
-              city.map((obj)=>{
-                console.log(obj.id,job.city)
-                if(obj.id===job.city){
-                  console.log(obj.city,'ites bak')
+      <span style={{color:'wheat',}}>CITY</span> <h3 style={{color:'white',marginLeft:'60px',marginTop:'20px'}}>{
+              city.map((obj)=>{               
+                if(obj.id===job.city){                 
                    return obj.city                      
                 }
               }
               )
             }</h3>      
-      <span style={{color:'wheat',}}>DISCRIPTION</span> <h3 style={{color:'white',marginLeft:'60px'}}>{job.discriptions}</h3>
-      <span style={{color:'wheat',}}>POST DATE</span> <h3 style={{color:'white',marginLeft:'60px'}}>{job.created_at}</h3>
-      <span style={{color:'wheat',}}>VALID</span> <h3 style={{color:'white',marginLeft:'60px'}}>{job.valid_at}</h3>
-      <Button variant="dark" type=""    style={{textAlign:'center',height:'4rem',width:'15rem',}}>Make Payment </Button>
-      
+      <span style={{color:'wheat',}}>DISCRIPTION</span> <h4 style={{color:'white',marginLeft:'60px',marginTop:'20px'}}>{job.discriptions}</h4>
+      <span style={{color:'wheat',}}>POST DATE</span> <h4 style={{color:'white',marginLeft:'60px',marginTop:'20px'}}>{String(job.created_at).slice(0,10).split("-").reverse().join("-")}</h4>
+      <span style={{color:'wheat',}}>VALID</span> <h4 style={{color:'white',marginLeft:'60px',marginTop:'20px'}}>{job.valid_at}</h4>
         </div> 
-      
+      <div align='center'>
+      <Button variant="dark" type=""    style={{textAlign:'center',height:'4rem',width:'15rem',}}>Make Payment </Button>
+      </div>
     
       </Card.Body>
     </Card>

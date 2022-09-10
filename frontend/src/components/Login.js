@@ -76,25 +76,14 @@ const count=0
   return (
   
       <>   
-
-      {/* <Modal show={show} onHide={handleClose} animation={false}>
-        <Modal.Header closeButton>
-          <Modal.Title></Modal.Title>
-        </Modal.Header>
-        <Modal.Body>{errors}</Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Close
-          </Button>
-        </Modal.Footer>
-      </Modal> */}
+     
       <Snackbar open={opens} autoHideDuration={6000} onClose={handleCloses}>
-                <div className='box' >
-                <Alert onClose={handleCloses} severity="error" sx={{ width: '100%' }} >
-                 {errors}
-                </Alert>
-                </div>               
-              </Snackbar>
+        <div className='box' >
+        <Alert onClose={handleCloses} severity="error" sx={{ width: '100%' }} >
+          {errors}
+        </Alert>
+        </div>               
+      </Snackbar>
 
    
     <Card style={{ backgroundColor:'#339966',borderRadius:'2rem'}}>     

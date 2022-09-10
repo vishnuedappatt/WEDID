@@ -5,6 +5,7 @@ import Card from 'react-bootstrap/Card'
 import { Link } from 'react-router-dom';
 import axios from '../axios' ;
 import Modal from 'react-bootstrap/Modal';
+import BasicSnackBar from './common/CommonSnackbar/CommonSnackBar';
 
 function Forgottpassword() {
   const [email,setEmail]=useState('')
@@ -12,9 +13,19 @@ function Forgottpassword() {
   const [emailerror,setEmailError]=useState(false)
   const[backend,setBackend]=useState('')
 
+// // snackbar
+// const [open, setOpen] = React.useState(false);  
+// const handleClick = () => {
+//   setOpen(true);
+// };
+// const handleClose = (event, reason) => {
+//   if (reason === 'clickaway') {
+//     return;
+//   }
+//   setOpen(false);
+// };
 
-
-
+// modal
 
   const [show, setShow] = useState(false);
   const handleClose = () => {setShow(false)};
@@ -47,11 +58,13 @@ function Forgottpassword() {
           console.log(res.data)
           if(res.data.success){
             handleShow()
+            // handleClick() snackk
             setBackend(res.data.success+' reset and login again')
           }
           if(res.data.error){
             setBackend(res.data.error)
             handleShow()
+            // handleClick() snack
           }
         })
 
@@ -96,6 +109,12 @@ function Forgottpassword() {
         {emailerror?<span style={{color:'red'}}>* enter a valid email field </span>:''}
         <Form.Text className="text-muted">        
         </Form.Text>
+        {/* <BasicSnackBar  
+open={open}
+onClose={handleClose}
+severity='warning'
+message={backend}
+/> */}
       </Form.Group>
   
       <div style={{textAlign:'center'}}>
