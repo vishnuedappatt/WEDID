@@ -26,7 +26,8 @@ const [password,setPassword]=useState('')
 const [mcheck,EmailChecker]=useState(false)
 const [pcheck,PasswordChecker]=useState(false)
 
-
+const [forgot,setForgot]=useState(1)
+const [fshow,setForShow]=useState(false)
 
 
 const checkEmail=(e)=>{
@@ -42,9 +43,14 @@ const checkPassword=(e)=>{
     setPassword(pass)
 }
 
-
+const count=0
  const loginHandler=(e)=>{
      e.preventDefault() 
+     console.log(forgot,'forgott')
+     if (forgot>2){
+      setForShow(true)
+     }
+     
      if (email.trim().length ===0 ){
       console.log('empty')
       EmailChecker(true)
@@ -54,6 +60,10 @@ const checkPassword=(e)=>{
       if ( password.trim().length !==0){
         console.log('finallll')
         Userlogin(email,password)  
+        setForgot(forgot+1)
+       
+    
+
       }
      }
     if ( password.trim().length ===0){
@@ -65,8 +75,7 @@ const checkPassword=(e)=>{
      }
   return (
   
-      <>
-    
+      <>   
 
       {/* <Modal show={show} onHide={handleClose} animation={false}>
         <Modal.Header closeButton>
@@ -111,8 +120,8 @@ const checkPassword=(e)=>{
       <Button variant="dark" type="submit"  style={{width:'30%',height:'4rem'}} >
         Submit
       </Button><br></br><br></br>
-      <Link style={{textDecoration:'None',color:'black',marginTop:'2rem'}} to='/forgot_password'>forgotpassword ?</Link><br></br><br></br>
-      <Button variant="dark" type=""    style={{textAlign:'center',height:'4rem',width:'15rem',}}><Link to='/register' style={{textDecoration:'none'}}> Create An Account</Link>  </Button>
+   {fshow?   <Link style={{textDecoration:'None',color:'black',marginTop:'2rem'}} to='/forgot_password'>forgotpassword ?</Link>:''}<br></br><br></br>
+      <Link to='/register' style={{textDecoration:'None',color:'black',marginTop:'2rem'}}> Create An Account</Link> 
    </div>
     </Form>      
       </Card.Body>

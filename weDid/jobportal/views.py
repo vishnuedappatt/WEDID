@@ -11,8 +11,8 @@ from rest_framework.permissions import IsAuthenticated,IsAdminUser
 import random
 from user.authentication import ADMINAuth, JWTAuthentications, create_access_token,create_refresh_token,decode_access_token,decode_refresh_token
 from .serializer import CategorySerializer,CitySerializer,DistrictSerializer,JobSerializer,EditJobSerializer
-
-
+from rest_framework.pagination import PageNumberPagination
+from rest_framework import generics
 # Create your views here.
 
 
@@ -232,3 +232,14 @@ def all_job_show(request):
             'error':'error in request'
         }
         return response 
+
+class LargeResultsSetPagination(PageNumberPagination):
+    page_size = 2
+    page_size_query_param = 'page_size'
+ 
+   
+class BillingRecordsView(generics.ListAPIView):
+    authentication_classes = [JWTAuthentications]
+    queryset =Job_Detail.objects.filter(payment='True',booked='False',available='True')
+    serializer_class = JobSerializer
+    pagination_class = LargeResultsSetPagination

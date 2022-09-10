@@ -11,7 +11,7 @@ function LoginPage() {
        
         <Row className='justify-content-center mt-5 pt-5'>  
             
-            <Col  lg={5} sm={12}>
+            <Col  lg={6} sm={12}>
                 <h2 style={{textAlign:'center'}}>LOGIN</h2>
                 <Login />
             </Col>            

@@ -21,8 +21,10 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import Form from 'react-bootstrap/Form';
 
-import Pagination from '@mui/material/Pagination';
+// import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack'
+import Pagination from '../Pagination';
+
 
 const style = {
   position: 'absolute',
@@ -49,6 +51,9 @@ function Jobshow() {
   const[dist,setDistrict]=useState([])
   const[city,setCity]=useState([])
 
+  // pagination
+const [currentpage,setcurrentPage]=useState(1)
+const [postperpage,setPostPerPage]=useState(3)
 
   const navigate = useNavigate();
 
@@ -60,7 +65,11 @@ function Jobshow() {
     return () => {    
     }
   }, [])
-  
+ 
+  // getting last page and last page
+ const lastPageIndex=currentpage * postperpage;
+ const firstPageIndex=lastPageIndex - postperpage;
+ const currentData =alldata.slice(firstPageIndex,lastPageIndex)
 
   // / getting all jobpost
   const getalljob=()=>{
@@ -70,7 +79,8 @@ function Jobshow() {
             Authorization:'Bearer '+ request
           }
     }).then((res)=>{
-        console.log(res.data)
+      console.log(res.data,'its the datass')
+        console.log(res.data.results,'its the datass')
         setAllData(res.data)    
     })
   }
@@ -85,7 +95,6 @@ const getCategory=()=>{
           Authorization:'Bearer '+ request
         }
   }).then((res)=>{
-      console.log(res.data)
       setCatatege(res.data)    
      
   })
@@ -100,9 +109,7 @@ const getDistrict=()=>{
       headers: {
           Authorization:'Bearer '+ request
         }
-  }).then((res)=>{
-      console.log(res.data)
-     
+  }).then((res)=>{        
       setDistrict(res.data)
   })
 }
@@ -119,7 +126,6 @@ await axios.get(`job/showcity/${id}/`,{
     }
 }).then((res)=>{
   if (res.status===200){
-    console.log(res.data)
     setCity(res.data)
   }    
 }).catch((err)=>{
@@ -133,7 +139,6 @@ await axios.get(`job/showcity/${id}/`,{
 // filter value of district
 const [fil_dis,setFilter]=useState('')
  const handler=(e)=>{
-  console.log(e.target.value)
   setFilter(e.target.value)
  }
 
@@ -149,11 +154,9 @@ const districtFilter=async(e)=>{
       }
   }).then((res)=>{
     if (res.status===200){
-      console.log(res.data)
       // setCity(res.data)
       setAllData(res.data) 
       if(res.data.length===0){
-        console.log('ok ann')
         setEmpty(true)
       }  
       handleClose()
@@ -195,7 +198,6 @@ const CatCityFilter=async(e)=>{
       setAllData(res.data)   
       handleClose()
       if(res.data.length===0){
-        console.log('ok ann')
         setEmpty(true)
       }
     }    
@@ -205,6 +207,11 @@ const CatCityFilter=async(e)=>{
 
 
 }
+
+
+
+
+
 
   return (
     <div>       
@@ -335,7 +342,7 @@ const CatCityFilter=async(e)=>{
       </Modal>
       </div>
 
-    {alldata ? alldata.map((obj,key)=>
+    {currentData ? currentData.map((obj,key)=>
     <div  className='main-div m-5'>   
      <Table striped borderless hover>
       <thead>
@@ -351,9 +358,7 @@ const CatCityFilter=async(e)=>{
         <tr style={{height:'8rem',border:'1px white solid'}}>
             <td  style={{color:'white'}} className='column pt-5 '>{
               catege.map((objs,key)=>{
-                console.log(objs.id,obj.category,'djflkjfkljldf')
                 if(objs.id===obj.category){
-                  console.log(objs.name,'ites bak')
                    return objs.name                      
                 }
               }
@@ -362,9 +367,7 @@ const CatCityFilter=async(e)=>{
              </td>
           <td  style={{color:'white'}}  className='column pt-5 '> {
               dist.map((objs)=>{
-                console.log(objs.id,obj.district)
                 if(objs.id===obj.district){
-                  console.log(objs.district,'ites bak')
                    return objs.district                      
                 }
               }
@@ -380,17 +383,16 @@ const CatCityFilter=async(e)=>{
   
        </div>)
         :''
-      }  <Stack fullWidth spacing={2}>
-      <Pagination count={10} />
+      }  <Stack  spacing={9}>
+       
     </Stack>
+    <Pagination totalpost={alldata.length} postperpage={postperpage} setcurrentPage={setcurrentPage} currentpage={currentpage}/>
 
         {empty? 
         <div align='center'>
               <h1 style={{color:'white',marginTop:'100px'}}>No matches Found</h1>
         </div>
          :''}
-     
-    
     </div>
   )
 }

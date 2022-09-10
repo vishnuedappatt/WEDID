@@ -1,5 +1,6 @@
 from . import views
 from django.urls import path
+from .views import *
 
 urlpatterns = [
 
@@ -17,4 +18,5 @@ urlpatterns = [
     path('viewjob/<int:id>/<int:cid>/',views.showjob,name="showjob"),
     path('dis_job_view/<int:id>/',views.disctrict_job_show,name="district_job_show"),
     path('all_job/',views.all_job_show,name="alljob"),
+    path('all/',BillingRecordsView.as_view(),name='all'),
     ]
