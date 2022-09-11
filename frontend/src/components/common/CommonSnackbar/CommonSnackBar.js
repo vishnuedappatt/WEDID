@@ -1,26 +1,29 @@
-import React,{useState,forwardRef} from 'react';
-import Button from '@mui/material/Button';
+import React,{useState} from 'react'
 import Snackbar from '@mui/material/Snackbar';
-import MuiAlert from '@mui/material/Alert';
 
-const Alert = forwardRef(function Alert(props, ref) {
-  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-});
 
-const BasicSnackBar =({open,onClose,severity,message})=> {
-
+const CommonSnackbar=({transition,open,onClose,values,message})=> {
+  console.log(message,'tesdsfk')
+  console.log(open,'opee')
   return (
-    <>
-      {/* <Button variant="outlined" onClick={handleClick}>
-        Open success snackbar
-      </Button> */}
-      <Snackbar open={open} autoHideDuration={6000} onClose={onClose}>
-        <Alert onClose={onClose} severity={severity} sx={{ width: '100%' }}>
-        {message}
-        </Alert>
-      </Snackbar>
-    </>
+    <div>
+      <Snackbar
+      
+      anchorOrigin={{
+        vertical:'top',
+        horizontal:'center'
+      }}
+      // style={{marginTop:val+'rem'}}
+        open={open}
+        autoHideDuration={4000}
+        onClose={onClose}
+        TransitionComponent={transition}
+        message=' are you sure '
+        key={transition ? transition.name : ''}
+      />
+    </div>
   );
 }
 
-export default BasicSnackBar;
+
+export default CommonSnackbar;

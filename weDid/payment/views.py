@@ -4,9 +4,13 @@ import razorpay
 from rest_framework.decorators import api_view,authentication_classes
 from rest_framework.response import Response
 from django.conf import settings
+
+from user.models import Account
 from .models import Order
 from .serializers import OrderSerializer
 from user.authentication import JWTAuthentications
+from jobportal.models import Job_Detail
+from jobportal.serializer import JobSerializer
 
 
 @api_view(['POST'])
@@ -118,3 +122,30 @@ def handle_payment_success(request):
     }
     print(77)
     return response
+
+
+
+
+
+@api_view(['POST'])
+@authentication_classes([JWTAuthentications])
+def freepayment(request):
+    try:
+        data=request.data
+        email=request.user
+        id=data['id']
+        job=Job_Detail.objects.get(id=id)
+        job.booked_person=email
+        job.booked=True
+        job.save()
+        user=Account.objects.get(email=email)
+        user.count+=1
+        user.save()        
+        serializer=JobSerializer(job,many=False)
+        return Response(serializer.data)
+    except:
+        response=Response()
+        response.data = {
+            'error': 'Error found'
+        }
+        return response

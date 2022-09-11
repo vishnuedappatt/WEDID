@@ -67,6 +67,8 @@ const handleClicks = () => {
             )  
         }
  
+
+        
         let logOut=()=>{
             axios.post('user/logout/').then((res)=>{
                 console.log(res.data)
