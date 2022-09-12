@@ -79,8 +79,7 @@ const [postperpage,setPostPerPage]=useState(3)
             Authorization:'Bearer '+ request
           }
     }).then((res)=>{
-      console.log(res.data,'its the datass')
-        console.log(res.data.results,'its the datass')
+      console.log(res.data,'its the datass')  
         setAllData(res.data)    
     })
   }
@@ -96,6 +95,7 @@ const getCategory=()=>{
         }
   }).then((res)=>{
       setCatatege(res.data)    
+      console.log(res.data,'dfdfdf')
      
   })
 }
@@ -214,7 +214,7 @@ const CatCityFilter=async(e)=>{
 
 
   return (
-    <div>       
+    <>       
       <div align='center ' style={{backgroundColor:'gray'}}>
       <p >wedidsolutions@gmail.com</p>
             <h4>IF OPPURTUNITY DOESN'T KNOCK , BUILD A DOOR</h4>
@@ -356,23 +356,8 @@ const CatCityFilter=async(e)=>{
       </thead>
       <tbody>
         <tr style={{height:'8rem',border:'1px white solid'}}>
-            <td  style={{color:'white'}} className='column pt-5 '>{
-              catege.map((objs,key)=>{
-                if(objs.id===obj.category){
-                   return objs.name                      
-                }
-              }
-              )
-            }
-             </td>
-          <td  style={{color:'white'}}  className='column pt-5 '> {
-              dist.map((objs)=>{
-                if(objs.id===obj.district){
-                   return objs.district                      
-                }
-              }
-              )
-            }</td>
+            <td  style={{color:'white'}} className='column pt-5 '>{obj.category.name}</td>
+          <td  style={{color:'white'}}  className='column pt-5 '> {obj.district.district }</td>
           <td  style={{color:'white'}}    className='column pt-5 '>{obj.title}</td>
           <td  style={{color:'white'}}  className='column pt-5 '>{obj.rate}</td>
          <td className=' pay-btn pt-5 '> <Button variant="outline-success" onClick={()=>navigate(`/singlejob/${obj.id}`)} >view and pay</Button></td> 
@@ -393,7 +378,7 @@ const CatCityFilter=async(e)=>{
               <h1 style={{color:'white',marginTop:'100px'}}>No matches Found</h1>
         </div>
          :''}
-    </div>
+    </>
   )
 }
 

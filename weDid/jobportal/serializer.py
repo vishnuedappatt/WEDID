@@ -22,6 +22,9 @@ class CitySerializer(serializers.ModelSerializer):
 
 
 class JobSerializer(serializers.ModelSerializer):
+    category=CategorySerializer(many=False)
+    city=CitySerializer(many=False)
+    district=DistrictSerializer(many=False)
     class Meta :
         model=Job_Detail
         fields="__all__"

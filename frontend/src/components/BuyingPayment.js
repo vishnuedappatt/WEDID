@@ -23,9 +23,6 @@ const[catege,setCatege]=useState([])
 const[dist,setDist]=useState([])
 const[city,setCity]=useState([])
 
-
-  // error
-  const [errorfixing,setErrorFixing]=useState(false)
 // for showing free service
 const [count,setCount]=useState(false)
 
@@ -35,12 +32,9 @@ const [count,setCount]=useState(false)
       GetDistrict({setDist})
       GetCity({setCity})
       userData()     
-      let val=JSON.parse(localStorage.getItem('message'))
-      console.log(val,'kkik') 
+      let val=(JSON.parse(localStorage.getItem('message')))  
       if (val){
-        console.log(val,'df')
         setPayed(true)
-        setErrorFixing(false)
       }
     },[])
     // user datas
@@ -68,7 +62,7 @@ const [count,setCount]=useState(false)
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true)
 
-
+  
 
     const getsinglejob=async()=>{
       console.log(id)
@@ -81,7 +75,6 @@ const [count,setCount]=useState(false)
         if(res.status===200){
           setJob(res.data)
           console.log(res.data,'single jobb')
-          setErrorFixing(true)
         }
       })
     }
@@ -158,7 +151,6 @@ const handlePaymentSuccess = async (response) => {
       handleClick(TransitionLeft)
       setName("");
       setAmount("");
-      setErrorFixing(false)
     })
     .catch((err) => {
       console.log(err);
@@ -239,40 +231,39 @@ const val='30rem'
         <CommonModal message={'are you sure to get this service'} modalHeading={'Confirmation for service'} btnsave={'confirm to get this '} fncall={freePayment} show={show} onHide={handleClose}/>
       <Card.Img  />
       <Card.Body> 
-      {payed ?
+     {payed ?
     
-    <div align='center'>
-       <CommonSnackbar onClose={snackHandleClose} message={'are you want this'} values={'fdfdffdd'} transition={transition} open={open} />
-    <p style={{color:'yellow'}}>You are ready to get this service </p>
-  <Button variant="dark" type=""  onClick={freePayment}    style={{textAlign:'center',height:'4rem',width:'15rem',}}>Get this Service</Button>
-  </div>:''}
-     {errorfixing ?   
+      <div align='center'>
+         <CommonSnackbar onClose={snackHandleClose} message={'are you want this'} values={'fdfdffdd'} transition={transition} open={open} />
+      <p style={{color:'yellow'}}>You are ready to get this service </p>
+    <Button variant="dark" type=""  onClick={freePayment}    style={{textAlign:'center',height:'4rem',width:'15rem',}}>Get this Service</Button>
+    </div>: 
+    
     <div style={{paddingLeft:'100px'}}>   
-    { payed ?'':
-    <div>
+    
       <span style={{color:'wheat',}}>CATEGORY</span> <h2 style={{color:'white',marginLeft:'60px',marginTop:'20px'}}>{job.category.name }</h2>
       <span style={{color:'wheat',}}>DISTRICT</span> <h3 style={{color:'white',marginLeft:'60px',marginTop:'20px'}}>{job.district.district}</h3>      
       <span style={{color:'wheat',}}>CITY</span> <h3 style={{color:'white',marginLeft:'60px',marginTop:'20px'}}>{job.city.city }</h3>      
       <span style={{color:'wheat',}}>DISCRIPTION</span> <h4 style={{color:'white',marginLeft:'60px',marginTop:'20px'}}>{job.discriptions}</h4>
       <span style={{color:'wheat',}}>POST DATE</span> <h4 style={{color:'white',marginLeft:'60px',marginTop:'20px'}}>{String(job.created_at).slice(0,10).split("-").reverse().join("-")}</h4>
       <span style={{color:'wheat',}}>VALID</span> <h4 style={{color:'white',marginLeft:'60px',marginTop:'20px'}}>{job.valid_at}</h4>
-      </div>}
-      { count && !payed && <div align='center'>      
+      { count ?<div align='center'>
         <div align='center'>
         <CommonSnackbar  onClose={snackHandleClose} transition={transition} open={open} />
-        </div>    
+        </div>
+      {/* <CommonSnackbar onClose={snackHandleClose} transition={transition} open={open} /> */}
         <p style={{color:'yellow'}}>** this service you can get only giving the service charge it is <span style={{color:'red'}}>50</span> rupees/post *</p>
       <Button variant="primary" type="" onClick={showRazorpay}   style={{textAlign:'center',height:'4rem',width:'15rem',}}>Pay for getting this service</Button>
-      </div> }
-      {count ?'': 
+      </div> : 
       <div align='center'>
       <p style={{color:'yellow'}}>** First service for a employ is absolutly free </p>
     <Button variant="dark" type=""  onClick={handleShow}    style={{textAlign:'center',height:'4rem',width:'15rem',}}>Get this Service</Button>
     </div>
       }
         </div> 
-  :''}
-          
+}
+      
+     
     
       </Card.Body>
     </Card>

@@ -14,6 +14,7 @@ import MuiAlert from '@mui/material/Alert';
 import GetCategory from '../common/Category/Category';
 import GetCity from '../common/City/City';
 import GetDistrict from '../common/District/District';
+import CommonStepper from '../common/CommonStepper/CommonStepper';
 
 const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
@@ -37,6 +38,16 @@ function GivingRent() {
     const [place,setPlace]=useState('')
     const [rate,setRate]=useState('')
     const [mobile,setMobile]=useState('')
+  const [pricein,setPricein]=useState('per_day')
+    // commonstepper
+    // steps for stepper
+  const steps = [
+    'Fill the black for creating rent',
+    'payment section',
+    'Post the rent item',
+  ];
+
+
 
   useEffect(() => {      
     let request=(JSON.parse(localStorage.getItem('authToken')))  
@@ -162,6 +173,28 @@ function GivingRent() {
   }
 
 
+  // for image getting
+const [image,setImage]=useState()
+  const imageHandler=(e)=>{
+    console.log('er')
+    setImage(e.target.files[0])
+
+  }
+  // for image getting
+  const [image1,setImage1]=useState()
+  const image1Handler=(e)=>{
+    console.log('er')
+    setImage1(e.target.files[0])
+
+  }
+  // for image getting
+  const [image2,setImage2]=useState()
+  const image2Handler=(e)=>{
+    console.log('er')
+    setImage2(e.target.files[0])
+
+  }
+
   
 
 
@@ -169,36 +202,40 @@ function GivingRent() {
     e.preventDefault()
     let request=(JSON.parse(localStorage.getItem('token'))) 
     console.log(request)
+    console.log(pricein,'pdf')
     const isValid = formValidation()
     if (isValid){
+      const rentData = new FormData();
+      rentData.append('category',category)
+      rentData.append('district',district)
+      rentData.append('city',city)
+      rentData.append('discription',discription)
+      rentData.append('sub_mobile',sub_mobile)
+      rentData.append('address',address)
+      rentData.append('place',place)
+      rentData.append('rate',rate)
+      rentData.append('slug',title)
+      rentData.append('image',image)
+      rentData.append('image1',image1)
+      rentData.append('image2',image2)
+      rentData.append('price_in',pricein)
+      rentData.append('title',title)
         console.log('oke')
-        // await axios.post('job/jobpost/',{
-
-        //         category:category,
-        //         district:district,
-        //         city:city,
-        //         title:title,
-        //         discription:discription,
-        //         sub_mobile:sub_mobile,
-        //         address:address, 
-        //         place:place,
-        //         rate:rate,
-        //         slug:title,          
-        //       },{
-        //     headers: {
-        //         Authorization:'Bearer  '+ request
-        //     }
-        // }).then((res)=>{
-        //     console.log(res.data)
-        //     if (res.data.ordernumber){
-        //     localStorage.setItem('order_number',JSON.stringify(res.data.ordernumber))
-        //     localStorage.setItem('rate',JSON.stringify(rate))
-        //     setSubmit(true)
-        //     handleClick()
-        //   }}).catch((err)=>{
-        //     console.log(err.response.data.detail)
+        await axios.post('rent/post/',rentData,{
+            headers: {
+                Authorization:'Bearer  '+ request
+            }
+        }).then((res)=>{
+            console.log(res.data)
+            if (res.data.ordernumber){
+            localStorage.setItem('order_number',JSON.stringify(res.data.ordernumber))
+            localStorage.setItem('rate',JSON.stringify(rate))
+            setSubmit(true)
+            handleClick()
+          }}).catch((err)=>{
+            console.log(err.response.data.detail)
            
-        //   })
+          })
         }}
 
 
@@ -312,14 +349,17 @@ const formValidation=()=>{
 
 
 const [check,setCheck]=useState(false)
+
 const handleCheck=()=>{
     console.log('fdff')
 if (!check){
     setCheck(true)
     console.log(check)
+    setPricein('per_hour')
 }else{
     setCheck(false)
     console.log(check)  
+    setPricein('per_day')
 }
 }
 
@@ -466,8 +506,11 @@ const showRazorpay = async (e) => {
 
   return (
     <div >       
+
         <h1 className='heading'>GIVING RENT ITEMS</h1>
-       {submit || payed ?'': <form onSubmit={submitHandler}   className='main'>
+        
+       {submit || payed ?      <CommonStepper steps={steps} activeStep={0}/>: <form onSubmit={submitHandler}   className='main'>
+       <CommonStepper steps={steps} activeStep={0}/>
             <div className="row mb-4  ">
                 <div className="col">
                     <div className="form-outline">
@@ -579,27 +622,25 @@ const showRazorpay = async (e) => {
                 <div className="col">                   
                     <div className="form-outline ">
                     <label className="form-label" >Image</label><br></br>
-                      <span><input style={{color:'white'}} type='file' required/>   <input style={{color:'white'}} className='mt-1' type='file'/>   <input style={{color:'white'}} className='mt-1 ' type='file'/>   </span> 
+                      <input onChange={imageHandler} style={{color:'white'}} type='file' />   <input style={{color:'white'}}  onChange={image1Handler} className='mt-1' type='file'/>   <input style={{color:'white'}}  onChange={image2Handler} className='mt-1 ' type='file'/> 
                         {Object.keys(rateErr).map((key)=>{
                                  return <div style={{color:'red'}} >{rateErr[key]}</div> })}                
                     </div>
                 </div>
             </div>
-            <div className="row mb-4  ">
-                <div className="col">
-                    <div className="form-outline">
-                        <div className="form-outline mb-4">         
-                        <label className="form-label" >Place</label>
-                            <input type="text" id="form6Example5"  onChange={(e)=>setPlace(e.target.value)} value={place}  placeholder='Enter your place' className="form-control" />   
-                            {Object.keys(placeErr).map((key)=>{
-                                 return <div style={{color:'red'}} >{placeErr[key]}</div> })}
-                        </div>                                 
-                    </div>
-                </div>
+            <div className="row mb-4">
+              <div className="col">                   
+                      <div className="form-outline mb-4">
+                      <label className="form-label" >Rate</label>
+                          <input type="text" id="form6Example5"  onChange={(e)=>setRate(e.target.value)} value={rate}  placeholder='Give a rate for this service'  className="form-control" />
+                          {Object.keys(rateErr).map((key)=>{
+                                  return <div style={{color:'red'}} >{rateErr[key]}</div> })}                
+                      </div>
+                  </div>
                 <div className="col">                   
                     <div className="form-outline mb-4">
                     <label className="form-label" >Rate</label><br></br>
-                    <label  style={{color:'yellow'}} className="form-label">*  please tick for price in per hour / other wise price for day</label>
+                    <label  style={{color:'yellow'}} className="form-label">*  please untick for price in per hour / other wise price for day</label>
                     <div >
                     <Checkbox 
                     onClick={handleCheck}
@@ -647,7 +688,7 @@ const showRazorpay = async (e) => {
 
 
 
-{payed ?
+        { payed ?
          <form className='form-payment'>
           <div className='check-main'>
        
