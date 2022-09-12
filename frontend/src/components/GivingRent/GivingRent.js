@@ -1,25 +1,29 @@
 import React,{useEffect,useState} from 'react'
 import Button from 'react-bootstrap/Button';
-import './GivingService.css'
 import Dropdown from 'react-bootstrap/Dropdown';
-import axios from '../axios'
+import axios from '../../axios'
 import {useNavigate} from 'react-router-dom';
-import './materalui.css'
+import Checkbox from '@mui/material/Checkbox';
+
+
 
 // material ui
 // import Button from '@mui/material/Button';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
-import CommonStepper from './common/CommonStepper/CommonStepper';
+import GetCategory from '../common/Category/Category';
+import GetCity from '../common/City/City';
+import GetDistrict from '../common/District/District';
+
+const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
-
-function GivingService() {
+function GivingRent() {
     const navigate=useNavigate()
-    const[getcat,setGetCat]=useState([])
-    const[getdis,setGetDis]=useState([])
+    const[getcat,setCatege]=useState([])
+    const[getdis,setDist]=useState([])
     const[getcity,setGetCity]=useState([])
 
     // for categorystate
@@ -37,8 +41,10 @@ function GivingService() {
   useEffect(() => {      
     let request=(JSON.parse(localStorage.getItem('authToken')))  
     console.log(request,'rere')    
-    getCategory()
-    getDistrict()   
+    // getCategory()
+    GetCategory({setCatege})
+    // getDistrict()   
+    GetDistrict({setDist})
     userData()   
     let val=(JSON.parse(localStorage.getItem('order_number')))   
     if (val){
@@ -52,12 +58,7 @@ function GivingService() {
     }
   }, [])
 
-// steps for stepper
-  const steps = [
-    'Fill the black for creating post',
-    'payment section',
-    'Post the job',
-  ];
+
 
 
 
@@ -72,7 +73,6 @@ function GivingService() {
     if (reason === 'clickaway') {
       return;
     }
-
     setOpen(false);
   };
 
@@ -82,7 +82,6 @@ function GivingService() {
   const handleClicks = () => {
     setOpens(true);
   };
-
   const handleCloses = (event, reason) => {
     if (reason === 'clickaway') {
       return;
@@ -109,32 +108,6 @@ function GivingService() {
     })
 }
 
-
-// getting all category
-  const getCategory=()=>{
-    let request=(JSON.parse(localStorage.getItem('token')))  
-    axios.get('job/jobcate/',{
-        headers: {
-            Authorization:'Bearer '+ request
-          }
-    }).then((res)=>{
-        console.log(res.data)
-        setGetCat(res.data)    
-    })
-  }
-
-// for getting all district
-  const getDistrict=()=>{
-    let request=(JSON.parse(localStorage.getItem('token')))  
-    axios.get('job/showdistrict/',{
-        headers: {
-            Authorization:'Bearer '+ request
-          }
-    }).then((res)=>{
-        console.log(res.data)
-        setGetDis(res.data)
-    })
-  }
 
 //  getting category id and get and show
 
@@ -198,33 +171,34 @@ function GivingService() {
     console.log(request)
     const isValid = formValidation()
     if (isValid){
-        await axios.post('job/jobpost/',{
+        console.log('oke')
+        // await axios.post('job/jobpost/',{
 
-                category:category,
-                district:district,
-                city:city,
-                title:title,
-                discription:discription,
-                sub_mobile:sub_mobile,
-                address:address, 
-                place:place,
-                rate:rate,
-                slug:title,          
-              },{
-            headers: {
-                Authorization:'Bearer  '+ request
-            }
-        }).then((res)=>{
-            console.log(res.data)
-            if (res.data.ordernumber){
-            localStorage.setItem('order_number',JSON.stringify(res.data.ordernumber))
-            localStorage.setItem('rate',JSON.stringify(rate))
-            setSubmit(true)
-            handleClick()
-          }}).catch((err)=>{
-            console.log(err.response.data.detail)
+        //         category:category,
+        //         district:district,
+        //         city:city,
+        //         title:title,
+        //         discription:discription,
+        //         sub_mobile:sub_mobile,
+        //         address:address, 
+        //         place:place,
+        //         rate:rate,
+        //         slug:title,          
+        //       },{
+        //     headers: {
+        //         Authorization:'Bearer  '+ request
+        //     }
+        // }).then((res)=>{
+        //     console.log(res.data)
+        //     if (res.data.ordernumber){
+        //     localStorage.setItem('order_number',JSON.stringify(res.data.ordernumber))
+        //     localStorage.setItem('rate',JSON.stringify(rate))
+        //     setSubmit(true)
+        //     handleClick()
+        //   }}).catch((err)=>{
+        //     console.log(err.response.data.detail)
            
-          })
+        //   })
         }}
 
 
@@ -271,7 +245,6 @@ const formValidation=()=>{
         isValid = false
   }else{
       if(sub_mobile!=mobile){
-
       
       if(sub_mobile.trim().length <9){
         subMobileErr.short_lname = '* mobile number contain min 10 number'
@@ -338,6 +311,17 @@ const formValidation=()=>{
 }
 
 
+const [check,setCheck]=useState(false)
+const handleCheck=()=>{
+    console.log('fdff')
+if (!check){
+    setCheck(true)
+    console.log(check)
+}else{
+    setCheck(false)
+    console.log(check)  
+}
+}
 
 
 // payment section
@@ -482,8 +466,7 @@ const showRazorpay = async (e) => {
 
   return (
     <div >       
-        <h1 className='heading'>APPLY FOR AN OPPORTUNITY</h1>
-        <CommonStepper className='mt-5' activeStep={0} steps={steps}/>
+        <h1 className='heading'>GIVING RENT ITEMS</h1>
        {submit || payed ?'': <form onSubmit={submitHandler}   className='main'>
             <div className="row mb-4  ">
                 <div className="col">
@@ -594,9 +577,39 @@ const showRazorpay = async (e) => {
                     </div>
                 </div>
                 <div className="col">                   
+                    <div className="form-outline ">
+                    <label className="form-label" >Image</label><br></br>
+                      <span><input style={{color:'white'}} type='file' required/>   <input style={{color:'white'}} className='mt-1' type='file'/>   <input style={{color:'white'}} className='mt-1 ' type='file'/>   </span> 
+                        {Object.keys(rateErr).map((key)=>{
+                                 return <div style={{color:'red'}} >{rateErr[key]}</div> })}                
+                    </div>
+                </div>
+            </div>
+            <div className="row mb-4  ">
+                <div className="col">
+                    <div className="form-outline">
+                        <div className="form-outline mb-4">         
+                        <label className="form-label" >Place</label>
+                            <input type="text" id="form6Example5"  onChange={(e)=>setPlace(e.target.value)} value={place}  placeholder='Enter your place' className="form-control" />   
+                            {Object.keys(placeErr).map((key)=>{
+                                 return <div style={{color:'red'}} >{placeErr[key]}</div> })}
+                        </div>                                 
+                    </div>
+                </div>
+                <div className="col">                   
                     <div className="form-outline mb-4">
-                    <label className="form-label" >Rate</label>
-                        <input type="text" id="form6Example5"  onChange={(e)=>setRate(e.target.value)} value={rate}  placeholder='Give a rate for this service'  className="form-control" />
+                    <label className="form-label" >Rate</label><br></br>
+                    <label  style={{color:'yellow'}} className="form-label">*  please tick for price in per hour / other wise price for day</label>
+                    <div >
+                    <Checkbox 
+                    onClick={handleCheck}
+                            value={check}
+                            {...label}
+                            defaultChecked
+                            sx={{ '& .MuiSvgIcon-root': { fontSize: 48 } }}
+                        />
+                    </div>
+                  
                         {Object.keys(rateErr).map((key)=>{
                                  return <div style={{color:'red'}} >{rateErr[key]}</div> })}                
                     </div>
@@ -660,5 +673,5 @@ const showRazorpay = async (e) => {
     </div>
   )
 }
-
-export default GivingService
+   
+export default GivingRent

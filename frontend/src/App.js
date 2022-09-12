@@ -12,21 +12,17 @@ import CaseOfReverse from "./PrivetRouters/CaseOfReverse";
 import JobHomePage from "./pages/JobHomePage";
 import Payment from "./components/Payment";
 import SingleJobPage from "./pages/SingleJobPage";
+import PostingRentPage from "./pages/PostingRentPage";
 
 
 function App() {
   return (
-    // <div >
       <>
-
-     
-
       <BrowserRouter>
         <AuthProvider>
             <Routes>
               <Route path="/" element={<HomePage />} />
-              <Route element={<CaseOfReverse />}>
-               
+              <Route element={<CaseOfReverse />}>               
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/register" element={<RegisterPage />} />
                 <Route path="/verify" element={<VerifyPage />}/> 
@@ -37,13 +33,13 @@ function App() {
                 <Route path='/joblook' element={<JobHomePage />}/>    
                 <Route path='/payment' element={<Payment />}/>               
                 <Route path='/singlejob/:id' element={<SingleJobPage />}/>         
+                <Route path='/postrent' element={<PostingRentPage  />}/>
               </Route>    
             </Routes>
         </AuthProvider>
       </BrowserRouter>    
         
       </>
-    // {/* </div> */}
   );
 }
 

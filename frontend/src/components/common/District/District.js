@@ -1,13 +1,13 @@
 import axios from "../../../axios";
 
-const GetDistrict=({setDistrict})=>{
+const GetDistrict=({setDist})=>{
     let request=(JSON.parse(localStorage.getItem('token')))  
     axios.get('job/showdistrict/',{
         headers: {
             Authorization:'Bearer '+ request
           }
     }).then((res)=>{
-          setDistrict(res.data)
+      setDist(res.data)
     })
   }
   

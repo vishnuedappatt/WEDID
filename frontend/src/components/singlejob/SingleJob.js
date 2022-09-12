@@ -19,8 +19,8 @@ function SingleJob() {
     console.log(id)
    const navigate=useNavigate()
 const [job,setJob]=useState([])
-const[catege,setCatatege]=useState([])
-const[dist,setDistrict]=useState([])
+const[catege,setCatege]=useState([])
+const[dist,setDist]=useState([])
 const[city,setCity]=useState([])
 
 // for showing free service
@@ -28,8 +28,8 @@ const [count,setCount]=useState(false)
 
     useEffect(() => {      
       getsinglejob()    
-     GetCategory({setCatatege})
-      GetDistrict({setDistrict})
+     GetCategory({setCatege})
+      GetDistrict({setDist})
       GetCity({setCity})
       userData()     
       let val=(JSON.parse(localStorage.getItem('message')))  
@@ -270,7 +270,7 @@ const val='30rem'
         </div>
       {/* <CommonSnackbar onClose={snackHandleClose} transition={transition} open={open} /> */}
         <p style={{color:'yellow'}}>** this service you can get only giving the service charge it is <span style={{color:'red'}}>50</span> rupees/post *</p>
-      <Button variant="primary" type="" onClick={ handleClick(TransitionLeft)}   style={{textAlign:'center',height:'4rem',width:'15rem',}}>Pay for getting this service</Button>
+      <Button variant="primary" type="" onClick={showRazorpay}   style={{textAlign:'center',height:'4rem',width:'15rem',}}>Pay for getting this service</Button>
       </div> : 
       <div align='center'>
       <p style={{color:'yellow'}}>** First service for a employ is absolutly free </p>
