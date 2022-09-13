@@ -9,7 +9,7 @@ const  instance=axios.create({
 
 // let authToken = localStorage.getItem('authToken') ? JSON.parse(localStorage.getItem('authToken')) : null
 //  instance.interceptors.request.use(async req =>{
-    
+        
 //     if(!authToken){
 //       if (req.url === `user/login/`){
 //         console.log("ki")
@@ -19,9 +19,7 @@ const  instance=axios.create({
 //       authToken = localStorage.getItem('authToken') ? JSON.parse(localStorage.getItem('authToken')) : null
 //       req.headers.Authorization =  `Bearer ${authToken?.token}`
       
-//     }
-    
-    
+//     }      
 //     const user = jwt_decode(authToken.token)
 //     console.log(user,"im user")
 //     console.log(user.exp,"kkkkkk")
@@ -37,9 +35,7 @@ const  instance=axios.create({
 //       localStorage.setItem('authTokens',JSON.stringify(response.data))
 //       req.headers.Authorization =  `Bearer ${authToken?.token}`
 //       return req 
-//     }
-  
- 
+//     } 
 //   })
 
 export default instance

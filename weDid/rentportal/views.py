@@ -12,6 +12,7 @@ from user.authentication import ADMINAuth, JWTAuthentications, create_access_tok
 from .models import Rent_detail
 from .serializer import RentSerializer
 from user.authentication import JWTAuthentications
+from jobportal.serializer import  CategorySerializer,CitySerializer,DistrictSerializer
 
 # Create your views here.
 def hello(request):
@@ -64,4 +65,11 @@ def rentpost(request):
     return Response(serializer.data)                    
 
 
+# category for rent
+@api_view(['GET'])
+@authentication_classes([JWTAuthentications])
+def rentcategories(request):
+    rent=Categories.objects.filter(category_of='rent')
+    serializer=CategorySerializer(rent,many=True)
+    return Response(serializer.data)
 

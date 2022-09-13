@@ -12,9 +12,9 @@ import Checkbox from '@mui/material/Checkbox';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 import GetCategory from '../common/Category/Category';
-import GetCity from '../common/City/City';
 import GetDistrict from '../common/District/District';
 import CommonStepper from '../common/CommonStepper/CommonStepper';
+import GetRentCategory from '../common/RentCategory/RentCategory';
 
 const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
@@ -23,7 +23,7 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 });
 function GivingRent() {
     const navigate=useNavigate()
-    const[getcat,setCatege]=useState([])
+    const[getcat,setRentCatege]=useState([])
     const[getdis,setDist]=useState([])
     const[getcity,setGetCity]=useState([])
 
@@ -53,7 +53,8 @@ function GivingRent() {
     let request=(JSON.parse(localStorage.getItem('authToken')))  
     console.log(request,'rere')    
     // getCategory()
-    GetCategory({setCatege})
+    // GetCategory({setCatege})  
+    GetRentCategory({setRentCatege})
     // getDistrict()   
     GetDistrict({setDist})
     userData()   
@@ -151,7 +152,9 @@ function GivingRent() {
   const [addressErr, setAddressErr] = useState({})
   const [placeErr, setPlaceErr] = useState({})
   const [rateErr, setRateError] = useState({})
-
+  const[imageErr,setImageError]=useState({})
+  const[image1Err,setImage1Error]=useState({})
+  const[image2Err,setImage2Error]=useState({})
 
     const checkCate=(id)=>{
         setCategory(id)
@@ -251,8 +254,13 @@ const formValidation=()=>{
     const disErr={}
     const cityErr={}
     const cateErr={}
+    const imageErr={}
+    const image1Err={}
+    const image2Err={}
+
     let isValid = true
 
+  
     if (!category){
         cateErr.short_fname = '* category is a required field'
         isValid = false
@@ -332,7 +340,22 @@ const formValidation=()=>{
    if(!rate){
     rateErr.short_cpassword= '*rate  required field!'
     isValid = false
-  }
+  } 
+
+  if(!image){
+    imageErr.short_cpassword= '*rate  required field!'
+    isValid = false
+  } 
+
+  if(!image1){
+    image1Err.short_cpassword= '*image1  required field!'
+    isValid = false
+  } 
+
+  if(!image2){
+    image2Err.short_cpassword= '*image2 required field!'
+    isValid = false
+  } 
 
   setDisErr(disErr)
   setCityErr(cityErr)
@@ -343,6 +366,9 @@ const formValidation=()=>{
   setAddressErr(addressErr)
   setPlaceErr(placeErr)
   setRateError(rateErr)
+  setImageError(imageErr)
+  setImage1Error(image1Err)
+  setImage2Error(image2Err)
 
   return isValid
 }
@@ -419,21 +445,6 @@ const showRazorpay = async (e) => {
   // we will pass the amount and product name to the backend using form data
   bodyData.append("amount", amount.toString());
   bodyData.append("name", name);
-  let rate=(JSON.parse(localStorage.getItem('rate'))) 
-  console.log(rate,'its rate')
-  if (rate>500){
-    const sum=parseInt(rate)+parseInt(rate*.1)
-    console.log(sum)
-    setSalary(sum)
-  }else if(rate<500){
-    const sum=parseInt(rate)+parseInt(rate*.05)
-    console.log(sum)
-    setSalary(sum)
-  }else{
-    const sum=parseInt(rate)+parseInt(rate*1.5)
-    console.log(sum)
-    setSalary(sum)
-  }
 
   let request=(JSON.parse(localStorage.getItem('token')))  
   let order_number=(JSON.parse(localStorage.getItem('order_number'))) 
@@ -442,7 +453,7 @@ const showRazorpay = async (e) => {
  
   const data = axios.post('payment/pay/',{
     name:order_number ,
-    amount:salary,
+    amount:50,
   },{
       headers: {
           Authorization:'Bearer '+ request
@@ -509,7 +520,7 @@ const showRazorpay = async (e) => {
 
         <h1 className='heading'>GIVING RENT ITEMS</h1>
         
-       {submit || payed ?      <CommonStepper steps={steps} activeStep={0}/>: <form onSubmit={submitHandler}   className='main'>
+       {submit || payed ?  '': <form onSubmit={submitHandler}   className='main'>
        <CommonStepper steps={steps} activeStep={0}/>
             <div className="row mb-4  ">
                 <div className="col">
@@ -592,8 +603,6 @@ const showRazorpay = async (e) => {
                                  return <div style={{color:'red'}} >{titleErr[key]}</div> })}
                
             </div>
-
-
             <div className="form-outline mb-4">               
                 <label className="form-label" >Discription</label>
                 <textarea className='text'  onChange={(e)=>setDiscription(e.target.value)} value={discription}   placeholder='describe about your job role'></textarea>                
@@ -622,9 +631,16 @@ const showRazorpay = async (e) => {
                 <div className="col">                   
                     <div className="form-outline ">
                     <label className="form-label" >Image</label><br></br>
-                      <input onChange={imageHandler} style={{color:'white'}} type='file' />   <input style={{color:'white'}}  onChange={image1Handler} className='mt-1' type='file'/>   <input style={{color:'white'}}  onChange={image2Handler} className='mt-1 ' type='file'/> 
-                        {Object.keys(rateErr).map((key)=>{
-                                 return <div style={{color:'red'}} >{rateErr[key]}</div> })}                
+                      <input onChange={imageHandler} style={{color:'white'}} type='file' />
+                        {Object.keys(imageErr).map((key)=>{
+                                 return <div style={{color:'red'}} >{imageErr[key]}</div> })}         
+                          <input style={{color:'white'}}  onChange={image1Handler} className='mt-1' type='file'/> 
+                                   {Object.keys(image1Err).map((key)=>{
+                                 return <div style={{color:'red'}} >{image1Err[key]}</div> })}      
+                           <input style={{color:'white'}}  onChange={image2Handler} className='mt-1 ' type='file'/> 
+                                   {Object.keys(image2Err).map((key)=>{
+                                 return <div style={{color:'red'}} >{image2Err[key]}</div> })}    
+                                
                     </div>
                 </div>
             </div>
@@ -639,7 +655,7 @@ const showRazorpay = async (e) => {
                   </div>
                 <div className="col">                   
                     <div className="form-outline mb-4">
-                    <label className="form-label" >Rate</label><br></br>
+                    <label className="form-label" >Rate per</label><br></br>
                     <label  style={{color:'yellow'}} className="form-label">*  please untick for price in per hour / other wise price for day</label>
                     <div >
                     <Checkbox 
@@ -650,28 +666,29 @@ const showRazorpay = async (e) => {
                             sx={{ '& .MuiSvgIcon-root': { fontSize: 48 } }}
                         />
                     </div>
-                  
-                        {Object.keys(rateErr).map((key)=>{
-                                 return <div style={{color:'red'}} >{rateErr[key]}</div> })}                
+          
                     </div>
                 </div>
             </div>
     
          <div className="main-payment  mb-4">   
-         {submit ? <Button className='payment-btn1' variant="outline-warning"><p>Make Payment</p></Button>  :<Button className='payment-btn' variant="success"  type='submit'><p>Clik here to continue</p></Button>      } 
+         {submit ? <div>
+          <CommonStepper steps={steps} activeStep={0}/>
+          <Button className='payment-btn1' variant="outline-warning"><p>Make Payment</p></Button> 
+         </div>   :<Button className='payment-btn' variant="success"  type='submit'><p>Clik here to continue</p></Button>      } 
            
             </div>             
             </form> }
             <div className="main-payment ">   
          {submit ?
          <form className='form-payment'>
+            <CommonStepper steps={steps} activeStep={1}/>
             <div className='check-main'>
               <input type="checkbox" className='checkbox' id="vehicle1" name="vehicle1" value="Bike" required></input><p className='check-heading' >Accept all terms & conditions for wedid solutions</p>
                 <input type="checkbox" className='checkbox' id="vehicle1" name="vehicle1" value="Bike" required /><p  className='check-heading'>Accept all terms & conditions from Razorpay payment system</p>           
                 <p style={{color:'yellow',marginTop:'4rem'}}>** charges applied</p>
-                <p  style={{color:'red'}}>**  your our rate is less than 500 you should pay 5%,</p>    
-            <p  style={{color:'red'}}>**  your our rate is greater  than 500 you should pay 10%,</p>
-            <p  style={{color:'red'}}>**  your our rate is greater 1000 you should pay 15%,</p>     
+                <p  style={{color:'red'}}>**  you should pay 50 rupess for posting </p>    
+           
             </div>
            
             
@@ -690,6 +707,8 @@ const showRazorpay = async (e) => {
 
         { payed ?
          <form className='form-payment'>
+          <CommonStepper steps={steps} activeStep={2}/>
+          <Button className='payment-btn1' variant="outline-warning"><p>Make Payment</p></Button> 
           <div className='check-main'>
        
             <p  className='check-heading'>Accept all terms & conditions from Razorpay payment system</p>

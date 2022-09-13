@@ -29,7 +29,6 @@ from django.contrib import auth
 
 @api_view(['POST'])
 def Register(request):
-    print(request.data)
     try:
         data=request.data
         password=data['password']
@@ -60,16 +59,17 @@ def Register(request):
             'error':'this mobile number is already taken choose another one'
             }
             return response
-     
+
+        
         
         user=Account.objects.create(
             first_name=data['first_name'],
             last_name=data['last_name'],
             email=data['email'],
             mobile=data['mobile'],            
-            password=make_password(userpassword)
-                
-    )   
+            password=make_password(userpassword)                
+         )   
+        
         mobile=data['mobile']        
         send(mobile)        
         serializer=AccountSerializer(user ,many=False)
