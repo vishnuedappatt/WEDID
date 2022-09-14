@@ -137,11 +137,19 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
-import os
+# import os
 
 # Actual directory user files go to
-MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'mediafiles')
-STATIC_URL = 'static/'
+# MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'mediafiles')
+
+
+# MEDIA_URL= '/media/'
+import os
+STATIC_URL = '/static/'
+
+MEDIA_ROOT = os.path.join(BASE_DIR,'media')
+MEDIA_URL= '/media/'
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
@@ -177,3 +185,5 @@ EMAIL_USE_TLS=config('EMAIL_USE_TLS')
 # razorpay
 RAZORPAY_PUBLIC_KEY=config('RAZORPAY_PUBLIC_KEY')
 RAZORPAY_SECRET_KEY=config('RAZORPAY_SECRET_KEY')
+
+

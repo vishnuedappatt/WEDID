@@ -20,7 +20,7 @@ def hello(request):
 
 
 @api_view(["POST"])
-@authentication_classes([JWTAuthentications])
+# @authentication_classes([JWTAuthentications])
 def rentpost(request):
     data=request.data
     user=request.user
@@ -73,3 +73,41 @@ def rentcategories(request):
     serializer=CategorySerializer(rent,many=True)
     return Response(serializer.data)
 
+# all data
+@api_view(['GET'])
+# @authentication_classes([JWTAuthentications])
+def all_rent_show(request):
+    try:      
+       
+        job=Rent_detail.objects.filter(payment='True',booked='False',available='True')
+        serializer=RentSerializer(job,many=True)
+        return Response(serializer.data)
+    except:
+        response=Response()
+        response.data={
+            'error':'error in request'
+        }
+        return response 
+
+
+# for compliting the post and showing on posted surface
+@api_view(['POST'])
+# @authentication_classes([JWTAuthentications])
+def rentpaymentdone(request):
+    data=request.data
+    orderid=data['order_number']
+    print(orderid)
+    rent=Rent_detail.objects.filter(ordernumber=orderid).exists()
+    if not rent:
+        response=Response()
+        response.data={
+            'error':'this item is not present '
+        }
+        return response 
+    else:
+        rent=Rent_detail.objects.get(ordernumber=orderid)
+        rent.payment=True
+        rent.save()
+        serializer=RentSerializer(rent,many=False)
+        return Response(serializer.data)
+    

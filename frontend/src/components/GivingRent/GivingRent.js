@@ -502,14 +502,14 @@ const showRazorpay = async (e) => {
   const lastSubmitHandler=(e)=>{
     e.preventDefault()
     let order_number=(JSON.parse(localStorage.getItem('order_number'))) 
-    axios.post('job/payedjob/',{
+    axios.post('rent/payment/finish/',{
       order_number:order_number
     }).then((res)=>{
       if(res.data){
         localStorage.removeItem('order_number')
         localStorage.removeItem('rate')
         localStorage.removeItem('message')
-        navigate('/joblook')
+        navigate('/postrent')
       }
      
     })
@@ -682,8 +682,8 @@ const showRazorpay = async (e) => {
             <div className="main-payment ">   
          {submit ?
          <form className='form-payment'>
-            <CommonStepper steps={steps} activeStep={1}/>
             <div className='check-main'>
+            <CommonStepper steps={steps} activeStep={1}/>
               <input type="checkbox" className='checkbox' id="vehicle1" name="vehicle1" value="Bike" required></input><p className='check-heading' >Accept all terms & conditions for wedid solutions</p>
                 <input type="checkbox" className='checkbox' id="vehicle1" name="vehicle1" value="Bike" required /><p  className='check-heading'>Accept all terms & conditions from Razorpay payment system</p>           
                 <p style={{color:'yellow',marginTop:'4rem'}}>** charges applied</p>

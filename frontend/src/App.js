@@ -13,6 +13,7 @@ import JobHomePage from "./pages/JobHomePage";
 import Payment from "./components/Payment";
 import SingleJobPage from "./pages/SingleJobPage";
 import PostingRentPage from "./pages/PostingRentPage";
+import RentShowPage from "./pages/RentShowPage";
 
 
 function App() {
@@ -34,6 +35,7 @@ function App() {
                 <Route path='/payment' element={<Payment />}/>               
                 <Route path='/singlejob/:id' element={<SingleJobPage />}/>         
                 <Route path='/postrent' element={<PostingRentPage  />}/>
+                <Route path="/rentlook" element={<RentShowPage />} />
               </Route>    
             </Routes>
         </AuthProvider>

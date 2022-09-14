@@ -346,7 +346,7 @@ const CatCityFilter=async(e)=>{
     <div  className='main-div m-5'>   
      <Table striped borderless hover>
       <thead>
-        <tr style={{backgroundColor:'gray'}}>          
+        <tr style={{backgroundColor:'gray'}}>           
           <th style={{marginLeft:'3rem'}}>CATEGORY</th>
           <th>DISTRICT</th>
           <th>TITLE OF ROLE</th>
