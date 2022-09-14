@@ -35,8 +35,10 @@ function List() {
 <div>
 {data ? data.map((obj,key)=>
  <div className='list mt-5 me-5 '>
-   
+   <div align='center'>
       <img src={ImageUrl+obj.image} alt='noo' className='listImg'/>
+   </div>
+      
       <div className='listDesc'>
       <span className='span'>Item :</span><h3 className='listTile'>{obj.title}</h3>
         <span className='listSize'><span className='span'>Category: </span>{obj.category.name} </span>
@@ -44,7 +46,7 @@ function List() {
         <span className='listSize'><span className='span'>City: </span>{obj.city.city} </span>
         <span className='listPrice'><span className='span'>Price: </span>{obj.rate} ₹</span>
       </div>
-      <div className='BookingBtn'>
+      <div align='center' className='BookingBtn'>
       <button className='bookbtn'>View and Book</button>
       
     </div>

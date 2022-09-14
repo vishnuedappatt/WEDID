@@ -29,8 +29,10 @@ import Box from '@mui/material/Box';
 function RentSideBar() {
 
   return (
-    <div  className='main'>
+    <div  >
    
+     
+     <div className='header'>
      <h2 className='wedid' align='center'>WEDID</h2>
      <Form align='center'>
                   <Form.Control 
@@ -39,15 +41,16 @@ function RentSideBar() {
                     className="me-2"
                     aria-label="Search"
                   />
-                  <Button className='submit-btn m-4' variant="outline-success">Search</Button>
+                  <Button className='submit-btn m-4' variant="outline-dark">Search</Button>
                 </Form>
         <Box>
-          <Typography id="modal-modal-title" variant="h6" component="h2">    
-            <Accordion className= 'accordion bg-dark mt-3'>
+          <Typography className='type' id="modal-modal-title" variant="h6" component="h2">    
+            <Accordion className= 'accordion bg-dark mt-3 p-3'>
               <AccordionSummary      
               expandIcon={<ExpandMoreIcon />}          
                 aria-controls="panel1a-content"
                 id="panel1a-header"
+                className='dropaccor'
               >
                 <Typography style={{color:'white'}} >Filter by district </Typography>
               </AccordionSummary>              
@@ -60,7 +63,7 @@ function RentSideBar() {
             <Form >
 
             
-          <FormControl  className='mt-2' fullWidth>
+          <FormControl  className='form-1 mt-2 ' fullWidth>
         <InputLabel id="demo-simple-select-label">District</InputLabel>
         <Select
           labelId="demo-simple-select-label"
@@ -85,7 +88,7 @@ function RentSideBar() {
           </Typography>
           <Typography id="modal-modal-title" variant="h6" component="h2">                  
             
-              <Accordion className='bg-dark mt-3'>
+              <Accordion className='bg-dark mt-3 p-3'>
                 <AccordionSummary       
                 expandIcon={<ExpandMoreIcon />}          
                   aria-controls="panel1a-content"
@@ -156,6 +159,7 @@ function RentSideBar() {
             </Typography>
         </Box>
      
+     </div>
 
     </div>
   )

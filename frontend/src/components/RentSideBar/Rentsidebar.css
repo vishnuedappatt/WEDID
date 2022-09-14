@@ -1,5 +1,5 @@
-.main{
-    height: 800px;
+.main-div{
+    height: 900px;
     background-color: rgba(255, 255, 255, 0.603);
     padding: 10px;
     
@@ -8,8 +8,32 @@
 .wedid{
     font-weight: 800;
 }
-
+.header{
+    height: 900px;
+    background-color: rgba(255, 255, 255, 0.603);
+    padding: 20px;
+}
 /* .submit-btn{
     display: flex;
     j
+} */
+
+/* .type{
+    height:100px;
+    background-color: blac;
+    
+} */
+
+/* .accordion{
+    height: 80px;
+    max-height: fit-content;
+
+}
+
+.dropaccor{
+    background-color: black;
+} */
+
+/* .form-1{
+    background-color: black;
 } */

@@ -20,7 +20,7 @@ def hello(request):
 
 
 @api_view(["POST"])
-# @authentication_classes([JWTAuthentications])
+@authentication_classes([JWTAuthentications])
 def rentpost(request):
     data=request.data
     user=request.user
@@ -75,7 +75,7 @@ def rentcategories(request):
 
 # all data
 @api_view(['GET'])
-# @authentication_classes([JWTAuthentications])
+@authentication_classes([JWTAuthentications])
 def all_rent_show(request):
     try:      
        
@@ -95,6 +95,7 @@ def all_rent_show(request):
 # @authentication_classes([JWTAuthentications])
 def rentpaymentdone(request):
     data=request.data
+    print(data)
     orderid=data['order_number']
     print(orderid)
     rent=Rent_detail.objects.filter(ordernumber=orderid).exists()

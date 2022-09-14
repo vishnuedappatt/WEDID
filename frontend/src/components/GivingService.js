@@ -483,9 +483,9 @@ const showRazorpay = async (e) => {
   return (
     <div >       
         <h1 className='heading'>APPLY FOR AN OPPORTUNITY</h1>
-     
+          <CommonStepper className='mt-5' activeStep={0} steps={steps}/>
        {submit || payed ?   <CommonStepper className='mt-5' activeStep={1} steps={steps}/>: <form onSubmit={submitHandler}   className='main'>
-       <CommonStepper className='mt-5' activeStep={0} steps={steps}/>
+  
             <div className="row mb-4  ">
                 <div className="col">
                     <div className="form-outline">

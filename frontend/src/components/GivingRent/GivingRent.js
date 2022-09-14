@@ -65,6 +65,7 @@ function GivingRent() {
     let message=(JSON.parse(localStorage.getItem('message')))
     if (message){
       setPayed(true)
+      setSubmit(false)
     }
     return () => {      
     }
@@ -509,7 +510,7 @@ const showRazorpay = async (e) => {
         localStorage.removeItem('order_number')
         localStorage.removeItem('rate')
         localStorage.removeItem('message')
-        navigate('/postrent')
+        navigate('/rentlook')
       }
      
     })
@@ -519,7 +520,7 @@ const showRazorpay = async (e) => {
     <div >       
 
         <h1 className='heading'>GIVING RENT ITEMS</h1>
-        
+       
        {submit || payed ?  '': <form onSubmit={submitHandler}   className='main'>
        <CommonStepper steps={steps} activeStep={0}/>
             <div className="row mb-4  ">
@@ -675,12 +676,12 @@ const showRazorpay = async (e) => {
          {submit ? <div>
           <CommonStepper steps={steps} activeStep={0}/>
           <Button className='payment-btn1' variant="outline-warning"><p>Make Payment</p></Button> 
-         </div>   :<Button className='payment-btn' variant="success"  type='submit'><p>Clik here to continue</p></Button>      } 
+         </div>   : <Button className='payment-btn' variant="success"  type='submit'><p>Clik here to continue</p></Button>      } 
            
             </div>             
             </form> }
             <div className="main-payment ">   
-         {submit ?
+         {submit &&
          <form className='form-payment'>
             <div className='check-main'>
             <CommonStepper steps={steps} activeStep={1}/>
@@ -701,23 +702,23 @@ const showRazorpay = async (e) => {
                 </Alert>
                 </div>               
               </Snackbar>
-         </form>:'  '  } 
+         </form>  } 
+          {payed&& 
+           <div >
+            <CommonStepper steps={steps} activeStep={2}/>
+          </div>}
 
 
-
-        { payed ?
-         <form className='form-payment'>
-          <CommonStepper steps={steps} activeStep={2}/>
-          <Button className='payment-btn1' variant="outline-warning"><p>Make Payment</p></Button> 
-          <div className='check-main'>
+        { payed &&
        
-            <p  className='check-heading'>Accept all terms & conditions from Razorpay payment system</p>
-          </div>
-           
+         <form className='form-payment'>      
+        
+      
              <Button className='payment-btn2' type='submit' variant="outline-warning" onClick={lastSubmitHandler}><p>SHARE THE POST </p></Button><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br>
              <Button className='payment-btn4' type='' onClick={cancelHandler} variant="outline-danger"><p>cancel</p></Button>
                 <Snackbar open={opens} autoHideDuration={6000} onClose={handleCloses}>
                 <div className='box'>
+                 
                 <Alert onClose={handleCloses} severity="success" sx={{ width: '100%' }} >
                   payment done successfully 
                 </Alert>
@@ -726,7 +727,7 @@ const showRazorpay = async (e) => {
             
          </form>
          
-           :'  '     } 
+             } 
            
             </div> 
             
