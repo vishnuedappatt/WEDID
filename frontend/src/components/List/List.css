@@ -73,7 +73,10 @@
     color:  #010407;
     font-size: large;
 }
-
+.nofound{
+    margin: 100px;
+    color: white;
+}
 
 @media (max-width:980px){
  
@@ -97,24 +100,29 @@
     }
 
     .bookbtn{
-        background-color: #0071c2;
-       
-        border: none;
-        cursor: pointer;
-        border-radius: 10px;
-        margin: 10px;
+        font-size: 22px;
+        background-color: #7ae9a8f6;
+        /* border: #010407 solid 1px; */
+        font-weight: bold;
+        color: #054d80;
+        width: max-content;
+        padding: 5px;
+        border-radius: 5px;
+    
     }
 
     .list{
-        border: 2px solid rgb(230, 17, 17);
-        /* padding: 10px; */
+        border: 2px solid rgb(230, 17, 17);      
         border-radius: 7px;
         display: flex;
         justify-content: space-between;
         gap: 20px;
         margin-bottom: 20px;
         background-color:rgba(255, 255, 255, 0.795);
-        width: fit-content;
-        margin: 1px;
+        /* width:max-content;    */
+        /* max-width: 100%; */
+        margin: 10px;
+        width: auto;
+        object-fit: fill;
     }
 }

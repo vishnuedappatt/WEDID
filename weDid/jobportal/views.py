@@ -104,7 +104,8 @@ def jobpost(request):
         rate=data['rate'],
         slug=data['slug'],
         available=True,
-        ordernumber=order_number,            
+        ordernumber=order_number,     
+        valid_at =data['date'],      
     )   
     user.count+=1
     user.save()        

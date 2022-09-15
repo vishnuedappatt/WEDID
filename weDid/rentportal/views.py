@@ -13,6 +13,8 @@ from .models import Rent_detail
 from .serializer import RentSerializer
 from user.authentication import JWTAuthentications
 from jobportal.serializer import  CategorySerializer,CitySerializer,DistrictSerializer
+from rest_framework import generics
+from rest_framework import filters
 
 # Create your views here.
 def hello(request):
@@ -59,6 +61,8 @@ def rentpost(request):
         image1=request.FILES['image1'],
         image2=request.FILES['image2'],
         price_in=request.data['price_in'],
+        valid_at=request.data['date'],
+        
                   
     )     
     serializer=RentSerializer(job,many=False)
@@ -77,8 +81,7 @@ def rentcategories(request):
 @api_view(['GET'])
 @authentication_classes([JWTAuthentications])
 def all_rent_show(request):
-    try:      
-       
+    try:             
         job=Rent_detail.objects.filter(payment='True',booked='False',available='True')
         serializer=RentSerializer(job,many=True)
         return Response(serializer.data)
@@ -111,4 +114,52 @@ def rentpaymentdone(request):
         rent.save()
         serializer=RentSerializer(rent,many=False)
         return Response(serializer.data)
+ 
     
+#filter with district 
+ 
+@api_view(['GET'])
+@authentication_classes([JWTAuthentications])
+def disctrict_rent_show(request,id):
+    try:        
+        district=District.objects.get(id=id)
+        print(district)
+        rent=Rent_detail.objects.filter(district=district,payment='True',booked='False',available='True')
+        serializer=RentSerializer(rent,many=True)
+        return Response(serializer.data)
+    except:
+        response=Response()
+        response.data={
+            'error':'error in request'
+        }
+        return response 
+    
+    
+
+
+ 
+#  filter with category and place
+@api_view(['GET'])
+@authentication_classes([JWTAuthentications])
+def filter_rent_show(request,id,cid):
+    try:
+        category=Categories.objects.get(id=id)
+        print(category)
+        city=City.objects.get(id=cid)
+        print(city)
+        rent=Rent_detail.objects.filter(category=category,city=city,payment='True',booked='False',available='True')
+        serializer=RentSerializer(rent,many=True)
+        return Response(serializer.data)
+    except:
+        response=Response()
+        response.data={
+            'error':'error in request'
+        }
+        return response 
+    
+class Rentitems(generics.ListAPIView):
+    queryset =Rent_detail.objects.filter(payment='True',booked='False',available='True')
+    serializer_class = RentSerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['title','place','category__name','district__district','city__city']
+    # search_fields = ['title']

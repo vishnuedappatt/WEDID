@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'jobportal',
     'payment',
     'rentportal',
+    'django_filters',
 ]
 
 MIDDLEWARE = [

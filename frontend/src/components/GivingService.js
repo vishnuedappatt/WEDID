@@ -167,7 +167,7 @@ function GivingService() {
   const [addressErr, setAddressErr] = useState({})
   const [placeErr, setPlaceErr] = useState({})
   const [rateErr, setRateError] = useState({})
-
+  const[dateErr,setDateError]=useState({})
 
     const checkCate=(id)=>{
         setCategory(id)
@@ -190,6 +190,15 @@ function GivingService() {
 
 
   
+  // date field
+
+  const [date,setDate]=useState('')
+
+  const dateHandler=(e)=>{
+    console.log(e.target.value,'dateeee')
+    setDate(e.target.value)
+
+  }
 
 
   const submitHandler = async(e)=>{
@@ -209,7 +218,8 @@ function GivingService() {
                 address:address, 
                 place:place,
                 rate:rate,
-                slug:title,          
+                slug:title,  
+                date:date,        
               },{
             headers: {
                 Authorization:'Bearer  '+ request
@@ -240,6 +250,8 @@ const formValidation=()=>{
     const disErr={}
     const cityErr={}
     const cateErr={}
+    const dateErr={}
+
     let isValid = true
 
     if (!category){
@@ -312,9 +324,9 @@ const formValidation=()=>{
     placeErr.short_email= '* this place field is required'
     isValid = false
   }
-  else if(address.trim().length<5)
+  else if(address.trim().length<3)
   {
-    placeErr.short_email= '* this place field contain min 5 charector'
+    placeErr.short_email= '* this place field contain min 3 char'
     isValid = false
   }
   
@@ -323,7 +335,10 @@ const formValidation=()=>{
     rateErr.short_cpassword= '*rate  required field!'
     isValid = false
   }
-
+  if(!date){
+    dateErr.short_cpassword= '* valid upto field is  required !'
+    isValid = false
+  }
   setDisErr(disErr)
   setCityErr(cityErr)
   setCateErr(cateErr)
@@ -333,6 +348,7 @@ const formValidation=()=>{
   setAddressErr(addressErr)
   setPlaceErr(placeErr)
   setRateError(rateErr)
+  setDateError(dateErr)
 
   return isValid
 }
@@ -350,6 +366,7 @@ const [payment_id,setPaymentId]=useState("")
 const handlePaymentSuccess = async (response) => {
   try {
     let bodyData = new FormData();
+    
     console.log(response,'its response')
     // we will send the response we've got from razorpay to the backend to validate the payment
     bodyData.append("response", JSON.stringify(response));
@@ -600,6 +617,20 @@ const showRazorpay = async (e) => {
                         <input type="text" id="form6Example5"  onChange={(e)=>setRate(e.target.value)} value={rate}  placeholder='Give a rate for this service'  className="form-control" />
                         {Object.keys(rateErr).map((key)=>{
                                  return <div style={{color:'red'}} >{rateErr[key]}</div> })}                
+                    </div>
+                </div>
+            </div>
+            <div className="row mb-4">
+              <div className="col">                   
+                      <div className="form-outline mb-4">
+                      <label className="form-label" >valid up to</label>
+                          <input type="date" id="form6Example5"  onChange={dateHandler} value={date}  placeholder='Give a rate for this service'  className="form-control" />
+                          {Object.keys(dateErr).map((key)=>{
+                                  return <div style={{color:'red'}} >{dateErr[key]}</div> })}                
+                      </div>
+                  </div>
+                <div className="col">                   
+                    <div className="form-outline mb-4">   
                     </div>
                 </div>
             </div>

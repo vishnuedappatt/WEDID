@@ -39,8 +39,7 @@ const style = {
 };
 
 
-function Jobshow() {
-
+function Jobshow() {  
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -343,7 +342,7 @@ const CatCityFilter=async(e)=>{
       </div>
 
     {currentData ? currentData.map((obj,key)=>
-    <div  className='main-div m-5'>   
+    <div  className=' m-5'>   
      <Table striped borderless hover>
       <thead>
         <tr style={{backgroundColor:'gray'}}>           

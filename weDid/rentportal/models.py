@@ -32,7 +32,7 @@ class Rent_detail(models.Model):
     booked=models.BooleanField(default=False)
     booked_person=models.ForeignKey(Account, related_name="rent_booked_person", on_delete=models.SET_NULL,null=True)
     created_at = models.DateTimeField(auto_now_add=True)    
-    valid_at=models.CharField(max_length=100,null=True,blank=True)
+    valid_at=models.DateField(blank=True,null=True)
     
     
     def __str__(self):

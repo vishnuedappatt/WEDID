@@ -156,6 +156,7 @@ function GivingRent() {
   const[imageErr,setImageError]=useState({})
   const[image1Err,setImage1Error]=useState({})
   const[image2Err,setImage2Error]=useState({})
+  const[dateErr,setDateError]=useState({})
 
     const checkCate=(id)=>{
         setCategory(id)
@@ -199,7 +200,15 @@ const [image,setImage]=useState()
 
   }
 
-  
+  // date field
+
+   const [date,setDate]=useState('')
+
+  const dateHandler=(e)=>{
+    console.log(e.target.value,'dateeee')
+    setDate(e.target.value)
+
+  }
 
 
   const submitHandler = async(e)=>{
@@ -224,6 +233,7 @@ const [image,setImage]=useState()
       rentData.append('image2',image2)
       rentData.append('price_in',pricein)
       rentData.append('title',title)
+      rentData.append('date',date)
         console.log('oke')
         await axios.post('rent/post/',rentData,{
             headers: {
@@ -258,6 +268,7 @@ const formValidation=()=>{
     const imageErr={}
     const image1Err={}
     const image2Err={}
+    const dateErr={}
 
     let isValid = true
 
@@ -358,6 +369,10 @@ const formValidation=()=>{
     isValid = false
   } 
 
+  if(!date){
+    dateErr.short_cpassword= '* valid upto field is  required !'
+    isValid = false
+  }
   setDisErr(disErr)
   setCityErr(cityErr)
   setCateErr(cateErr)
@@ -370,6 +385,7 @@ const formValidation=()=>{
   setImageError(imageErr)
   setImage1Error(image1Err)
   setImage2Error(image2Err)
+  setDateError(dateErr)
 
   return isValid
 }
@@ -671,7 +687,20 @@ const showRazorpay = async (e) => {
                     </div>
                 </div>
             </div>
-    
+            <div className="row mb-4">
+              <div className="col">                   
+                      <div className="form-outline mb-4">
+                      <label className="form-label" >Rate</label>
+                          <input type="date" id="form6Example5"  onChange={dateHandler} value={date}  placeholder='Give a rate for this service'  className="form-control" />
+                          {Object.keys(dateErr).map((key)=>{
+                                  return <div style={{color:'red'}} >{dateErr[key]}</div> })}                
+                      </div>
+                  </div>
+                <div className="col">                   
+                    <div className="form-outline mb-4">   
+                    </div>
+                </div>
+            </div>
          <div className="main-payment  mb-4">   
          {submit ? <div>
           <CommonStepper steps={steps} activeStep={0}/>

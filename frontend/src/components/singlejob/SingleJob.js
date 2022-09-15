@@ -267,7 +267,7 @@ const val='30rem'
       {count ?'': 
       <div align='center'>
       <p style={{color:'yellow'}}>** First service for a employ is absolutly free </p>
-    <Button variant="dark" type=""  onClick={handleShow}    style={{textAlign:'center',height:'4rem',width:'15rem',}}>Get this Service</Button>
+    <Button variant="dark" type=""  onClick={handleShow}   style={{textAlign:'center',height:'4rem',width:'15rem',}}>Get this Service</Button>
     </div>
       }
         </div> 
