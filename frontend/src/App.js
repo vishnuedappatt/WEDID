@@ -15,7 +15,7 @@ import SingleJobPage from "./pages/SingleJobPage";
 import PostingRentPage from "./pages/PostingRentPage";
 import RentShowPage from "./pages/RentShowPage";
 import { RentProvider } from "./context/rentcontext";
-import SingleRestPage from "./pages/SingleRestPage";
+import SingleRentPage from "./pages/SingleRentPage";
 
 
 function App() {
@@ -39,7 +39,7 @@ function App() {
                 <Route path='/singlejob/:id' element={<SingleJobPage />}/>         
                 <Route path='/postrent' element={<PostingRentPage  />}/>
                 <Route path="/rentlook" element={<RentShowPage />} />
-                <Route path="rentlook/rentsingle/:id" element={<SingleRestPage />} />
+                <Route path="rentlook/rentsingle/:id" element={<SingleRentPage />} />
               </Route>    
             </Routes>
           </RentProvider>

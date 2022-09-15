@@ -15,11 +15,8 @@ from user.authentication import JWTAuthentications
 from jobportal.serializer import  CategorySerializer,CitySerializer,DistrictSerializer
 from rest_framework import generics
 from rest_framework import filters
-
+from rest_framework import viewsets
 # Create your views here.
-def hello(request):
-    pass
-
 
 @api_view(["POST"])
 @authentication_classes([JWTAuthentications])
@@ -163,3 +160,13 @@ class Rentitems(generics.ListAPIView):
     filter_backends = [filters.SearchFilter]
     search_fields = ['title','place','category__name','district__district','city__city']
     # search_fields = ['title']
+
+
+# single view of rent
+
+@api_view(['GET'])
+@authentication_classes([JWTAuthentications])
+def singlerentview(request,id):
+    rent=Rent_detail.objects.get(id=id)
+    serializer=RentSerializer(rent,many=False)
+    return Response(serializer.data)

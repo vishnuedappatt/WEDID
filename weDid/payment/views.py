@@ -11,6 +11,8 @@ from .serializers import OrderSerializer
 from user.authentication import JWTAuthentications
 from jobportal.models import Job_Detail
 from jobportal.serializer import JobSerializer
+from rentportal.models import Rent_detail
+from rentportal.serializer import RentSerializer
 
 
 @api_view(['POST'])
@@ -142,6 +144,28 @@ def freepayment(request):
         user.count+=1
         user.save()        
         serializer=JobSerializer(job,many=False)
+        return Response(serializer.data)
+    except:
+        response=Response()
+        response.data = {
+            'error': 'Error found'
+        }
+        return response
+    
+    
+
+@api_view(['POST'])
+@authentication_classes([JWTAuthentications])
+def payemntfinish(request):
+    try:
+        data=request.data
+        email=request.user
+        id=data['id']
+        rent=Rent_detail.objects.get(id=id)
+        rent.booked_person=email
+        rent.booked=True
+        rent.save()             
+        serializer=RentSerializer(rent,many=False)
         return Response(serializer.data)
     except:
         response=Response()

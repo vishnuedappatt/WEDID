@@ -3,7 +3,6 @@ from .views import *
 from django.urls import path
 
 urlpatterns = [  
-    path('', views.hello, name="payment"),
     path('post/',views.rentpost,name='rentpost'),
     path('rentcategory/',views.rentcategories,name='rentcategory'),
     path('all/',views.all_rent_show,name='allrent'),
@@ -11,5 +10,6 @@ urlpatterns = [
     path('filterdistrict/<int:id>/',views.disctrict_rent_show,name='filter-district'),
     path('filter/<int:id>/<int:cid>/',views.filter_rent_show,name='filter'),
     path('search/',Rentitems.as_view(),name='search'),
+    path('singleview/<int:id>/',views.singlerentview,name='singlerent view'),
       
     ]
