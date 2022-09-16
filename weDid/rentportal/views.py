@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 from email.mime import image
 from django.shortcuts import render
 from django.shortcuts import render,redirect
@@ -16,6 +17,7 @@ from jobportal.serializer import  CategorySerializer,CitySerializer,DistrictSeri
 from rest_framework import generics
 from rest_framework import filters
 from rest_framework import viewsets
+import datetime
 # Create your views here.
 
 @api_view(["POST"])
@@ -31,9 +33,7 @@ def rentpost(request):
     dt= int(datetime.date.today().strftime('%d'))
     mt= int(datetime.date.today().strftime('%m'))
     d=datetime.date(yr,mt,dt)
-    current_date =d.strftime("%Y%m%d")
-   
-
+    current_date =d.strftime("%Y%m%d")  
     val=(random.randint(1, 99))
     order_number=current_date +str(user.id)+str(val)
     print(order_number)
@@ -79,7 +79,8 @@ def rentcategories(request):
 @authentication_classes([JWTAuthentications])
 def all_rent_show(request):
     try:             
-        job=Rent_detail.objects.filter(payment='True',booked='False',available='True')
+        now=datetime.datetime.now()
+        job=Rent_detail.objects.filter(payment='True',booked='False',available='True',valid_at__gte=now)
         serializer=RentSerializer(job,many=True)
         return Response(serializer.data)
     except:

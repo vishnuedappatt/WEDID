@@ -7,6 +7,8 @@ import ImageUrl from '../common/Image/Image';
 import Carousel from 'react-bootstrap/Carousel';
 import CommonModal from '../common/Modal/Modal';
 import { useNavigate } from 'react-router-dom';
+import LocationOnIcon from '@mui/icons-material/LocationOn';
+import LocationOn from '@mui/icons-material/LocationOn';
 
 function SingleRent() {
     const parms=useParams();
@@ -20,7 +22,6 @@ function SingleRent() {
         let val=JSON.parse(localStorage.getItem('message'))
         console.log(val,'kkik') 
         if (val){
-          console.log(val,'df')
           setPayed(true)
        
         }
@@ -184,8 +185,7 @@ const showRazorpay = async (e) => {
             // setJob(res.data)
             localStorage.removeItem('message')
             handleClose()
-            console.log(res.data)
-         
+            console.log(res.data)         
             navigate('/rentlook')        
           }
         })
@@ -193,57 +193,57 @@ const showRazorpay = async (e) => {
     
   return (
   <div align='center'>
-    {rent &&  <div className='container'>
-
-       <Card >
+    {rent &&  <div className='container'>      
+       <Card style={{borderBottomLeftRadius:'150px',borderTopRightRadius:'150px'}}>
        <CommonModal message={'are you sure to get this service'} modalHeading={'Confirmation for service'} btnsave={'confirm to get this '} fncall={showRazorpay} show={show} onHide={handleClose}/>
        <Carousel activeIndex={index} onSelect={handleSelect}>
       <Carousel.Item>
         <img
           className="d-block"
+          style={{width:'500px'}}
           src={ImageUrl+rent.image}
           alt="First slide"
           />
-        <Carousel.Caption>
-          {/* <h3>First slide label</h3>
-          <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p> */}
+        <Carousel.Caption>        
         </Carousel.Caption>
       </Carousel.Item>
       <Carousel.Item>
         <img
           className="d-block "
+          style={{width:'500px'}}
           src={ImageUrl+rent.image1}
           alt="Second slide"
           />
-
-        <Carousel.Caption>
-         
+        <Carousel.Caption>         
         </Carousel.Caption>
       </Carousel.Item>
       <Carousel.Item>
         <img
           className="d-block "
+          style={{width:'500px'}}
           src={ImageUrl+rent.image2}
           alt="Third slide"
         />
-
-        <Carousel.Caption>
-       
+        <Carousel.Caption>       
         </Carousel.Caption>
       </Carousel.Item>
-    </Carousel>
-     
-      <Card.Body className='bg-warning'>
-      <Card.Title className=''>{rent.title}</Card.Title>
-      {payed ? <span>* please click the button for complete your order</span>:' '}
-   {!payed &&   <div> 
+    </Carousel>     
+      <Card.Body style={{backgroundColor:'#0962',borderBottomLeftRadius:'150px'}}>    
+      {payed ? <div>
         <Card.Title className=''>{rent.title}</Card.Title>
+        <span>* please click the button for complete your order</span>
+      </div>
+    :' '}
+   {!payed &&   
+   <div>   
+        <Card.Title style={{fontWeight:'900' ,fontSize:'30px'}}>{rent.title}</Card.Title>
         <Card.Title>{rent.category.name}</Card.Title>
-        <Card.Text>{rent.district.district}</Card.Text>
-        <Card.Text>{rent.city.city}</Card.Text>
-        <Card.Text>{rent.discriptions}</Card.Text>
+        <Card.Text><LocationOn color="dark" />   {rent.district.district},{rent.city.city}</Card.Text>
+        <Card.Text onClick={handleShow} style={{color:'red'}}>Discriptions</Card.Text>
+        <CommonModal message={rent.discriptions} modalHeading={'Discription and rules'} btnsave={''} show={show} onHide={handleClose}/>
+        {/* <Card.Text >{rent.discriptions}</Card.Text> */}
         </div> }
-       {payed ? <Button onClick={finalsubmit} variant="outline-dark">Get this Item</Button> : <Button onClick={handleShow} className='h-5' variant="primary">Make Payment</Button>}
+       {payed ? <Button  onClick={finalsubmit} variant="outline-dark">Get this Item</Button> : <Button style={{height:'60px',marginTop:'20px'}} onClick={handleShow} className='h-5' variant="danger">Make Payment</Button>}
       </Card.Body>
     </Card>
         </div>}

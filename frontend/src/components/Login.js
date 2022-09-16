@@ -77,18 +77,18 @@ const count=0
   
       <>   
      
-      <Snackbar open={opens} autoHideDuration={6000} onClose={handleCloses}>
-        <div className='box' >
-        <Alert onClose={handleCloses} severity="error" sx={{ width: '100%' }} >
-          {errors}
-        </Alert>
-        </div>               
-      </Snackbar>
+    
 
    
     <Card style={{ backgroundColor:'#339966',borderRadius:'2rem'}}>     
       <Card.Body>       
-     
+      <Snackbar open={opens} autoHideDuration={6000} onClose={handleCloses}>
+        <div className='box' >
+        <Alert onClose={handleCloses} severity="error" sx={{ width: '100%',marginTop:'100px',}} >
+          {errors}
+        </Alert>
+        </div>               
+      </Snackbar>
     <Form onSubmit={loginHandler} >
       <Form.Group className="mb-3 mt-5" controlId="formBasicEmail">
         <Form.Label>Email address</Form.Label>

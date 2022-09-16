@@ -9,5 +9,6 @@ class Order(models.Model):
     isPaid = models.BooleanField(default=False)
     order_date = models.DateTimeField(auto_now=True)
 
+    
     def __str__(self):
         return self.order_product

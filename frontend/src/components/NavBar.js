@@ -22,12 +22,10 @@ function NavBar() {
      }).then((res)=>{
             console.log(res.data)
             if (res.data){
-                console.log('valuess are herer')
-             
+                console.log('valuess are herer')            
 
             }
             // setUser(res.data)
-
         }
         ).catch((err)=>{
           console.log('error ann moneeeee moonjii')
@@ -38,7 +36,7 @@ function NavBar() {
   return (
     
 <div>
-<Navbar bg="secondary" expand="lg">
+<Navbar style={{height:'100px',backgroundColor:'white'}}  expand="lg">
       <Container fluid>
         <Navbar.Brand style={{fontWeight:800}} href="#">WEDID</Navbar.Brand>
         <Navbar.Toggle aria-controls="navbarScroll" />

@@ -179,11 +179,11 @@ const searchHandler=(e)=>{
 }
 
 
-
+  
   return (
     <div  >   
      <div className='header'>
-     <h2 className='wedid' align='center'>WEDID</h2>
+     <h3 className='wedid' align='center'>WEDID</h3>
      <Form onSubmit={searchData} value={sear} align='center'>
                   <Form.Control 
                     type="search"
