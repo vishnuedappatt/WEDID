@@ -10,9 +10,11 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated,IsAdminUser
 import random
 from user.authentication import ADMINAuth, JWTAuthentications, create_access_token,create_refresh_token,decode_access_token,decode_refresh_token
-from .serializer import CategorySerializer,CitySerializer,DistrictSerializer,JobSerializer,EditJobSerializer
+from .serializer import CategorySerializer,CitySerializer,DistrictSerializer, JobHistorySerializer,JobSerializer,EditJobSerializer
 from rest_framework.pagination import PageNumberPagination
 from rest_framework import generics
+
+from . import serializer
 # Create your views here.
 
 
@@ -75,9 +77,7 @@ def jobpost(request):
     data=request.data
     user=request.user
     count=user.count    
-    mobiles=user.mobile  
-    print(mobiles)
-    print(data)
+    mobiles=user.mobile 
     yr= int(datetime.date.today().strftime('%Y'))
     dt= int(datetime.date.today().strftime('%d'))
     mt= int(datetime.date.today().strftime('%m'))
@@ -121,6 +121,7 @@ def jobpost(request):
 @api_view(['GET'])
 @authentication_classes([JWTAuthentications])
 def getallpost(request):
+   
     job=Job_Detail.objects.all()
     serializer=JobSerializer(job,many=True)
     return Response(serializer.data)
@@ -243,3 +244,24 @@ class BillingRecordsView(generics.ListAPIView):
     queryset =Job_Detail.objects.filter(payment='True',booked='False',available='True')
     serializer_class = JobSerializer
     pagination_class = LargeResultsSetPagination
+    
+    
+
+@api_view(['GET'])
+@authentication_classes([JWTAuthentications])
+def Givingjob_history(request):
+    user=request.user
+    job=Job_Detail.objects.filter(user__email=user)
+    serializer=JobHistorySerializer(job,many=True)
+    return Response(serializer.data)
+  
+  
+@api_view(['GET'])
+@authentication_classes([JWTAuthentications])
+def taking_job_history(request):
+    user=request.user
+    print(user,'kkkkkkk')
+    job=Job_Detail.objects.filter(booked_person__email=user)
+    serializer=JobHistorySerializer(job,many=True)
+    return Response(serializer.data)
+  

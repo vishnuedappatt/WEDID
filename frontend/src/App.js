@@ -16,6 +16,14 @@ import PostingRentPage from "./pages/PostingRentPage";
 import RentShowPage from "./pages/RentShowPage";
 import { RentProvider } from "./context/rentcontext";
 import SingleRentPage from "./pages/SingleRentPage";
+import ProfilePage from "./pages/ProfilePage";
+import RentHistoryPage from "./pages/RentHistoryPage";
+import ProfileEditPage from "./pages/ProfileEditPage";
+import JobTakenHistoryPage from "./pages/JobTakenHistoryPage";
+import JobGivenHistoryPage from "./pages/JobGivenHistoryPage";
+import RentGivingHistoryPage from "./pages/RentGivingHistoryPage";
+import RentTakenHistoryPage from "./pages/RentTakenHistoryPage";
+import RentGivingHistory from "./components/RentGivingHistory/RentGivingHistory";
 
 
 function App() {
@@ -40,6 +48,16 @@ function App() {
                 <Route path='/postrent' element={<PostingRentPage  />}/>
                 <Route path="/rentlook" element={<RentShowPage />} />
                 <Route path="rentlook/rentsingle/:id" element={<SingleRentPage />} />
+                <Route path='/profile' element={<ProfilePage />}/>
+                {/* <Route path="/renthistory" element={<RentHistoryPage/>}/> */}
+
+                <Route path="/takenjobs" element={<JobTakenHistoryPage/>}/>
+                <Route path="/givenjobs" element={<JobGivenHistoryPage />} />
+
+                <Route path="/takenrents" element={<RentTakenHistoryPage/>}/>
+                <Route path="/givenrents" element={<RentGivingHistoryPage />} />
+                
+                <Route path="/editprofile" element={<ProfileEditPage />} />
               </Route>    
             </Routes>
           </RentProvider>

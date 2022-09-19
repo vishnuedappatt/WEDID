@@ -133,6 +133,7 @@ def handle_payment_success(request):
 @authentication_classes([JWTAuthentications])
 def freepayment(request):
     try:
+        print('gert in to rent')
         data=request.data
         email=request.user
         id=data['id']
@@ -143,7 +144,18 @@ def freepayment(request):
         user=Account.objects.get(email=email)
         user.count+=1
         user.save()        
-        serializer=JobSerializer(job,many=False)
+        serializer=JobSerializer(job,many=False)     
+        print(email.first_name,'email is')
+        mobile=job.mobile
+        print(mobile,'dkjfkldjklf')
+        print('ddddd')
+        # messeges=f'your service has been taken it by Mr .{email.first_name} .He will contact you as soon as possible .Also you can contact,   +91{email.mobile}'
+        # Message_service(job.mobile,messeges)
+        # title=job.title
+        # mess=f'you taked the service of  {title}  by Mr .{job.user} .you can contact to +91{job.mobile},+91 {job.sub_mobile}'
+        # Message_service(email.mobile,mess)
+        print('lll')
+    
         return Response(serializer.data)
     except:
         response=Response()

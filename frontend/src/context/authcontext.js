@@ -47,11 +47,9 @@ const handleClicks = () => {
                      localStorage.setItem('authToken',JSON.stringify(res.data))
                      localStorage.setItem('token',JSON.stringify(res.data.token))
                      setAuthToken(res.data)
-                     setUser(res.data.token)     
-                    
+                     setUser(res.data.token)                      
                      SetError(res.data.message)
                     navigate('/')
-
                 }
              
               if(res.data.message){              

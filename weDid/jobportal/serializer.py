@@ -1,5 +1,6 @@
 from rest_framework import serializers
-from user.models import Categories,District,City
+from user.models import Account, Categories,District,City
+from user.serializers import AccountSerializer
 from .models import Job_Detail
 
 
@@ -34,4 +35,16 @@ class EditJobSerializer(serializers.ModelSerializer):
         model=Job_Detail
         fields=['title','category','district','city','discriptions','sub_mobile','address','place','rate']
         
+
         
+        
+class JobHistorySerializer(serializers.ModelSerializer):
+    category=CategorySerializer(many=False)
+    city=CitySerializer(many=False)
+    district=DistrictSerializer(many=False)
+    user=AccountSerializer(many=False)
+    booked_person=AccountSerializer(many=False)
+    
+    class Meta :
+        model=Job_Detail
+        fields="__all__"
