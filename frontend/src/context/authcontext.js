@@ -19,6 +19,8 @@ export const AuthProvider=({children})=>{
     const handleShow = () => {setShow(true)};
 
 
+    
+
     const [errors,SetError]=useState(false)
 // react
 const [opens, setOpens] = useState(false);
@@ -49,6 +51,7 @@ const handleClicks = () => {
                      setAuthToken(res.data)
                      setUser(res.data.token)                      
                      SetError(res.data.message)
+                     localStorage.setItem('userId',JSON.stringify(res.data.id))
                     navigate('/')
                 }
              
@@ -73,6 +76,7 @@ const handleClicks = () => {
             })
             localStorage.removeItem('authToken')
             localStorage.removeItem('token')
+            localStorage.removeItem('userId')
             setUser(null)
             setAuthToken(null)
             navigate('/login')

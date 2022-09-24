@@ -90,7 +90,7 @@ function GivingRent() {
   };
 
 
-
+// snackbar
   const [opens, setOpens] = React.useState(false);
   const handleClicks = () => {
     setOpens(true);

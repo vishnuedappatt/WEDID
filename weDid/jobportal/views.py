@@ -13,7 +13,7 @@ from user.authentication import ADMINAuth, JWTAuthentications, create_access_tok
 from .serializer import CategorySerializer,CitySerializer,DistrictSerializer, JobHistorySerializer,JobSerializer,EditJobSerializer
 from rest_framework.pagination import PageNumberPagination
 from rest_framework import generics
-
+from rest_framework import viewsets
 from . import serializer
 # Create your views here.
 
@@ -70,20 +70,17 @@ def getallcity(request):
 
 
 
-
 @api_view(['POST'])
 @authentication_classes([JWTAuthentications])
 def jobpost(request):
     data=request.data
     user=request.user
-    count=user.count    
     mobiles=user.mobile 
     yr= int(datetime.date.today().strftime('%Y'))
     dt= int(datetime.date.today().strftime('%d'))
     mt= int(datetime.date.today().strftime('%m'))
     d=datetime.date(yr,mt,dt)
-    current_date =d.strftime("%Y%m%d")
-   
+    current_date =d.strftime("%Y%m%d")  
 
     val=(random.randint(1, 99))
     order_number=current_date +str(user.id)+str(val)
@@ -130,6 +127,14 @@ def getallpost(request):
 @api_view(['GET'])
 @authentication_classes([JWTAuthentications])
 def singlejobview(request,id):
+    job=Job_Detail.objects.get(id=id)
+    serializer=JobSerializer(job,many=False)
+    return Response(serializer.data)
+
+
+@api_view(['GET'])
+@authentication_classes([JWTAuthentications])
+def singlejobview_withBooked_person(request,id):
     job=Job_Detail.objects.get(id=id)
     serializer=JobSerializer(job,many=False)
     return Response(serializer.data)
@@ -251,17 +256,36 @@ class BillingRecordsView(generics.ListAPIView):
 @authentication_classes([JWTAuthentications])
 def Givingjob_history(request):
     user=request.user
-    job=Job_Detail.objects.filter(user__email=user)
+    job=Job_Detail.objects.filter(user__email=user,booked=True)
     serializer=JobHistorySerializer(job,many=True)
     return Response(serializer.data)
   
   
+# @api_view(['PUT'])
+# @authentication_classes([JWTAuthentications])
+# def Givingjob_edit(request,id):
+#     job=Job_Detail.objects.filter(id=id)
+#     change=JobHistorySerializer(instance=job,data=request.data)
+#     if change.is_valid():
+#         print('kkkk')
+#         change.save()    
+#         return Response(change.data)
+    
+class giving_job_edit(viewsets.ModelViewSet):
+    authentication_classes=[JWTAuthentications]
+    queryset=Job_Detail.objects.all()
+    serializer_class=JobSerializer
+  
+
+    
+    
+    
 @api_view(['GET'])
 @authentication_classes([JWTAuthentications])
 def taking_job_history(request):
     user=request.user
     print(user,'kkkkkkk')
-    job=Job_Detail.objects.filter(booked_person__email=user)
+    job=Job_Detail.objects.filter(booked_person__email=user,booked=True)
     serializer=JobHistorySerializer(job,many=True)
     return Response(serializer.data)
   

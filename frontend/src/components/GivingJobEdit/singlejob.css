@@ -1,0 +1,285 @@
+.form{
+    margin: 10%;
+    max-width: 100%;  
+    padding: 1%;
+    display: flex;
+ 
+    justify-content:left;
+    
+}
+body {
+    /* overflow-y: hidden;  */
+    overflow-x: hidden; /* Hide horizontal scrollbar */
+  }
+
+
+.form-control{
+    height: 4rem;
+    /* color: aqua; */
+    /* background-color: aqua; */
+    border: 2px rgb(37, 84, 236) solid;
+    max-width: 100%;
+    margin-top: 3%;
+}
+
+
+/* .form-control:hover{
+    background-color: rgba(1, 5, 1, 0.06);
+    border: 2px rgb(0, 0, 0) solid;
+    box-shadow: 20px;
+
+} */
+.form-outline{
+    padding: 1%;
+    /* background-color: aqua; */
+}
+
+
+.main{
+    margin-top: 5%;
+    background-color: rgba(0, 0, 0, 0.939);
+    /* margin: 15%; */
+    margin-bottom: 15%;
+    margin-left: 15%;
+    margin-right: 15%;
+}
+
+.form-label{
+    font-size: large;
+    color: white;
+}
+
+
+
+
+.form-controls{
+    height: 4rem;
+   width: 20rem;
+ margin-top: 100px;
+    max-width: 100%;
+}
+
+
+.fields{
+    width: 48rem;
+
+}
+
+@media (max-width: 1100px) {
+.fields {
+ width: 17rem;
+    }
+}
+
+body{
+    /* background-color: rgb(137, 242, 242); */
+
+    background-color: rgb(38, 38, 38);
+}
+
+
+.heading{
+    display: flex;
+    justify-content: center ;
+    margin-top: 100px;
+    margin-bottom: 0%;
+    color: white;
+}
+
+
+.text{
+    width: 100%;
+    height: 8rem;
+    padding: 3%;
+}
+
+
+.payment-btn{
+    width: 17rem;
+    height: 6rem;   
+    
+}
+
+
+.main-payment{
+    /* background-color: aqua; */
+    flex-direction: column; 
+    display: flex;
+    justify-content: center;
+    text-align: center;
+   padding-left: 40%;
+   
+
+}
+
+.submit-btn{
+
+    width: 15rem;
+    height: 4rem;
+
+}
+
+.submit{
+    display: flex;
+    justify-content: right;
+    /* background-color: black; */
+}
+
+.checkbox{
+    width: 20px;
+    height: 2rem;
+    margin-left: 0%;
+    margin-right:30rem;
+    margin-top: 3rem;      
+}
+
+.free1{
+    color: white;
+    font-size:20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.free2{
+    color: white;
+    font-size:20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin-top: -20px;
+}
+
+.check-text{
+    color:white;
+    /* margin-bottom: 100px; */
+    font-size: 15px;
+
+}
+.sub-heading{
+    font-size: medium;
+}
+
+
+.payment-btn1{
+    width: 16rem;
+    height: 6rem;   
+    float: left;   
+    margin-top: 10px;
+  
+}
+.payment-btn2{
+    width: 22rem;
+    height: 6rem;   
+    float: left;   
+    margin-top: 90px;
+  
+}
+
+
+.main-payment1{
+    display: flex;
+    justify-content: center;
+    text-align: center;
+}
+
+.check-heading{   
+    color: white;  
+    margin-top: -35px;
+}
+
+.check-main{
+    width: 100%;
+    margin-left: -400px;
+    margin-top: 5rem;
+}
+
+.payment-btn4{
+    width: 10rem;
+    height: 4rem;   
+    float: left;   
+    margin-top: 10px;
+    margin-left: 100px;   
+    margin-bottom: 40px;
+}
+
+@media (max-width: 900px) {
+    .payment-btn{
+        width: 8rem;
+        height: 4rem;     
+        margin-left: -20px;   
+        margin-top: 10px;
+    }
+    .free1{
+        color: white;
+        font-size:10px;
+       
+      
+    }
+    
+    .free2{
+        color: white;
+        font-size:10px;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    .submit{
+   
+        justify-content: center;
+        
+
+    }
+    .checkbox{
+        width: 20px;
+        height: 1rem;
+        margin-right:120rem;
+        margin-top: 1rem;  
+        
+    }
+    
+    .check-text{
+        color:white;
+        margin-bottom: 100px;
+        font-size: 10px;
+    }
+    .sub-heading{
+        display: none;
+    }
+    .payment-btn1{
+        width: 8rem;
+        height: 4rem;   
+        float: left;   
+        margin-top: 10px;
+        margin-left: -20px;   
+        margin-bottom: 40px;
+    }
+    .payment-btn2{
+        width: 10rem;
+        height: 4rem;   
+        float: left;   
+        margin-top: 50px;
+        margin-left: -40px;   
+        margin-bottom: 40px;
+    }
+
+    .check-main{
+        /* background-color:black; */
+        margin-left: -6rem;
+        margin-top: 5rem;          
+    }
+
+    .check-heading{   
+        color: white;  
+        margin-top: 1px;
+        font-size: small;
+    }
+
+    .payment-btn4{
+        width: 10rem;
+        height: 4rem;   
+        float: left;   
+        margin-top: 10px;
+        margin-left: -40px;   
+        margin-bottom: 40px;
+    }
+
+    }
+    
+
+
+    

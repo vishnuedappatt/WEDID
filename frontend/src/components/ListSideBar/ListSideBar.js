@@ -111,7 +111,7 @@ function ListSideBar({val}) {
        
         {/* <Link style={{'backgroundColor':'black' ,'color':color1,'textDecoration':'none','textAlign':'center','fontSize':'22px'}} className='mt-5'   to="/jobhistory">Job History</Link> */}
         {/* <Link style={{'backgroundColor':'black' ,'color':color2,'textDecoration':'none','textAlign':'center','fontSize':'22px'}}className='mt-5'   to="/renthistory">Rent History</Link> */}
-        <Link style={{'backgroundColor':'black' ,'color':color5,'textDecoration':'none','textAlign':'center','fontSize':'22px'}} className='mt-5'   to="/editprofile">ProfilEdit </Link>             
+        {/* <Link style={{'backgroundColor':'black' ,'color':color5,'textDecoration':'none','textAlign':'center','fontSize':'22px'}} className='mt-5'   to="/editprofile">ProfilEdit </Link>              */}
     </ListGroup>
     </div>
   )

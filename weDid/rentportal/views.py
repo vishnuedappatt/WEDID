@@ -171,3 +171,31 @@ def singlerentview(request,id):
     rent=Rent_detail.objects.get(id=id)
     serializer=RentSerializer(rent,many=False)
     return Response(serializer.data)
+
+
+
+
+@api_view(['GET'])
+@authentication_classes([JWTAuthentications])
+def Giving_rent_history(request):
+    user=request.user
+    job=Rent_detail.objects.filter(user__email=user,booked=True)
+    serializer=RentSerializer(job,many=True)
+    return Response(serializer.data)
+
+
+class Edit_giving_job(viewsets.ModelViewSet):
+    authentication_classes=[JWTAuthentications]
+    queryset=Rent_detail.objects.all()
+    serializer_class=RentSerializer
+
+@api_view(['GET'])
+@authentication_classes([JWTAuthentications])
+def taking_rent_history(request):
+    user=request.user
+    print(user,'kkkkkkk')
+    job=Rent_detail.objects.filter(booked_person__email=user,booked=True)
+    serializer=RentSerializer(job,many=True)
+    return Response(serializer.data)
+  
+  

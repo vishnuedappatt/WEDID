@@ -23,7 +23,9 @@ import JobTakenHistoryPage from "./pages/JobTakenHistoryPage";
 import JobGivenHistoryPage from "./pages/JobGivenHistoryPage";
 import RentGivingHistoryPage from "./pages/RentGivingHistoryPage";
 import RentTakenHistoryPage from "./pages/RentTakenHistoryPage";
-import RentGivingHistory from "./components/RentGivingHistory/RentGivingHistory";
+import GivingJobEditPage from "./pages/GivingJobEditPage";
+import EditRentHistory from "./components/EditRentHistory/EditRentHistory";
+import RentGivingEditPage from "./pages/RentGivingEditPage";
 
 
 function App() {
@@ -53,11 +55,14 @@ function App() {
 
                 <Route path="/takenjobs" element={<JobTakenHistoryPage/>}/>
                 <Route path="/givenjobs" element={<JobGivenHistoryPage />} />
+                <Route path="/givenjobs/edit/:id" element={<GivingJobEditPage />} />
 
                 <Route path="/takenrents" element={<RentTakenHistoryPage/>}/>
                 <Route path="/givenrents" element={<RentGivingHistoryPage />} />
+                <Route path="/givenrents/editz/:id" element={<RentGivingEditPage />} />
+
                 
-                <Route path="/editprofile" element={<ProfileEditPage />} />
+               
               </Route>    
             </Routes>
           </RentProvider>

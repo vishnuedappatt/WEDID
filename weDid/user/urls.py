@@ -1,5 +1,11 @@
 from . import views
 from django.urls import path
+from rest_framework.routers import DefaultRouter
+from .views import *
+
+router=DefaultRouter()
+router.register('profile',userprofile,basename='userprofile')
+
 
 urlpatterns = [
 
@@ -12,6 +18,7 @@ urlpatterns = [
     path('forgotpassword/',views.forgotpassword,name='forgottpassword'),
     path('resetpassword_validate/<uidb64>/<token>',views.resetpassword_validate,name="resetpassword_validate"),
     path('resetPassword/',views.resetPassword,name="resetPassword"),
-    path('profile/',views.userdata,name='userdata'),
+    path('profile/change_password/',views.change_password,name='change password'),
+    # path('profile/edit/',views.edituserdata,name='edituser'),
   
-    ]
+    ]+router.urls

@@ -23,9 +23,11 @@ class CitySerializer(serializers.ModelSerializer):
 
 
 class JobSerializer(serializers.ModelSerializer):
+    user=AccountSerializer(many=False)
     category=CategorySerializer(many=False)
     city=CitySerializer(many=False)
     district=DistrictSerializer(many=False)
+    booked_person=AccountSerializer(many=False)
     class Meta :
         model=Job_Detail
         fields="__all__"

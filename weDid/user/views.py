@@ -22,7 +22,7 @@ from django.utils.encoding import force_bytes
 from django.contrib.auth.tokens import default_token_generator
 from django.core.mail import EmailMessage
 from django.contrib import auth
-
+from rest_framework import viewsets
 
 # Create your views here.
 
@@ -346,6 +346,54 @@ def userdata(request):
     data=Account.objects.get(email=user)
     serializer=AccountSerializer(data,many=False)
     return Response(serializer.data)
+
+
+@api_view(['PATCH'])
+@authentication_classes([JWTAuthentications])
+def edituserdata(request):
+    print('ddd')
+    user=request.user
+    edit=Account.objects.get(email=user)
+    change=AccountSerializer(instance=edit,data=request.data)
+    print('qqqq')
+    if change.is_valid():
+        print('djfjhk')
+        change.save()
+    return Response(change.data)
+
+
+
+class userprofile(viewsets.ModelViewSet):
+    authentication_classes=[JWTAuthentications]
+    queryset=Account.objects.all()
+    serializer_class=AccountSerializer
+    
+    
+@api_view(['POST'])
+@authentication_classes([JWTAuthentications])
+def change_password(request):
+    data=request.data
+    current_password=data['currentPassword']
+    new_password=data['newPassword']
+    confirm_password=data['confirmPassword']
+    
+    user=Account.objects.get(email=request.user)
+    if new_password==confirm_password:            
+        success=user.check_password(current_password)
+        if success:
+            user.set_password(new_password)
+            user.save()
+            message={'success':'password reset successfully'}
+            return Response(message,status=status.HTTP_200_OK)
+        else:
+            message={'error':' current password   is not currect'}
+            return Response(message,status=status.HTTP_400_BAD_REQUEST)
+           
+    else:
+        message={'error':'password missmatch'}
+        return Response(message,status=status.HTTP_400_BAD_REQUEST)
+
+
 
 
 

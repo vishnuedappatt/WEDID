@@ -1,6 +1,12 @@
 from . import views
 from django.urls import path
 from .views import *
+from rest_framework.routers import DefaultRouter
+
+
+
+router=DefaultRouter()
+router.register('jobz',giving_job_edit,basename='edit_job_edit')
 
 urlpatterns = [
     
@@ -18,7 +24,8 @@ urlpatterns = [
     path('dis_job_view/<int:id>/',views.disctrict_job_show,name="district_job_show"),
     path('all_job/',views.all_job_show,name="alljob"),
     path('all/',BillingRecordsView.as_view(),name='all'),
-    path('giving_history/',views.Givingjob_history,name='job history'),
-    path('taking_history/',views.taking_job_history,name='job_taking_history'),
+    path('giving_history_job/',views.Givingjob_history,name='job history'),
+    path('taking_history_job/',views.taking_job_history,name='job_taking_history'),
+    # path('editjob/<int:id>/',views.Givingjob_edit,name='giving_job_king'),
         
-    ]
+    ]+router.urls
