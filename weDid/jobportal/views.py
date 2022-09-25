@@ -5,16 +5,20 @@ from django.shortcuts import render,redirect
 from rest_framework.decorators import api_view,permission_classes,authentication_classes
 from rest_framework.permissions import IsAuthenticated
 from user.models import Account,UserToken,Categories,District,City
-from .models import Job_Detail
+from .models import Job_Detail,JobVerification
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated,IsAdminUser
 import random
 from user.authentication import ADMINAuth, JWTAuthentications, create_access_token,create_refresh_token,decode_access_token,decode_refresh_token
-from .serializer import CategorySerializer,CitySerializer,DistrictSerializer, JobHistorySerializer,JobSerializer,EditJobSerializer
+from .serializer import CategorySerializer,CitySerializer,DistrictSerializer, JobHistorySerializer,JobSerializer,EditJobSerializer, JobVerificationSerializer
 from rest_framework.pagination import PageNumberPagination
 from rest_framework import generics
 from rest_framework import viewsets
 from . import serializer
+from django_filters import rest_framework as filters
+from user.verify import send,check
+
+
 # Create your views here.
 
 
@@ -105,7 +109,11 @@ def jobpost(request):
         valid_at =data['date'],      
     )   
     user.count+=1
-    user.save()        
+    user.save()    
+    verify=JobVerification()
+    verify.mobile=mobiles
+    verify.order_number=order_number
+    verify.save()
     serializer=JobSerializer(job,many=False)
     return Response(serializer.data)                                                                                                                           
         
@@ -292,7 +300,7 @@ def Givingjob_verify_day(request):
     return Response(serializer.data)
   
   
-  # day for verify
+  # day for verify table
 @api_view(['GET'])
 @authentication_classes([JWTAuthentications])
 def employee_verify_day(request):
@@ -303,4 +311,34 @@ def employee_verify_day(request):
     return Response(serializer.data)
   
   
+# day for verify
+@api_view(['GET'])
+@authentication_classes([JWTAuthentications])
+def verify_data(request,number):
+    print(number,'number')
+    verify=JobVerification.objects.get(order_number=number)
+    serializer=JobVerificationSerializer(verify,many=False)
+    return Response(serializer.data)
+
+
+
+# staring job verification
+@api_view(['POST'])
+@authentication_classes([JWTAuthentications])
+def start_verify_data(request):
+    data=request.data
+    number=data['number']
+    print(number,'ithhh')
+    verify=JobVerification.objects.get(order_number=number)
+    mobile=verify.mobile
+    print(mobile,'mobile')
+    send(mobile)
+    verify.job_start=True
+    verify.start_otp=True
+    verify.save()
+    serializer=JobVerificationSerializer(verify,many=False)
+    return Response(serializer.data)
+    
+    
+
 

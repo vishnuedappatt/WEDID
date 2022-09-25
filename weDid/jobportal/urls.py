@@ -7,6 +7,7 @@ from rest_framework.routers import DefaultRouter
 
 router=DefaultRouter()
 router.register('jobz',giving_job_edit,basename='edit_job_edit')
+# router.register('verify',VerificatinData,basename='verify')
 
 urlpatterns = [
     
@@ -28,5 +29,8 @@ urlpatterns = [
     path('taking_history_job/',views.taking_job_history,name='job_taking_history'),
     path('verify_day_user/',views.Givingjob_verify_day,name='giving_job_verify'),
     path('verify_day_employee/',views.employee_verify_day,name='employee_job_verify'),
+    
+    path('verifydata/<str:number>/',views.verify_data,name='verifydata'),
+    path('start_verify/',views.start_verify_data,name='start_verify')
         
     ]+router.urls

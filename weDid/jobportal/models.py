@@ -1,3 +1,4 @@
+from operator import mod
 from django.db import models
 from user.models import City,Categories,District,Account
 # Create your models here.
@@ -27,4 +28,20 @@ class Job_Detail(models.Model):
     
     def __str__(self):
         return self.title
+    
+    
+    
+class JobVerification(models.Model):
+    mobile=models.CharField(max_length=10,null=True,blank=True)
+    order_number=models.CharField(max_length=30)
+    job_start=models.BooleanField(default=False)
+    start_otp=models.BooleanField(default=False)
+    start_verify=models.BooleanField(default=False)
+    job_end=models.BooleanField(default=False)
+    end_otp=models.BooleanField(default=False)
+    end_verify=models.BooleanField(default=False)
+    
+    
+    def __str__(self):
+        return self.mobile
     

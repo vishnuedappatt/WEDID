@@ -32,7 +32,7 @@ function ListSideBar({val}) {
      const userSingleJobHistory=async(id)=>{   
       let request=(JSON.parse(localStorage.getItem('token')))  
       console.log(id,'ddd')
-     await axios.get(`job/verify_day_user/`,{
+     await axios.get(`job/verify_day_employee/`,{
           headers: {
               Authorization:'Bearer '+ request
             }
@@ -49,7 +49,7 @@ function ListSideBar({val}) {
      const userSingle=async(id)=>{   
       let request=(JSON.parse(localStorage.getItem('token')))  
       console.log(id,'ddd')
-     await axios.get(`job/verify_day_employee/`,{
+     await axios.get(`job/verify_day_user/`,{
           headers: {
               Authorization:'Bearer '+ request
             }

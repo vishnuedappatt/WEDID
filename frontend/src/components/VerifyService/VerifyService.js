@@ -18,14 +18,18 @@ import VerifyForm from '../common/Form/VerifyForm';
 function VerifyService() {
 
   const [user,setUser]=useState('')
-  const navigate=useNavigate()
+
+
+
     useEffect(() => {
-    userJobHistory()
+
+      EmployerVerify()
+
     }, [])
     
 
      // user datas
-     const userJobHistory=async()=>{   
+     const EmployerVerify=async()=>{   
       let request=(JSON.parse(localStorage.getItem('token')))  
  
      await axios.get('job/verify_day_user/',{
@@ -37,11 +41,27 @@ function VerifyService() {
           
       })
   }
+
+// verifications datas
+    const VerifyData=async(number)=>{   
+      let request=(JSON.parse(localStorage.getItem('token')))  
+
+    await axios.get(`job/verifydata/${number}/`,{
+          headers: {
+              Authorization:'Bearer '+ request
+            }
+      }).then((res)=>{
+          console.log(res.data,'verify ane')
+          
+      })
+    }
+
   const [open, setOpen] = React.useState(false);
 
-  const handleClickOpen = (id) => {
+  const handleClickOpen = (id,number) => {
     setOpen(true);
     userSingleJobHistory(id)
+    VerifyData(number)
 
   };
 
@@ -70,6 +90,7 @@ function VerifyService() {
 }
 
 
+
   return (
     <div>
     <Row>
@@ -80,7 +101,7 @@ function VerifyService() {
       <div style={{'height':'60vh','backgroundColor':'black'}}>
       <div style={{'height':'60vh','backgroundColor':'white '}}>
           <Card sx={{ minWidth:'30%', maxWidth:'100%' ,padding:'50px'}}> 
-            {/* <Button onClick={()=>navigate('addUser')} variant="contained">Add User</Button> */}
+        
       <Card>
       <Table striped>
       <thead>
@@ -101,9 +122,7 @@ function VerifyService() {
           <td>{obj.category.name }</td>
           <td>{String(obj.created_at).slice(0,10).split("-").reverse().join("-")}</td>
           <td>{String(obj.valid_at).split("-").reverse().join("-")}</td>
-          <td style={{color:'blue',cursor:'pointer'}} onClick={()=>handleClickOpen(obj.id)}><TouchAppIcon /></td> 
-             
-     
+          <td style={{color:'blue',cursor:'pointer'}} onClick={()=>handleClickOpen(obj.id,obj.ordernumber)}><TouchAppIcon /></td> 
         </tr> 
 
          )}       
@@ -127,9 +146,7 @@ function VerifyService() {
             </DialogContent>
             <DialogActions>
               <Button onClick={handleClose}>Close</Button>
-          {single.booked ?  '':  <Button onClick={()=>navigate(`edit/${single.id}/`)} autoFocus>
-              Edit
-              </Button> }
+      
             </DialogActions>
           </Dialog>  }
       </Card>

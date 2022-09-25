@@ -29,7 +29,7 @@ function VerifyServiceEmploye() {
      const userJobHistory=async()=>{   
       let request=(JSON.parse(localStorage.getItem('token')))  
  
-     await axios.get('job/verify_day_user/',{
+     await axios.get('job/verify_day_employee/',{
           headers: {
               Authorization:'Bearer '+ request
             }
@@ -40,9 +40,10 @@ function VerifyServiceEmploye() {
   }
   const [open, setOpen] = React.useState(false);
 
-  const handleClickOpen = (id) => {
+  const handleClickOpen = (id,number) => {
     setOpen(true);
     userSingleJobHistory(id)
+    VerifyData(number)
 
   };
 
@@ -53,9 +54,11 @@ function VerifyServiceEmploye() {
   // showing counter
   const [count,setCount]=useState(false)
 
-  const handleSubmit=(id)=>{
+  const handleSubmit=(id,number)=>{
     console.log(id)
     setCount(true)
+    otpSenting(number)
+
     setTimeout(()=>{
       setCount(false);
   }, 100000);
@@ -80,7 +83,36 @@ function VerifyServiceEmploye() {
         console.log(res.data,'evide work ann')
     })
 }
-const Completionist = () => <span>You are good to go!</span>;
+
+// verifications datas
+const VerifyData=async(number)=>{   
+  let request=(JSON.parse(localStorage.getItem('token')))  
+
+await axios.get(`job/verifydata/${number}/`,{
+      headers: {
+          Authorization:'Bearer '+ request
+        }
+  }).then((res)=>{
+      console.log(res.data,'verify ane')
+      
+  })
+}
+
+// sent otp
+const otpSenting=async(number)=>{   
+  let request=(JSON.parse(localStorage.getItem('token')))  
+
+await axios.post('job/start_verify/',{number:number},{
+      headers: {
+          Authorization:'Bearer '+ request
+        }
+  }).then((res)=>{
+      console.log(res.data,'verify ane')
+      VerifyData(number)
+
+      
+  })
+}
 
   return (
     <div>
@@ -113,7 +145,7 @@ const Completionist = () => <span>You are good to go!</span>;
           <td>{obj.category.name }</td>
           <td>{String(obj.created_at).slice(0,10).split("-").reverse().join("-")}</td>
           <td>{String(obj.valid_at).split("-").reverse().join("-")}</td>
-          <td style={{color:'blue',cursor:'pointer'}} onClick={()=>handleClickOpen(obj.id)}><TouchAppIcon /></td> 
+          <td style={{color:'blue',cursor:'pointer'}} onClick={()=>handleClickOpen(obj.id,obj.ordernumber)}><TouchAppIcon /></td> 
           
      
         </tr> 
@@ -136,7 +168,7 @@ const Completionist = () => <span>You are good to go!</span>;
                <h5>Please Make sure that this verification OTP sent to employer and OTP verified by employer in 5 min</h5>
                 <div align='center'>
                 
-               {count ?  <Chip label={<Countdown date={Date.now() + 100000} />} color="error" variant="contained" ></Chip>:  <Button variant="contained"  onClick={()=>handleSubmit(single.mobile)} color='success'>sent OTP</Button> }
+               {count ?  <Chip label={<Countdown date={Date.now() + 100000} />} color="error" variant="contained" ></Chip>:  <Button variant="contained"  onClick={()=>handleSubmit(single.mobile,single.ordernumber)} color='success'>sent OTP</Button> }
                  
                 </div>
               </DialogContentText>

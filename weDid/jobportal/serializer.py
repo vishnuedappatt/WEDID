@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from user.models import Account, Categories,District,City
 from user.serializers import AccountSerializer
-from .models import Job_Detail
+from .models import Job_Detail, JobVerification
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -50,3 +50,9 @@ class JobHistorySerializer(serializers.ModelSerializer):
     class Meta :
         model=Job_Detail
         fields="__all__"
+        
+        
+class JobVerificationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=JobVerification
+        fields='__all__'
