@@ -26,6 +26,8 @@ import RentTakenHistoryPage from "./pages/RentTakenHistoryPage";
 import GivingJobEditPage from "./pages/GivingJobEditPage";
 import EditRentHistory from "./components/EditRentHistory/EditRentHistory";
 import RentGivingEditPage from "./pages/RentGivingEditPage";
+import VerifyServicePage from "./pages/VerifyServicePage";
+import VerifyServiceEmployeePage from "./pages/VerifyServiceEmployeePage";
 
 
 function App() {
@@ -60,6 +62,9 @@ function App() {
                 <Route path="/takenrents" element={<RentTakenHistoryPage/>}/>
                 <Route path="/givenrents" element={<RentGivingHistoryPage />} />
                 <Route path="/givenrents/editz/:id" element={<RentGivingEditPage />} />
+                <Route path="/profile/verify/" element={<VerifyServicePage />} /> 
+                <Route path="/profile/verifier/" element={<VerifyServiceEmployeePage />} /> 
+
 
                 
                

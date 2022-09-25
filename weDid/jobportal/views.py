@@ -118,8 +118,8 @@ def jobpost(request):
 @api_view(['GET'])
 @authentication_classes([JWTAuthentications])
 def getallpost(request):
-   
-    job=Job_Detail.objects.all()
+    now=datetime.datetime.now()
+    job=Job_Detail.objects.filter(payment='True',booked='False',available='True',valid_at__gte=now)
     serializer=JobSerializer(job,many=True)
     return Response(serializer.data)
 
@@ -256,20 +256,10 @@ class BillingRecordsView(generics.ListAPIView):
 @authentication_classes([JWTAuthentications])
 def Givingjob_history(request):
     user=request.user
-    job=Job_Detail.objects.filter(user__email=user,booked=True)
+    job=Job_Detail.objects.filter(user__email=user)
     serializer=JobHistorySerializer(job,many=True)
     return Response(serializer.data)
   
-  
-# @api_view(['PUT'])
-# @authentication_classes([JWTAuthentications])
-# def Givingjob_edit(request,id):
-#     job=Job_Detail.objects.filter(id=id)
-#     change=JobHistorySerializer(instance=job,data=request.data)
-#     if change.is_valid():
-#         print('kkkk')
-#         change.save()    
-#         return Response(change.data)
     
 class giving_job_edit(viewsets.ModelViewSet):
     authentication_classes=[JWTAuthentications]
@@ -285,7 +275,32 @@ class giving_job_edit(viewsets.ModelViewSet):
 def taking_job_history(request):
     user=request.user
     print(user,'kkkkkkk')
-    job=Job_Detail.objects.filter(booked_person__email=user,booked=True)
+    job=Job_Detail.objects.filter(booked_person__email=user)
     serializer=JobHistorySerializer(job,many=True)
     return Response(serializer.data)
   
+  
+  
+# day for verify
+@api_view(['GET'])
+@authentication_classes([JWTAuthentications])
+def Givingjob_verify_day(request):
+    user=request.user
+    now=datetime.datetime.now()
+    job=Job_Detail.objects.filter(user__email=user,valid_at=now)
+    serializer=JobHistorySerializer(job,many=True)
+    return Response(serializer.data)
+  
+  
+  # day for verify
+@api_view(['GET'])
+@authentication_classes([JWTAuthentications])
+def employee_verify_day(request):
+    user=request.user
+    now=datetime.datetime.now()
+    job=Job_Detail.objects.filter(booked_person__email=user,valid_at=now) 
+    serializer=JobHistorySerializer(job,many=True)
+    return Response(serializer.data)
+  
+  
+

@@ -13,11 +13,10 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import ImageUrl from '../common/Image/Image';
+import VerifyForm from '../common/Form/VerifyForm';
 
+function VerifyService() {
 
-
-function RentGivingHistory() {
   const [user,setUser]=useState('')
   const navigate=useNavigate()
     useEffect(() => {
@@ -29,13 +28,13 @@ function RentGivingHistory() {
      const userJobHistory=async()=>{   
       let request=(JSON.parse(localStorage.getItem('token')))  
  
-     await axios.get('rent/rent_giving_history/',{
+     await axios.get('job/verify_day_user/',{
           headers: {
               Authorization:'Bearer '+ request
             }
       }).then((res)=>{
           setUser(res.data)
-          console.log(res.data,'evide work ann')
+          
       })
   }
   const [open, setOpen] = React.useState(false);
@@ -60,7 +59,7 @@ function RentGivingHistory() {
    const userSingleJobHistory=async(id)=>{   
     let request=(JSON.parse(localStorage.getItem('token')))  
     console.log(id,'ddd')
-   await axios.get(`rent/singleview/${id}/`,{
+   await axios.get(`job/singlejob/${id}/`,{
         headers: {
             Authorization:'Bearer '+ request
           }
@@ -70,17 +69,15 @@ function RentGivingHistory() {
     })
 }
 
+
   return (
     <div>
     <Row>
     <Col lg={4}>
-      <ListSideBar val={4}/>
+      <ListSideBar val={2}/>
     </Col>
     <Col lg={8}>
       <div style={{'height':'60vh','backgroundColor':'black'}}>
-        
-
-
       <div style={{'height':'60vh','backgroundColor':'white '}}>
           <Card sx={{ minWidth:'30%', maxWidth:'100%' ,padding:'50px'}}> 
             {/* <Button onClick={()=>navigate('addUser')} variant="contained">Add User</Button> */}
@@ -124,27 +121,13 @@ function RentGivingHistory() {
             </DialogTitle>
             <DialogContent>
               <DialogContentText style={{color:'black'}} id="alert-dialog-description">
-            <h5 style={{color:'blue',fontWeight:800}}> Title :<span style={{color:'black'}}>{single.title} </span></h5><br></br>
-            <h5 style={{color:'blue',fontWeight:800}}> Category :<span style={{color:'black'}}>{single.category.name}</span></h5><br></br>
-            <h5 style={{color:'blue',fontWeight:800}}> District :<span style={{color:'black'}}>{single.district.district} </span></h5><br></br>
-            <h5 style={{color:'blue',fontWeight:800}}> City :<span style={{color:'black'}}>{single.city.city}</span></h5><br></br>
-            <h5 style={{color:'blue',fontWeight:800}}>  discription  :<span style={{color:'black',fontWeight:100,fontSize:'16px'}}>{single.discriptions}</span></h5><br></br>
-            <h5 style={{color:'blue',fontWeight:800}}> Posted on :<span style={{color:'black'}}>{String(single.created_at).slice(0,10).split("-").reverse().join("-")}</span></h5><br></br>
-            <h5 style={{color:'blue',fontWeight:800}}> Valid on :<span style={{color:'black'}}> {String(single.valid_at).split("-").reverse().join("-")} </span></h5><br></br>
-            <h5 style={{color:'blue',fontWeight:800}}> Rate :<span style={{color:'black'}}>{single.rate}</span></h5><br></br>
-            { single.image  && <div><img style={{width:'100px',height:'100px'}} src={ImageUrl+single.image} /> <img style={{width:'100px',height:'100px'}} src={ImageUrl+single.image1} /><img style={{width:'100px',height:'100px'}} src={ImageUrl+single.image2} /></div> }
-            { single.booked ?  <div>
-            <h5>Booked Person</h5>
-                Name :  {single.booked_person.first_name} {single.booked_person.last_name}<br></br>
-                Eamil :{single.booked_person.email}<br></br>
-                Mobile :{single.booked_person.mobile}<br></br>  
-                </div> :' '}            
-              
+                <VerifyForm   savebtn='Verify'/>
+        
               </DialogContentText>
             </DialogContent>
             <DialogActions>
               <Button onClick={handleClose}>Close</Button>
-           {single.booked ?' ':   <Button onClick={()=>navigate(`editz/${single.id}/`)} autoFocus>
+          {single.booked ?  '':  <Button onClick={()=>navigate(`edit/${single.id}/`)} autoFocus>
               Edit
               </Button> }
             </DialogActions>
@@ -152,12 +135,11 @@ function RentGivingHistory() {
       </Card>
     </Card>
         </div>
-
       </div>
     </Col>
-    </Row>
+    </Row>      
     </div>
   )
 }
 
-export default RentGivingHistory
+export default VerifyService

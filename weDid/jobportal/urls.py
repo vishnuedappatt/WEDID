@@ -26,6 +26,7 @@ urlpatterns = [
     path('all/',BillingRecordsView.as_view(),name='all'),
     path('giving_history_job/',views.Givingjob_history,name='job history'),
     path('taking_history_job/',views.taking_job_history,name='job_taking_history'),
-    # path('editjob/<int:id>/',views.Givingjob_edit,name='giving_job_king'),
+    path('verify_day_user/',views.Givingjob_verify_day,name='giving_job_verify'),
+    path('verify_day_employee/',views.employee_verify_day,name='employee_job_verify'),
         
     ]+router.urls

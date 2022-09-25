@@ -58,8 +58,7 @@ def rentpost(request):
         image1=request.FILES['image1'],
         image2=request.FILES['image2'],
         price_in=request.data['price_in'],
-        valid_at=request.data['date'],
-        
+        valid_at=request.data['date'],        
                   
     )     
     serializer=RentSerializer(job,many=False)
@@ -179,7 +178,7 @@ def singlerentview(request,id):
 @authentication_classes([JWTAuthentications])
 def Giving_rent_history(request):
     user=request.user
-    job=Rent_detail.objects.filter(user__email=user,booked=True)
+    job=Rent_detail.objects.filter(user__email=user)
     serializer=RentSerializer(job,many=True)
     return Response(serializer.data)
 
@@ -194,8 +193,12 @@ class Edit_giving_job(viewsets.ModelViewSet):
 def taking_rent_history(request):
     user=request.user
     print(user,'kkkkkkk')
-    job=Rent_detail.objects.filter(booked_person__email=user,booked=True)
+    job=Rent_detail.objects.filter(booked_person__email=user)
     serializer=RentSerializer(job,many=True)
     return Response(serializer.data)
+  
+  
+  
+
   
   

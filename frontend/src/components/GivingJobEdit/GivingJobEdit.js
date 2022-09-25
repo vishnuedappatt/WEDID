@@ -150,13 +150,11 @@ function GivingJobEdit() {
         await axios.patch(`job/jobz/${id}/`,{
                
                 title:title,
-                discription:discription,
+                discriptions:discription,
                 sub_mobile:sub_mobile,
                 address:address, 
-                place:place,
-                // rate:rate,
-                slug:title,  
-                date:date,        
+                place:place,              
+                valid_at:date,        
               },{
             headers: {
                 Authorization:'Bearer  '+ request

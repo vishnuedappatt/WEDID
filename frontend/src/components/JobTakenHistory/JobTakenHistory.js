@@ -17,11 +17,23 @@ import DialogTitle from '@mui/material/DialogTitle';
 
 function JobTakenHistory() {
 
-
   const [user,setUser]=useState('')
   const navigate=useNavigate()
+
+  let newDate = new Date()
+  let date = newDate.getDate();
+  let month = newDate.getMonth() + 1;
+  let year = newDate.getFullYear();
+
+  let news=`${year}-${month<10?`0${month}`:`${month}`}-${date}`
+  let new_One=String(news).slice(0,10).split("-").reverse().join("-")
+  console.log(news,'dddd',new_One)
+
     useEffect(() => {
      userJobHistory()
+     console.log('hook')
+    
+
     }, [])
     
   
@@ -129,11 +141,13 @@ function JobTakenHistory() {
             <h5 style={{color:'blue',fontWeight:800}}>  discription  :<span style={{color:'black',fontWeight:100,fontSize:'16px'}}>{single.discriptions}</span></h5><br></br>
             <h5 style={{color:'blue',fontWeight:800}}> Posted on :<span style={{color:'black'}}>{String(single.created_at).slice(0,10).split("-").reverse().join("-")}</span></h5><br></br>
             <h5 style={{color:'blue',fontWeight:800}}> Valid on :<span style={{color:'black'}}> {String(single.valid_at).split("-").reverse().join("-")} </span></h5><br></br>
+            <h5 style={{color:'blue',fontWeight:800}}> Rate :<span style={{color:'black'}}>{single.rate}</span></h5><br></br>
             <h5>Hiring Person</h5>
                 Name :  {single.user.first_name} {single.user.last_name}<br></br>
                 Eamil :{single.user.email}<br></br>
                 Mobile :{single.user.mobile}<br></br>              
-                Sub_Mobile :{single.sub_mobile}<br></br>        
+                Sub_Mobile :{single.sub_mobile}<br></br>     
+                {single.valid_at ==news ? console.log('okkk'): console.log('not oke')}   
               </DialogContentText>
             </DialogContent>
             <DialogActions>

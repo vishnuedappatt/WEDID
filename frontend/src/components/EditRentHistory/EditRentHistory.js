@@ -201,7 +201,7 @@ const [image,setImage]=useState()
             
               rentData.append('price_in',pricein)
               rentData.append('title',title)
-              rentData.append('date',date)
+              rentData.append('valid_at',date)
                 console.log('oke',id)
                 await axios.patch(`rent/rents/${id}/`,rentData,{
                     headers: {

@@ -6,7 +6,11 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-
+import axios from '../../axios';
+// for badge
+import Badge from '@mui/material/Badge';
+import Stack from '@mui/material/Stack';
+import MailIcon from '@mui/icons-material/Mail'
 
 function ListSideBar({val}) {
     const [color,setColor]=useState('white')
@@ -15,6 +19,50 @@ function ListSideBar({val}) {
     const [color3,setColor3]=useState('white')
     const [color4,setColor4]=useState('white')
     const [color5,setColor5]=useState('white')
+
+    const [single,setSingle]=useState('')
+    const [leng,setLen]=useState('')
+    const [lengz,setLengz]=useState('')
+    useEffect(() => {
+    userSingleJobHistory()
+    userSingle()
+    }, [])
+    
+     // user datas
+     const userSingleJobHistory=async(id)=>{   
+      let request=(JSON.parse(localStorage.getItem('token')))  
+      console.log(id,'ddd')
+     await axios.get(`job/verify_day_user/`,{
+          headers: {
+              Authorization:'Bearer '+ request
+            }
+      }).then((res)=>{
+        setSingle(res.data)
+          console.log(res.data,'count')
+          console.log(res.data.length,'jkjkj')
+          setLengz(res.data.length)
+        
+      })
+  }
+
+  // / user datas
+     const userSingle=async(id)=>{   
+      let request=(JSON.parse(localStorage.getItem('token')))  
+      console.log(id,'ddd')
+     await axios.get(`job/verify_day_employee/`,{
+          headers: {
+              Authorization:'Bearer '+ request
+            }
+      }).then((res)=>{
+        setSingle(res.data)
+          console.log(res.data,'count')
+          console.log(res.data.length,'jkjkj')
+          setLen(res.data.length)
+        
+      })
+  }
+ 
+
 
 
     useEffect(() => {
@@ -106,12 +154,26 @@ function ListSideBar({val}) {
           <Link style={{'backgroundColor':'black' ,'color':color4,'textDecoration':'none','textAlign':'center','fontSize':'22px'}} className='mt-5'  to="/takenrents">Taked Rents</Link>
             
           </Typography>
+          <Typography>
+         
+                </Typography>
         </AccordionDetails>
       </Accordion>
-       
-        {/* <Link style={{'backgroundColor':'black' ,'color':color1,'textDecoration':'none','textAlign':'center','fontSize':'22px'}} className='mt-5'   to="/jobhistory">Job History</Link> */}
-        {/* <Link style={{'backgroundColor':'black' ,'color':color2,'textDecoration':'none','textAlign':'center','fontSize':'22px'}}className='mt-5'   to="/renthistory">Rent History</Link> */}
-        {/* <Link style={{'backgroundColor':'black' ,'color':color5,'textDecoration':'none','textAlign':'center','fontSize':'22px'}} className='mt-5'   to="/editprofile">ProfilEdit </Link>              */}
+      <Stack spacing={2} direction="row">
+        <Link style={{'backgroundColor':'black' ,'color':color1,'textDecoration':'none','textAlign':'center','fontSize':'22px'}} className='mt-5'   to="/profile/verify">Today Service Manager</Link>
+    
+        {leng &&  <Badge className='mt-5' badgeContent={leng} color="secondary">
+            <MailIcon color="primary" />
+          </Badge>   }     
+        </Stack>
+        <Stack spacing={2} direction="row">
+        <Link style={{'backgroundColor':'black' ,'color':color1,'textDecoration':'none','textAlign':'center','fontSize':'22px'}} className='mt-5'   to="/profile/verifier">Today Task Provider </Link>
+    
+          <Badge className='mt-5' badgeContent={lengz} color="secondary">
+            <MailIcon color="primary" />
+          </Badge>           
+        </Stack>      
+     
     </ListGroup>
     </div>
   )
