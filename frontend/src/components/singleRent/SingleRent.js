@@ -62,94 +62,80 @@ function SingleRent() {
  const handleClose = () => setShow(false);
  const handleShow = () => setShow(true)
 
+// common modal
+const [showz, setShowz] = useState(false);
+const handleClosez = () => setShowz(false);
+const handleShowz = () => setShowz(true)
 
 
 
 
 // payment section
-
 const [name, setName] = useState("");
 const [amount, setAmount] = useState("");
 const [payment_id,setPaymentId]=useState("")
 const [payed,setPayed]=useState(false)
+
 // this function will handel payment when user submit his/her money
 // and it will confim if payment is successfull or not
 const handlePaymentSuccess = async (response) => {
   try {
     let bodyData = new FormData();
-    console.log(response,'its response')
+
     // we will send the response we've got from razorpay to the backend to validate the payment
     bodyData.append("response", JSON.stringify(response));
-    console.log(response,'its response')
-    let request=(JSON.parse(localStorage.getItem('token')))  
-    axios.post('payment/payment/success/',{
-      response:response
-    },{
-        headers: {
-            Authorization:'Bearer '+ request
-          }
-    }).then((res) => {
-      console.log(res)
-      console.log("Everything is OK!");
-     
-      console.log(res.data.message)
-      localStorage.setItem('message',JSON.stringify(res.data.message))
-      setPayed(true)
-      handleClose()
-      setName("");
-      setAmount("");
+
+   let request=(JSON.parse(localStorage.getItem('token')))  
+   
+    await axios.post('payment/payment/success/',bodyData,{headers:{Authorization:'Bearer '+request}})
+      .then((res) => {
+        console.log("Everything is OK!");
+           console.log(res.data.message)
+        localStorage.setItem('message',JSON.stringify(res.data.message))
+        setPayed(true)     
+        setName("");
+        setAmount("");
+        handleClosez()
+      })
+    }catch(error){
+    console.log(console.error())
+  }
+}
  
-    })
-    .catch((err) => {
-      console.log(err);
-        });
-    } catch (error) {
-      console.log(console.error());
-    }
-  };
 
-
+// this will load a script tag which will open up Razorpay payment card to make //transactions
 const loadScript = () => {
   const script = document.createElement("script");
   script.src = "https://checkout.razorpay.com/v1/checkout.js";
   document.body.appendChild(script);
 };
 
-const showRazorpay = async (e) => {
-  e.preventDefault()
+const showRazorpay = async () => {
   const res = await loadScript();
+
   let bodyData = new FormData();
 
   // we will pass the amount and product name to the backend using form data
-  bodyData.append("amount", amount.toString());
+  bodyData.append("amount", 50);
   bodyData.append("name", name);
 
   let request=(JSON.parse(localStorage.getItem('token')))  
-  const data = axios.post('payment/pay/',{
-    name:rent.ordernumber ,
-    amount:50,
-  },{
-      headers: {
-          Authorization:'Bearer '+ request
-        }
-  }).then((res) => {
-    console.log(res.data,'its data')
-    console.log(res.data.order.order_payment_id)      
-    setPaymentId(res.data.order.order_payment_id)
+  const data = await axios.post('payment/pay/',bodyData,{headers:{Authorization:'Bearer  ' +request}}).then((res) => {
     return res;
   });
-  console.log(data)
 
- 
+  // in data we will receive an object from the backend with the information about the payment
+  //that has been made by the user
+
   var options = {
-    key_id:'rzp_test_xzSR2pt2eeMFXF' , 
-    key_secret:'GP3DxufqQIsdwOTTaTdR1OuS',
-    amount: amount,
+    key_id: process.env.REACT_APP_PUBLIC_KEY, // in react your environment variable must start with REACT_APP_
+    key_secret: process.env.REACT_APP_SECRET_KEY,
+    amount: data.data.payment.amount,
     currency: "INR",
     name: "Org. Name",
     description: "Test teansaction",
-    image: "", 
-    order_id:payment_id,  
+    image: "", // add image url
+    order_id: data.data.payment.id,
     handler: function (response) {
       // we will handle success by calling handlePaymentSuccess method and
       // will pass the response that we've got from razorpay
@@ -167,10 +153,10 @@ const showRazorpay = async (e) => {
       color: "#3399cc",
     },
   };
+
   var rzp1 = new window.Razorpay(options);
   rzp1.open();
 };
-
 
 
 // / final submit
@@ -195,7 +181,7 @@ const showRazorpay = async (e) => {
   <div align='center'>
     {rent &&  <div className='container'>      
        <Card style={{borderBottomLeftRadius:'150px',borderTopRightRadius:'150px'}}>
-       <CommonModal message={'are you sure to get this service'} modalHeading={'Confirmation for service'} btnsave={'confirm to get this '} fncall={showRazorpay} show={show} onHide={handleClose}/>
+       <CommonModal message={'are you sure to get this service'} modalHeading={'Confirmation for service'} btnsave={'confirm to get this '} fncall={showRazorpay} show={showz} onHide={handleClosez}/>
        <Carousel activeIndex={index} onSelect={handleSelect}>
       <Carousel.Item>
         <img
@@ -243,7 +229,7 @@ const showRazorpay = async (e) => {
         <CommonModal message={rent.discriptions} modalHeading={'Discription and rules'} btnsave={''} show={show} onHide={handleClose}/>
         {/* <Card.Text >{rent.discriptions}</Card.Text> */}
         </div> }
-       {payed ? <Button  onClick={finalsubmit} variant="outline-dark">Get this Item</Button> : <Button style={{height:'60px',marginTop:'20px'}} onClick={handleShow} className='h-5' variant="danger">Make Payment</Button>}
+       {payed ? <Button  onClick={finalsubmit} variant="outline-dark">Get this Item</Button> : <Button style={{height:'60px',marginTop:'20px'}} onClick={handleShowz} className='h-5' variant="danger">Make Payment</Button>}
       </Card.Body>
     </Card>
         </div>}

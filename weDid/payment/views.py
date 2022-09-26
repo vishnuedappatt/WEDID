@@ -18,9 +18,11 @@ from rentportal.serializer import RentSerializer
 @api_view(['POST'])
 @authentication_classes([JWTAuthentications])
 def start_payment(request):   
+    data=request.data
+    print(data)
     amount = request.data['amount']
     name = request.data['name']    
-   
+    print(amount,'kkkkkk')
     client = razorpay.Client(auth=(settings.RAZORPAY_PUBLIC_KEY,settings.RAZORPAY_SECRET_KEY))
 
     # create razorpay order
@@ -59,8 +61,9 @@ def start_payment(request):
 @authentication_classes([JWTAuthentications])
 def handle_payment_success(request):
     # request.data is coming from frontend
-    # res = json.loads(request.data["response"])
-    res=request.data['response']
+    res = json.loads(request.data["response"])
+    # res=request.data['response']
+    
     print(res,'response is hweww')
 
     """res will be:

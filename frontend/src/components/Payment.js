@@ -2,42 +2,34 @@ import React,{useState} from 'react'
 import axios from '../axios'
 
 function Payment() {
-
   const [name, setName] = useState("");
   const [amount, setAmount] = useState("");
-  const [payment_id,setPaymentId]=useState("")
+ 
+
 // this function will handel payment when user submit his/her money
 // and it will confim if payment is successfull or not
   const handlePaymentSuccess = async (response) => {
     try {
       let bodyData = new FormData();
-      console.log(response,'its response')
+
       // we will send the response we've got from razorpay to the backend to validate the payment
       bodyData.append("response", JSON.stringify(response));
-      console.log(response,'its response')
-      let request=(JSON.parse(localStorage.getItem('token')))  
-      axios.post('payment/payment/success/',{
-        response:response
-      },{
-          headers: {
-              Authorization:'Bearer '+ request
-            }
-      }).then((res) => {
-        console.log(res)
-        console.log("Everything is OK!");
-        console.log(res.data.message)
-        setName("");
-        setAmount("");
-      })
-      .catch((err) => {
-        console.log(err);
-          });
-      } catch (error) {
-        console.log(console.error());
-      }
-    };
-
  
+     let request=(JSON.parse(localStorage.getItem('token')))  
+     
+      await axios.post('payment/payment/success/',bodyData,{headers:{Authorization:'Bearer '+request}})
+        .then((res) => {
+          console.log("Everything is OK!");
+          setName("");
+          setAmount("");
+        })
+      }catch(error){
+      console.log(console.error())
+    }
+  }
+   
+
+  // this will load a script tag which will open up Razorpay payment card to make //transactions
   const loadScript = () => {
     const script = document.createElement("script");
     script.src = "https://checkout.razorpay.com/v1/checkout.js";
@@ -46,38 +38,30 @@ function Payment() {
 
   const showRazorpay = async () => {
     const res = await loadScript();
+
     let bodyData = new FormData();
 
     // we will pass the amount and product name to the backend using form data
     bodyData.append("amount", amount.toString());
     bodyData.append("name", name);
- 
+  
     let request=(JSON.parse(localStorage.getItem('token')))  
-    const data = axios.post('payment/pay/',{
-      name:name ,
-      amount:amount,
-    },{
-        headers: {
-            Authorization:'Bearer '+ request
-          }
-    }).then((res) => {
-      console.log(res.data)
-      console.log(res.data.order.order_payment_id)      
-      setPaymentId(res.data.order.order_payment_id)
+    const data = await axios.post('payment/pay/',bodyData,{headers:{Authorization:'Bearer  ' +request}}).then((res) => {
       return res;
     });
-    console.log(data,'isthedata')
 
-   
+    // in data we will receive an object from the backend with the information about the payment
+    //that has been made by the user
+
     var options = {
-      key_id:'rzp_test_xzSR2pt2eeMFXF' , 
-      key_secret:'GP3DxufqQIsdwOTTaTdR1OuS',
-      amount: amount,
+      key_id: process.env.REACT_APP_PUBLIC_KEY, // in react your environment variable must start with REACT_APP_
+      key_secret: process.env.REACT_APP_SECRET_KEY,
+      amount: data.data.payment.amount,
       currency: "INR",
       name: "Org. Name",
       description: "Test teansaction",
-      image: "", 
-      order_id:payment_id,  
+      image: "", // add image url
+      order_id: data.data.payment.id,
       handler: function (response) {
         // we will handle success by calling handlePaymentSuccess method and
         // will pass the response that we've got from razorpay
@@ -95,18 +79,18 @@ function Payment() {
         color: "#3399cc",
       },
     };
+
     var rzp1 = new window.Razorpay(options);
     rzp1.open();
   };
-  return (
-    <div>
 
-<div className="container" style={{ marginTop: "20vh" }}>
+  return (
+    <div className="container" style={{ marginTop: "20vh" }}>
       <form>
-        <h1 style={{color:'white'}}>Payment page</h1>
+        <h1>Payment page</h1>
 
         <div className="form-group">
-          <label htmlFor="name" style={{color:'white'}}>Product name</label>
+          <label htmlFor="name">Product name</label>
           <input
             type="text"
             className="form-control"
@@ -116,7 +100,7 @@ function Payment() {
           />
         </div>
         <div className="form-group">
-          <label htmlFor="exampleInputPassword1" style={{color:'white'}}>Amount</label>
+          <label htmlFor="exampleInputPassword1">Amount</label>
           <input
             type="text"
             className="form-control"
@@ -130,8 +114,7 @@ function Payment() {
         Pay with razorpay
       </button>
     </div>
-    </div>
-  )
+  );
 }
 
-export default Payment
+export default Payment;

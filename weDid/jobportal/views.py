@@ -17,7 +17,7 @@ from rest_framework import viewsets
 from . import serializer
 from django_filters import rest_framework as filters
 from user.verify import send,check
-
+from rest_framework  import status
 
 # Create your views here.
 
@@ -300,7 +300,7 @@ def Givingjob_verify_day(request):
     return Response(serializer.data)
   
   
-  # day for verify table
+# day for verify table
 @api_view(['GET'])
 @authentication_classes([JWTAuthentications])
 def employee_verify_day(request):
@@ -322,6 +322,7 @@ def verify_data(request,number):
 
 
 
+
 # staring job verification
 @api_view(['POST'])
 @authentication_classes([JWTAuthentications])
@@ -340,5 +341,97 @@ def start_verify_data(request):
     return Response(serializer.data)
     
     
+    
+# staring job verification
+@api_view(['POST'])
+@authentication_classes([JWTAuthentications])
+def start_verify_check(request):
+    data=request.data
+    number=data['number']
+    print(number,'uuuuupopp')
+    code=data['otp']
+    print(code,'jkjkjkj')
+    verify=JobVerification.objects.get(order_number=number)
+    mobile=verify.mobile
+    if check(mobile,code):  
+        verify.start_verify=True
+        verify.save()
+        serializer=JobVerificationSerializer(verify,many=False)
+        return Response(serializer.data)
+    else:
+        message={'error':'otp is not valid'}
+        return Response(message,status=status.HTTP_400_BAD_REQUEST)
 
 
+# staring job verification
+@api_view(['POST'])
+@authentication_classes([JWTAuthentications])
+def end_verify_data(request):
+    data=request.data
+    number=data['number'] 
+    verify=JobVerification.objects.get(order_number=number)
+    mobile=verify.mobile
+    print(mobile,'mobile')
+    send(mobile)
+    verify.end_otp=True
+    verify.save()
+    serializer=JobVerificationSerializer(verify,many=False)
+    return Response(serializer.data)
+     
+    
+# staring job verification
+@api_view(['POST'])
+@authentication_classes([JWTAuthentications])
+def end_verify_check(request):
+    data=request.data
+    number=data['number']
+    code=data['otp']
+    verify=JobVerification.objects.get(order_number=number)
+    mobile=verify.mobile
+    if check(mobile,code):  
+        verify.end_verify=True
+        verify.save()
+        serializer=JobVerificationSerializer(verify,many=False)
+        return Response(serializer.data)
+    else:
+        message={'error':'otp is not valid'}
+        return Response(message,status=status.HTTP_400_BAD_REQUEST)
+
+
+# total exp of service
+@api_view(['POST'])
+@authentication_classes([JWTAuthentications])
+def total_giving_expense(request):
+    user=request.user
+    mobile=user.mobile
+    print(mobile)
+    job=JobVerification.objects.filter(mobile=mobile,end_verify=True)
+    print(job)
+    sum=0
+    for i in job:
+        print(i.order_number)
+        exp=Job_Detail.objects.get(ordernumber=i.order_number)
+        print(exp.rate)
+        sum=sum+exp.rate  
+    # serializer=JobVerificationSerializer(job,many=True)
+    return Response({'count':sum})
+  
+
+
+# total revenuew of service
+@api_view(['POST'])
+@authentication_classes([JWTAuthentications])
+def total_revenue(request):
+    user=request.user
+    job=Job_Detail.objects.filter(booked_person__email=user)
+    sum=0
+    for i in job:
+        print(i.ordernumber)
+        reve= JobVerification.objects.filter(order_number= i.ordernumber).exists()
+        if reve:
+            revenue= JobVerification.objects.get(order_number= i.ordernumber)
+            if revenue.end_verify:
+                sum=sum+i.rate
+    return Response({'count':sum})
+        
+   

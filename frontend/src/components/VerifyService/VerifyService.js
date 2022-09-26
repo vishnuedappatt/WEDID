@@ -14,6 +14,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import VerifyForm from '../common/Form/VerifyForm';
+import ReactLoading from 'react-loading';
 
 function VerifyService() {
 
@@ -42,19 +43,6 @@ function VerifyService() {
       })
   }
 
-// verifications datas
-    const VerifyData=async(number)=>{   
-      let request=(JSON.parse(localStorage.getItem('token')))  
-
-    await axios.get(`job/verifydata/${number}/`,{
-          headers: {
-              Authorization:'Bearer '+ request
-            }
-      }).then((res)=>{
-          console.log(res.data,'verify ane')
-          
-      })
-    }
 
   const [open, setOpen] = React.useState(false);
 
@@ -62,6 +50,7 @@ function VerifyService() {
     setOpen(true);
     userSingleJobHistory(id)
     VerifyData(number)
+    setOrder(number)
 
   };
 
@@ -90,6 +79,64 @@ function VerifyService() {
 }
 
 
+
+const [verify,setVerify]=useState('')
+// verifications datas
+const VerifyData=async(number)=>{   
+  let request=(JSON.parse(localStorage.getItem('token')))  
+
+await axios.get(`job/verifydata/${number}/`,{
+      headers: {
+          Authorization:'Bearer '+ request
+        }
+  }).then((res)=>{
+      console.log(res.data,'verify ane')
+      setVerify(res.data)
+      
+      
+  })
+}
+
+const [startVerified,setStartVerified]=useState(false)
+
+const [code,setCode]=useState('')
+const [order,setOrder]=useState('')
+// sent otp
+const otpVerify=async(number)=>{   
+  let request=(JSON.parse(localStorage.getItem('token')))  
+  setStartVerified(true)
+await axios.post('job/start_otp_check/',{number:order,otp:code},{
+      headers: {
+          Authorization:'Bearer '+ request
+        }
+  }).then((res)=>{
+      console.log(res.data,'verify ') 
+      console.log(res.data)  
+      VerifyData(order)
+      setStartVerified(false)
+  }).catch((err)=>{
+  
+  })
+}
+// sent otp
+const endOtpVerify=async()=>{   
+  let request=(JSON.parse(localStorage.getItem('token')))  
+  setStartVerified(true)
+await axios.post('job/end_otp_check/',{number:order,otp:code},{
+      headers: {
+          Authorization:'Bearer '+ request
+        }
+  }).then((res)=>{
+      console.log(res.data,'verify ') 
+      console.log(res.data)  
+      VerifyData(order)
+      setStartVerified(false)
+  })
+}
+
+const Example = ({ type, color }) => (
+  <ReactLoading type={type} color={color} height={'20%'} width={'20%'} />
+);
 
   return (
     <div>
@@ -128,7 +175,8 @@ function VerifyService() {
          )}       
       </tbody>
     </Table>
-        {single &&  <Dialog
+        {single && 
+         <Dialog
               // style={{width:'900px'}} 
             open={open}
             onClose={handleClose}
@@ -140,8 +188,49 @@ function VerifyService() {
             </DialogTitle>
             <DialogContent>
               <DialogContentText style={{color:'black'}} id="alert-dialog-description">
-                <VerifyForm   savebtn='Verify'/>
-        
+              <div>             
+                 {/* {(verify.start_otp && verify.end_otp) && <span>employee waiting of your response</span> } */}
+                  {/* {(verify.start_verify || !verify.end_otp ) ? <span>Job started  ,waiting of Employer response</span> :' '}  */}
+                </div> 
+
+         
+                
+               {(verify.start_otp  )?
+                 <div>     
+                             
+                  {(verify.start_verify ) ?
+                  <div>{
+                    verify.end_verify ?   
+                    <div>
+                      {verify.job_end ?  <span style={{color:'green'}}> Money will credit to Employee account Successfully  !!</span> :
+                           <span>Job Completed successfully !! Money will credit to Employee account  with in few hours</span> 
+                      }
+                          
+                    </div> 
+                 
+                     :    <span>Job started !!!! You are waiting for employer confirmation </span> 
+                    }
+                     
+                  </div>
+                 :
+                    <div>
+                       <span>Please enter the otp you get</span> 
+                        <VerifyForm  save={otpVerify} set1={setCode} data1={code}  savebtn='Verify'/>
+                        { startVerified &&   <Example  type='bars' color='red'/> }
+                    </div>
+                       } 
+
+                </div> 
+                : <span>waiting for  employer response  !!!</span>} 
+                      {(verify.end_otp  )?
+                 <div>
+                  {(!verify.end_verify ) ?
+                  <VerifyForm  save={endOtpVerify} set1={setCode} data1={code}  savebtn='job complete Verify'/> :'' } 
+                     { startVerified &&   <Example  type='bars' color='red'/> }
+
+                </div> 
+                : ''} 
+                
               </DialogContentText>
             </DialogContent>
             <DialogActions>

@@ -209,10 +209,8 @@ def alluser(request):
 
 @api_view(['POST'])
 def refresh(request):
-    print('wooe')
     data=request.data
     refresh=data['refresh']
-    # refresh_token=request.COOKIES.get('refresh_token')
     id=decode_refresh_token(refresh)
     if not UserToken.objects.filter(
         user_id=id,

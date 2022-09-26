@@ -15,6 +15,7 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Countdown from 'react-countdown';
 import Chip from '@mui/material/Chip';
+import ReactLoading from 'react-loading';
 
 function VerifyServiceEmploye() {
 
@@ -51,16 +52,34 @@ function VerifyServiceEmploye() {
     setOpen(false);
   };
 
+
   // showing counter
   const [count,setCount]=useState(false)
 
   const handleSubmit=(id,number)=>{
     console.log(id)
-    setCount(true)
     otpSenting(number)
+    setCount(true)
+   
 
     setTimeout(()=>{
       setCount(false);
+      setView(false)
+  }, 100000);
+  
+  }
+
+
+
+  const endSubmit=(id,number)=>{
+    console.log(id)
+    endOtp(number)
+    setCount(true)
+   
+
+    setTimeout(()=>{
+      setCount(false);
+      setView(false)
   }, 100000);
   
   }
@@ -73,7 +92,7 @@ function VerifyServiceEmploye() {
    // user datas
    const userSingleJobHistory=async(id)=>{   
     let request=(JSON.parse(localStorage.getItem('token')))  
-    console.log(id,'ddd')
+
    await axios.get(`job/singlejob/${id}/`,{
         headers: {
             Authorization:'Bearer '+ request
@@ -94,10 +113,14 @@ await axios.get(`job/verifydata/${number}/`,{
         }
   }).then((res)=>{
       console.log(res.data,'verify ane')
+      setVerify(res.data)
+      
       
   })
 }
 
+  const [verify,setVerify]=useState('')
+  const [view,setView]=useState(false)
 // sent otp
 const otpSenting=async(number)=>{   
   let request=(JSON.parse(localStorage.getItem('token')))  
@@ -107,12 +130,34 @@ await axios.post('job/start_verify/',{number:number},{
           Authorization:'Bearer '+ request
         }
   }).then((res)=>{
-      console.log(res.data,'verify ane')
+      console.log(res.data,'verify ')
+     setCount(false)
       VerifyData(number)
-
+      setView(true)
       
   })
 }
+
+
+// sent otp
+const endOtp=async(number)=>{   
+  let request=(JSON.parse(localStorage.getItem('token')))  
+
+await axios.post('job/end_verify/',{number:number},{
+      headers: {
+          Authorization:'Bearer '+ request
+        }
+  }).then((res)=>{
+      console.log(res.data,'verify ')
+     setCount(false)
+      VerifyData(number)
+      setView(true)
+      
+  })
+}
+const Example = ({ type, color }) => (
+    <ReactLoading type={type} color={color} height={'20%'} width={'20%'} />
+);
 
   return (
     <div>
@@ -124,7 +169,7 @@ await axios.post('job/start_verify/',{number:number},{
       <div style={{'height':'60vh','backgroundColor':'black'}}>
       <div style={{'height':'60vh','backgroundColor':'white '}}>
           <Card sx={{ minWidth:'30%', maxWidth:'100%' ,padding:'50px'}}> 
-            {/* <Button onClick={()=>navigate('addUser')} variant="contained">Add User</Button> */}
+       
       <Card>
       <Table striped>
       <thead>
@@ -153,8 +198,7 @@ await axios.post('job/start_verify/',{number:number},{
          )}       
       </tbody>
     </Table>
-        {single &&  <Dialog
-              // style={{width:'900px'}} 
+        {single &&  <Dialog      
             open={open}
             onClose={handleClose}
             aria-labelledby="alert-dialog-title"
@@ -164,13 +208,46 @@ await axios.post('job/start_verify/',{number:number},{
               {"Details"}
             </DialogTitle>
             <DialogContent>
-              <DialogContentText style={{color:'black'}} id="alert-dialog-description">
-               <h5>Please Make sure that this verification OTP sent to employer and OTP verified by employer in 5 min</h5>
-                <div align='center'>
-                
-               {count ?  <Chip label={<Countdown date={Date.now() + 100000} />} color="error" variant="contained" ></Chip>:  <Button variant="contained"  onClick={()=>handleSubmit(single.mobile,single.ordernumber)} color='success'>sent OTP</Button> }
+              <DialogContentText style={{color:'black'}} id="alert-dialog-description">   
+              
+             
+               { verify.start_otp ? 
+                <div align='center'>   
+                { verify.start_verify ? <div> 
+                  {verify.end_otp ? <div>
+                    {/* <Button variant="contained"  onClick={()=>handleSubmit(single.mobile,single.ordernumber)} color='success'>Complete job sent OTP</Button>  */}
+                    <div>
+                      { verify.end_verify ?
+                      <div>
+                        { verify.job_end ?<span style={{color:'green'}}> Money will credit your account Success fully </span> :
+                        <span>Congragulations !!!! you are completed this Service Money will credit your account </span>
+                         }
+                      </div>
+                    :
+                    <span>waiting for employer response </span> }
+                    </div>
                  
-                </div>
+                  </div>:
+                  <div>
+                  <span>Start the job  Successfully , finish the job enter the button for verifications </span>                  
+                 
+                  {count ?   <Example  type='bars' color='red'/>
+          :  <Button variant="contained"  onClick={()=>endSubmit(single.mobile,single.ordernumber)} color='success'>End of job </Button> }        
+                  </div>}
+                  </div>  :
+                  <span>OTP sent Successfully , your employer is waiting for response </span>
+                }
+                </div> :
+               <div align='center'>                    
+                  <h5>Please Make sure that this verification OTP sent to employer and OTP verified by employer in 5 min   </h5>          
+               {count ?   <Example  type='bars' color='red'/>
+          :  <Button variant="contained"  onClick={()=>handleSubmit(single.mobile,single.ordernumber)} color='success'>sent OTP</Button> }                  
+                </div> 
+                }
+                <div align='center'>
+                { view   ?  <Chip label={<Countdown date={Date.now() + 100000} />} color="error" variant="contained" ></Chip> :''}
+                </div>             
+             
               </DialogContentText>
             </DialogContent>
             <DialogActions>

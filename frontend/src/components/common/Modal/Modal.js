@@ -14,9 +14,9 @@ const  CommonModal=({show,message,onHide,btnsave,modalHeading,fncall}) =>{
           <Button variant="secondary" onClick={onHide}>
             Close
           </Button>
-          <Button variant="primary" onClick={fncall}>
+     {btnsave ?     <Button variant="primary" onClick={fncall}>
             {btnsave}
-          </Button>
+          </Button> : ' '}
         </Modal.Footer>
       </Modal>
     </>

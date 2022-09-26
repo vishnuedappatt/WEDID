@@ -7,6 +7,7 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import axios from '../../axios';
+import Button from '@mui/material/Button';
 // for badge
 import Badge from '@mui/material/Badge';
 import Stack from '@mui/material/Stack';
@@ -118,9 +119,9 @@ function ListSideBar({val}) {
 
   return (
     <div>
-         <ListGroup className='p-5' style={{'height':'60vh','backgroundColor':'black'}}>
-         <Link style={{'backgroundColor':'black' ,'color':color,'textDecoration':'none','textAlign':'center','fontSize':'22px'}} className='mt-5'  to="/profile">Profile</Link>
-         <Accordion >
+         <ListGroup className='p-5' style={{'height':'65vh','backgroundColor':'black'}}>
+         <Link style={{'backgroundColor':'black' ,'color':color,'textDecoration':'none','textAlign':'center','fontSize':'22px'}} className='mt-2'  to="/profile">   <Button  variant="contained" color='warning' fullWidth >Profile</Button></Link>
+         <Accordion className='mt-4'>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel1a-content"
@@ -138,7 +139,7 @@ function ListSideBar({val}) {
           </Typography>
         </AccordionDetails>
       </Accordion>
-      <Accordion className='mt-5'>
+      <Accordion className='mt-4'>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel1a-content"
@@ -159,22 +160,22 @@ function ListSideBar({val}) {
                 </Typography>
         </AccordionDetails>
       </Accordion>
-      <Stack spacing={2} direction="row">
-        <Link style={{'backgroundColor':'black' ,'color':color1,'textDecoration':'none','textAlign':'center','fontSize':'22px'}} className='mt-5'   to="/profile/verify">Today Service Manager</Link>
-    
-        {leng &&  <Badge className='mt-5' badgeContent={leng} color="secondary">
+   
+        <Link style={{'backgroundColor':'black' ,'color':color1,'textDecoration':'none','textAlign':'center','fontSize':'22px'}} className='mt-5'   to="/profile/verify"><Button  variant="contained" style={{backgroundColor:'white',color:'black',width:'100%'}} fullWidth >Today Service Manager 
+        {leng &&  <Badge className='ml-2' badgeContent={leng} color="secondary">
             <MailIcon color="primary" />
-          </Badge>   }     
-        </Stack>
-        <Stack spacing={2} direction="row">
-        <Link style={{'backgroundColor':'black' ,'color':color1,'textDecoration':'none','textAlign':'center','fontSize':'22px'}} className='mt-5'   to="/profile/verifier">Today Task Provider </Link>
-    
-          <Badge className='mt-5' badgeContent={lengz} color="secondary">
+          </Badge>   }     </Button></Link>
+                    
+        <Link style={{'backgroundColor':'black' ,'color':color1,'textDecoration':'none','textAlign':'center','fontSize':'22px'}} className='mt-5'   to="/profile/verifier"><Button  variant="contained" style={{backgroundColor:'white',color:'black'}} fullWidth >Today Task Provider   <Badge className='' badgeContent={lengz} color="secondary">
             <MailIcon color="primary" />
-          </Badge>           
-        </Stack>      
-     
-    </ListGroup>
+          </Badge>    
+        </Button></Link>
+        <Link style={{'backgroundColor':'black' ,'color':color1,'textDecoration':'none','textAlign':'center','fontSize':'22px'}}   to="/profile/trans">
+        <Button className='mt-5'  variant="contained" style={{backgroundColor:'primary',color:'white'}} fullWidth >Total Service transactions </Button>
+        </Link>
+       
+                 
+      </ListGroup>
     </div>
   )
 }

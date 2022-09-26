@@ -31,6 +31,13 @@ urlpatterns = [
     path('verify_day_employee/',views.employee_verify_day,name='employee_job_verify'),
     
     path('verifydata/<str:number>/',views.verify_data,name='verifydata'),
-    path('start_verify/',views.start_verify_data,name='start_verify')
+    path('start_verify/',views.start_verify_data,name='start_verify'),
+    path('start_otp_check/',views.start_verify_check,name='start_verify_check'),
+    path('end_verify/',views.end_verify_data,name='end_verify'),
+    path('end_otp_check/',views.end_verify_check,name='end_verify_check'),
+    
+    
+    path('giving_exp/',views.total_giving_expense,name='toal_exp'),
+     path('revenue/',views.total_revenue,name='toal_reve'),
         
     ]+router.urls
