@@ -138,8 +138,9 @@ function GivingService() {
 
 //  getting category id and get and show
 
-  const cityGetting=async(id)=>{   
+  const cityGetting=async(id,name)=>{   
             setDistrict(id)
+            setDis(name)
         let request=(JSON.parse(localStorage.getItem('token')))  
     await axios.get(`job/showcity/${id}/`,{
             headers: {
@@ -169,12 +170,18 @@ function GivingService() {
   const [rateErr, setRateError] = useState({})
   const[dateErr,setDateError]=useState({})
 
-    const checkCate=(id)=>{
+
+  const [ca,setCa]=useState('')
+  const [dis,setDis]=useState('')
+  const [ci,setCi]=useState('')
+    const checkCate=(id,name)=>{
         setCategory(id)
+         setCa(name)
     }
 
-    const checkCity=(id)=>{        
+    const checkCity=(id,name)=>{        
         setCity(id)
+        setCi(name)
     }
 
     // for submitting
@@ -370,6 +377,8 @@ const handlePaymentSuccess = async (response) => {
 
     // we will send the response we've got from razorpay to the backend to validate the payment
     bodyData.append("response", JSON.stringify(response));
+    bodyData.append("typez",'job')
+
 
    let request=(JSON.parse(localStorage.getItem('token')))  
    
@@ -429,6 +438,8 @@ const showRazorpay = async (e) => {
 
   let order_number=(JSON.parse(localStorage.getItem('order_number'))) 
   bodyData.append("name",order_number.toString());
+  bodyData.append("typez",'job')
+  bodyData.append("buyer",'no')
 
   let request=(JSON.parse(localStorage.getItem('token')))  
   const data = await axios.post('payment/pay/',bodyData,{headers:{Authorization:'Bearer '+request}}).then((res) => {
@@ -471,130 +482,6 @@ const showRazorpay = async (e) => {
 
 
 
-// // payment section
-// const [salary,setSalary]=useState('')
-// const [name, setName] = useState("");
-// const [amount, setAmount] = useState("");
-// const [payment_id,setPaymentId]=useState("")
-// // this function will handel payment when user submit his/her money
-// // and it will confim if payment is successfull or not
-// const handlePaymentSuccess = async (response) => {
-//   try {
-//     let bodyData = new FormData();
-    
-//     console.log(response,'its response')
-//     // we will send the response we've got from razorpay to the backend to validate the payment
-//     bodyData.append("response", JSON.stringify(response));
-//     console.log(response,'its response')
-//     let request=(JSON.parse(localStorage.getItem('token')))  
-//     axios.post('payment/payment/success/',{
-//       response:response
-//     },{
-//         headers: {
-//             Authorization:'Bearer '+ request
-//           }
-//     }).then((res) => {
-//       console.log(res)
-//       console.log("Everything is OK!");
-//       handleClicks()
-//       console.log(res.data.message)
-//       localStorage.setItem('message',JSON.stringify(res.data.message))
-//       setPayed(true)
-//       setSubmit(false)
-//       setName("");
-//       setAmount("");
-//     })
-//     .catch((err) => {
-//       console.log(err);
-//         });
-//     } catch (error) {
-//       console.log(console.error());
-//     }
-//   };
-
-
-// const loadScript = () => {
-//   const script = document.createElement("script");
-//   script.src = "https://checkout.razorpay.com/v1/checkout.js";
-//   document.body.appendChild(script);
-// };
-
-// const showRazorpay = async (e) => {
-//   e.preventDefault()
-//   const res = await loadScript();
-//   let bodyData = new FormData();
-
-//   // we will pass the amount and product name to the backend using form data
-//   bodyData.append("amount", amount.toString());
-//   bodyData.append("name", name);
-//   let rate=(JSON.parse(localStorage.getItem('rate'))) 
-//   console.log(rate,'its rate')
-//   if (rate>500){
-//     const sum=parseInt(rate)+parseInt(rate*.1)
-//     console.log(sum)
-//     setSalary(sum)
-//   }else if(rate<500){
-//     const sum=parseInt(rate)+parseInt(rate*.05)
-//     console.log(sum)
-//     setSalary(sum)
-//   }else{
-//     const sum=parseInt(rate)+parseInt(rate*1.5)
-//     console.log(sum)
-//     setSalary(sum)
-//   }
-
-//   let request=(JSON.parse(localStorage.getItem('token')))  
-//   let order_number=(JSON.parse(localStorage.getItem('order_number'))) 
-
-
- 
-//   const data = axios.post('payment/pay/',{
-//     name:order_number ,
-//     amount:salary,
-//   },{
-//       headers: {
-//           Authorization:'Bearer '+ request
-//         }
-//   }).then((res) => {
-//     console.log(res.data,'its data')
-//     console.log(res.data.order.order_payment_id)      
-//     setPaymentId(res.data.order.order_payment_id)
-//     return res;
-//   });
-//   console.log(data)
-
- 
-//   var options = {
-//     key_id:'rzp_test_xzSR2pt2eeMFXF' , 
-//     key_secret:'GP3DxufqQIsdwOTTaTdR1OuS',
-//     amount: amount,
-//     currency: "INR",
-//     name: "Org. Name",
-//     description: "Test teansaction",
-//     image: "", 
-//     order_id:payment_id,  
-//     handler: function (response) {
-//       // we will handle success by calling handlePaymentSuccess method and
-//       // will pass the response that we've got from razorpay
-//       handlePaymentSuccess(response);
-//     },
-//     prefill: {
-//       name: "User's name",
-//       email: "User's email",
-//       contact: "User's phone",
-//     },
-//     notes: {
-//       address: "Razorpay Corporate Office",
-//     },
-//     theme: {
-//       color: "#3399cc",
-//     },
-//   };
-//   var rzp1 = new window.Razorpay(options);
-//   rzp1.open();
-// };
-
-
 // for final view 
   const lastSubmitHandler=(e)=>{
     e.preventDefault()
@@ -615,7 +502,7 @@ const showRazorpay = async (e) => {
   return (
     <div >       
         <h1 className='heading'>APPLY FOR AN OPPORTUNITY</h1>
-          <CommonStepper className='mt-5' activeStep={0} steps={steps}/>
+          {/* <CommonStepper className='mt-5' activeStep={0} steps={steps}/> */}
        {submit || payed ?   <CommonStepper className='mt-5' activeStep={1} steps={steps}/>: <form onSubmit={submitHandler}   className='main'>
   
             <div className="row mb-4  ">
@@ -630,10 +517,11 @@ const showRazorpay = async (e) => {
                             <Dropdown.Menu className='fields'>
                                 {getcat? getcat.map((obj,key)=>                            
                                
-                                <Dropdown.Item href="#/action-1"  key={obj.id}   onClick={()=>checkCate(obj.id)}>{obj.name}</Dropdown.Item>  )   :' '}    
+                                <Dropdown.Item href="#/action-1"  key={obj.id}   onClick={()=>checkCate(obj.id,obj.name)}>{obj.name}</Dropdown.Item>  )   :' '}    
                               
                             </Dropdown.Menu>
                         </Dropdown>   
+                        <span style={{color:'yellow'}}>{ca}</span>
                         {Object.keys(cateErr).map((key)=>{
                                  return <div style={{color:'red'}} >{cateErr[key]}</div> })}
                     </div>
@@ -649,10 +537,11 @@ const showRazorpay = async (e) => {
                             <Dropdown.Menu className='fields'>
                             {getdis? getdis.map((obj,key)=>                            
                                
-                               <Dropdown.Item href="#/action-1"  key={obj.id}  onClick={()=>cityGetting(obj.id)}>{obj.district}</Dropdown.Item>  )   :' '}  
+                               <Dropdown.Item href="#/action-1"  key={obj.id}  onClick={()=>cityGetting(obj.id,obj.district)}>{obj.district}</Dropdown.Item>  )   :' '}  
                                 
                             </Dropdown.Menu>
                         </Dropdown> 
+                        <span style={{color:'yellow'}}>{dis}</span>
                         {Object.keys(disErr).map((key)=>{
                                  return <div style={{color:'red'}} >{disErr[key]}</div> })}                        
                     </div>
@@ -672,10 +561,11 @@ const showRazorpay = async (e) => {
                             <Dropdown.Menu className='fields'>
                             {getcity? getcity.map((obj,key)=>                            
                                
-                               <Dropdown.Item href="#/action-1"  key={obj.id} onClick={()=>checkCity(obj.id)}  >{obj.city}</Dropdown.Item>  )   :' '}                                 
+                               <Dropdown.Item href="#/action-1"  key={obj.id} onClick={()=>checkCity(obj.id,obj.city)}  >{obj.city}</Dropdown.Item>  )   :' '}                                 
                                
                             </Dropdown.Menu>
                         </Dropdown>   
+                        <span style={{color:'yellow'}}>{ci}</span>
                         {Object.keys(cityErr).map((key)=>{
                                  return <div style={{color:'red'}} >{cityErr[key]}</div> })}
                     </div>

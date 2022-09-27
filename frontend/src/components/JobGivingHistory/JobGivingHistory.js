@@ -78,7 +78,7 @@ function JobGivingHistory() {
       <div style={{'height':'60vh','backgroundColor':'black'}}>
       <div style={{'height':'60vh','backgroundColor':'white '}}>
           <Card sx={{ minWidth:'30%', maxWidth:'100%' ,padding:'50px'}}> 
-            {/* <Button onClick={()=>navigate('addUser')} variant="contained">Add User</Button> */}
+         
       <Card>
       <Table striped>
       <thead>

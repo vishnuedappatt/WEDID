@@ -86,7 +86,7 @@ const handlePaymentSuccess = async (response) => {
     bodyData.append("response", JSON.stringify(response));
 
    let request=(JSON.parse(localStorage.getItem('token')))  
-   
+   bodyData.append("typez",'rent')
     await axios.post('payment/payment/success/',bodyData,{headers:{Authorization:'Bearer '+request}})
       .then((res) => {
         console.log("Everything is OK!");
@@ -110,15 +110,17 @@ const loadScript = () => {
   document.body.appendChild(script);
 };
 
-const showRazorpay = async () => {
+const showRazorpay = async (e) => {
+  e.preventDefault()
   const res = await loadScript();
 
   let bodyData = new FormData();
 
   // we will pass the amount and product name to the backend using form data
   bodyData.append("amount", 50);
-  bodyData.append("name", name);
-
+  bodyData.append("name", rent.ordernumber);
+  bodyData.append("typez",'rent')
+  bodyData.append("buyer",'yes')
   let request=(JSON.parse(localStorage.getItem('token')))  
   const data = await axios.post('payment/pay/',bodyData,{headers:{Authorization:'Bearer  ' +request}}).then((res) => {
     return res;

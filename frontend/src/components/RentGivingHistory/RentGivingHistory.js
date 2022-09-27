@@ -59,7 +59,6 @@ function RentGivingHistory() {
    // user datas
    const userSingleJobHistory=async(id)=>{   
     let request=(JSON.parse(localStorage.getItem('token')))  
-    console.log(id,'ddd')
    await axios.get(`rent/singleview/${id}/`,{
         headers: {
             Authorization:'Bearer '+ request

@@ -1,6 +1,5 @@
 from django.shortcuts import render
 import datetime
-import re
 from django.shortcuts import render,redirect
 from rest_framework.decorators import api_view,permission_classes,authentication_classes
 from rest_framework.permissions import IsAuthenticated
@@ -18,7 +17,7 @@ from . import serializer
 from django_filters import rest_framework as filters
 from user.verify import send,check
 from rest_framework  import status
-
+from django.core.mail import send_mail
 # Create your views here.
 
 
@@ -113,6 +112,7 @@ def jobpost(request):
     verify=JobVerification()
     verify.mobile=mobiles
     verify.order_number=order_number
+    verify.name=data['title']
     verify.save()
     serializer=JobSerializer(job,many=False)
     return Response(serializer.data)                                                                                                                           
@@ -356,6 +356,11 @@ def start_verify_check(request):
     if check(mobile,code):  
         verify.start_verify=True
         verify.save()
+        # send_mail( 'From WEDID ',
+        #     f'congradulations  !!!  Your Rent service got purchased   \n, {rent.title} service is takened by   {request.user.first_name} ,\n you can contact +91{request.user.mobile} , \n thankyou ',
+        #     'wedidsolutions@gmail.com'
+        #     ,[rent.user.email]   
+        #     ,fail_silently=False)
         serializer=JobVerificationSerializer(verify,many=False)
         return Response(serializer.data)
     else:
@@ -391,6 +396,9 @@ def end_verify_check(request):
     if check(mobile,code):  
         verify.end_verify=True
         verify.save()
+        job=Job_Detail.objects.get(ordernumber=number)
+        job.verified=True
+        job.save()
         serializer=JobVerificationSerializer(verify,many=False)
         return Response(serializer.data)
     else:
@@ -405,14 +413,17 @@ def total_giving_expense(request):
     user=request.user
     mobile=user.mobile
     print(mobile)
-    job=JobVerification.objects.filter(mobile=mobile,end_verify=True)
-    print(job)
+    job=JobVerification.objects.filter(mobile=mobile,job_end=True)
+    print(job,'idddddddd')
     sum=0
     for i in job:
         print(i.order_number)
-        exp=Job_Detail.objects.get(ordernumber=i.order_number)
-        print(exp.rate)
-        sum=sum+exp.rate  
+        exps=Job_Detail.objects.filter(ordernumber=i.order_number).exists()
+        if exps:
+            exp=Job_Detail.objects.get(ordernumber=i.order_number)
+            print(exp,'expp')
+            print(exp.rate)
+            sum=sum+exp.rate  
     # serializer=JobVerificationSerializer(job,many=True)
     return Response({'count':sum})
   
@@ -430,8 +441,29 @@ def total_revenue(request):
         reve= JobVerification.objects.filter(order_number= i.ordernumber).exists()
         if reve:
             revenue= JobVerification.objects.get(order_number= i.ordernumber)
-            if revenue.end_verify:
+            if revenue.job_end:
                 sum=sum+i.rate
+                print(sum,'ddd')
     return Response({'count':sum})
-        
-   
+
+
+
+# total completed services
+@api_view(['GET'])
+@authentication_classes([JWTAuthentications])
+def total_completed_task(request):
+    user=request.user
+    verify=Job_Detail.objects.filter(user=user,verified=True).exists()
+    if verify:
+        verify=Job_Detail.objects.filter(user=user,verified=True)
+        serializer=JobSerializer(verify,many=True)
+        return Response(serializer.data)
+    elif Job_Detail.objects.filter(booked_person__email=user):
+        verify=Job_Detail.objects.filter(booked_person__email=user)
+        serializer=JobSerializer(verify,many=True)
+        return Response(serializer.data)
+    else:
+        return Response({'error':'wow'})
+    
+
+                        

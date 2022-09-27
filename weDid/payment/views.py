@@ -4,10 +4,11 @@ import razorpay
 from rest_framework.decorators import api_view,authentication_classes
 from rest_framework.response import Response
 from django.conf import settings
-
+# for mail
+from django.core.mail import send_mail
 from user.models import Account
-from .models import Order
-from .serializers import OrderSerializer
+from .models import Order, OrderRent
+from .serializers import OrderSerializer,OrderRentSerializer
 from user.authentication import JWTAuthentications
 from jobportal.models import Job_Detail
 from jobportal.serializer import JobSerializer
@@ -22,7 +23,8 @@ def start_payment(request):
     print(data)
     amount = request.data['amount']
     name = request.data['name']    
-    print(amount,'kkkkkk')
+    type=request.data['typez']
+    buyer=request.data['buyer']
     client = razorpay.Client(auth=(settings.RAZORPAY_PUBLIC_KEY,settings.RAZORPAY_SECRET_KEY))
 
     # create razorpay order
@@ -36,11 +38,35 @@ def start_payment(request):
     # we are saving an order with isPaid=False because we've just initialized the order
     # we haven't received the money we will handle the payment succes in next 
     # function
-    order = Order.objects.create(order_product=name, 
-                                 order_amount=amount, 
-                                 order_payment_id=payment['id'])
+    if type=='job':        
+        if buyer =='yes':
+            order = Order.objects.create(order_product=name, 
+                                        order_amount=amount, 
+                                        order_payment_id=payment['id'],
+                                        buyer=True)
+            serializer = OrderSerializer(order)
+            
+        else:
+            order = Order.objects.create(order_product=name, 
+                                        order_amount=amount, 
+                                        order_payment_id=payment['id'])
+            
+            serializer = OrderSerializer(order)
+    else:
+        if buyer =='yes':
+            order = OrderRent.objects.create(order_product=name, 
+                                    order_amount=amount, 
+                                    order_payment_id=payment['id'],
+                                    buyer=True)
+            serializer = OrderRentSerializer(order)
+        
+        else:
+            order = OrderRent.objects.create(order_product=name, 
+                                        order_amount=amount, 
+                                        order_payment_id=payment['id'])
+            serializer = OrderRentSerializer(order)
 
-    serializer = OrderSerializer(order)
+   
 
     """order response will be 
     {'id': 17, 
@@ -61,7 +87,10 @@ def start_payment(request):
 @authentication_classes([JWTAuthentications])
 def handle_payment_success(request):
     # request.data is coming from frontend
+    data=request.data
+    print(data)
     res = json.loads(request.data["response"])
+    type=request.data["typez"]
     # res=request.data['response']
     
     print(res,'response is hweww')
@@ -89,7 +118,10 @@ def handle_payment_success(request):
             raz_signature = res[key]
             print(raz_signature ,'signature')
     # get order by payment_id which we've created earlier with isPaid=False
-    order = Order.objects.get(order_payment_id=ord_id)
+    if type=='job':
+        order = Order.objects.get(order_payment_id=ord_id)
+    else:
+        order = OrderRent.objects.get(order_payment_id=ord_id)
     print(order,'order')
     print(11)
     # we will pass this whole data in razorpay client to verify the payment
@@ -115,17 +147,21 @@ def handle_payment_success(request):
         return response
     print(55)
     # if payment is successful that means check is None then we will turn isPaid=True
-    ord= Order.objects.get(order_payment_id=ord_id)
-    print(ord)
-    ord.isPaid =True 
-    ord.save()
-    
-    print(66)
+    if type=='job':
+        ord= Order.objects.get(order_payment_id=ord_id)
+        print(ord)
+        ord.isPaid =True 
+        ord.save()    
+    else:
+        ord= OrderRent.objects.get(order_payment_id=ord_id)
+        print(ord)
+        ord.isPaid =True 
+        ord.save()    
     response=Response()
     response.data = {
         'message': 'payment successfully completed'
     }
-    print(77)
+   
     return response
 
 
@@ -152,11 +188,17 @@ def freepayment(request):
         mobile=job.mobile
         print(mobile,'dkjfkldjklf')
         print('ddddd')
-        # messeges=f'your service has been taken it by Mr .{email.first_name} .He will contact you as soon as possible .Also you can contact,   +91{email.mobile}'
-        # Message_service(job.mobile,messeges)
-        # title=job.title
-        # mess=f'you taked the service of  {title}  by Mr .{job.user} .you can contact to +91{job.mobile},+91 {job.sub_mobile}'
-        # Message_service(email.mobile,mess)
+        
+        send_mail( 'From WEDID ',
+            f'Thank You For purchase our service \n, {job.title} service posted  by mr.{job.user.first_name} ,\n you can contact +91{job.mobile} ,+91{job.sub_mobile}  , \n thankyou ',
+            'wedidsolutions@gmail.com'
+            ,[email]   
+            ,fail_silently=False)
+        send_mail( 'From WEDID ',
+            f'congradulations  !!!  Your service got purchased   \n, {job.title} service is takened by   {request.user.first_name} ,\n you can contact +91{request.user.mobile} , \n thankyou ',
+            'wedidsolutions@gmail.com'
+            ,[job.user.email]   
+            ,fail_silently=False)
         print('lll')
     
         return Response(serializer.data)
@@ -179,7 +221,17 @@ def payemntfinish(request):
         rent=Rent_detail.objects.get(id=id)
         rent.booked_person=email
         rent.booked=True
-        rent.save()             
+        rent.save()      
+        send_mail( 'From WEDID ',
+            f'Thank You For purchase our Rent service \n, {rent.title} service posted  by mr.{rent.user.first_name} ,\n you can contact +91{rent.mobile} ,+91{rent.sub_mobile}  , \n thankyou ',
+            'wedidsolutions@gmail.com'
+            ,[email]   
+            ,fail_silently=False)
+        send_mail( 'From WEDID ',
+            f'congradulations  !!!  Your Rent service got purchased   \n, {rent.title} service is takened by   {request.user.first_name} ,\n you can contact +91{request.user.mobile} , \n thankyou ',
+            'wedidsolutions@gmail.com'
+            ,[rent.user.email]   
+            ,fail_silently=False)       
         serializer=RentSerializer(rent,many=False)
         return Response(serializer.data)
     except:

@@ -56,3 +56,5 @@ class JobVerificationSerializer(serializers.ModelSerializer):
     class Meta:
         model=JobVerification
         fields='__all__'
+        
+        

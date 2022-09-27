@@ -47,18 +47,17 @@ const [count,setCount]=useState(false)
 
   const userData=async()=>{   
     let request=(JSON.parse(localStorage.getItem('token')))  
-   await axios.get('user/profile/',{
+   await axios.get('user/profiles/',{
         headers: {
             Authorization:'Bearer '+ request
           }
     }).then((res)=>{
         // setUser(res.data)
-        console.log(res.data,'evide work ann')
+        console.log(res.data,'evide work annuu')
             if(res.data.count>1){  
+              console.log('jkjk')
               setCount(true)
         }
-    }).catch((err)=>{
-        console.log(err.data.detail,'dfdfdf ')
     })
 }
 
@@ -143,6 +142,7 @@ const handlePaymentSuccess = async (response) => {
     bodyData.append("response", JSON.stringify(response));
 
    let request=(JSON.parse(localStorage.getItem('token')))  
+   bodyData.append("typez",'job')
    
     await axios.post('payment/payment/success/',bodyData,{headers:{Authorization:'Bearer '+request}})
       .then((res) => {
@@ -175,8 +175,10 @@ const showRazorpay = async () => {
 
   // we will pass the amount and product name to the backend using form data
   bodyData.append("amount", 50);
-  bodyData.append("name", name);
-
+  
+  bodyData.append("name", job.ordernumber);
+  bodyData.append("typez",'job')
+  bodyData.append("buyer",'yes')
   let request=(JSON.parse(localStorage.getItem('token')))  
   const data = await axios.post('payment/pay/',bodyData,{headers:{Authorization:'Bearer  ' +request}}).then((res) => {
     return res;

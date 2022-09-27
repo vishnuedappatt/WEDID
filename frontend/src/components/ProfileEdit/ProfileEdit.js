@@ -16,15 +16,8 @@ function ProfileEdit() {
         fd
       </div>
     </Col>
-
     </Row>
-    {/* <Row className='justify-content-center mt-1 pt-5'>
-    
-        <Col lg={5}>
-        <h3 style={{textAlign:'center',color:'white'}}>PROFILE</h3>
-         
-        </Col>
-    </Row>  */}
+   
     </div>
   )
 }

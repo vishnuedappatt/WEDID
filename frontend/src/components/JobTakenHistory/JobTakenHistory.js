@@ -144,7 +144,8 @@ function JobTakenHistory() {
             <h5 style={{color:'blue',fontWeight:800}}> Rate :<span style={{color:'black'}}>{single.rate}</span></h5><br></br>
             <h5>Hiring Person</h5>
                 Name :  {single.user.first_name} {single.user.last_name}<br></br>
-                Eamil :{single.user.email}<br></br>
+                Email :{single.user.email}<br></br>
+                Address:{single.address}<br></br>
                 Mobile :{single.user.mobile}<br></br>              
                 Sub_Mobile :{single.sub_mobile}<br></br>     
                 {single.valid_at ==news ? console.log('okkk'): console.log('not oke')}   

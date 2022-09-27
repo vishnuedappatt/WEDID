@@ -59,14 +59,16 @@ function GivingRent() {
     GetDistrict({setDist})
     userData()   
     let val=(JSON.parse(localStorage.getItem('order_number')))   
+    let message=(JSON.parse(localStorage.getItem('message')))
     if (val){
         setSubmit(true)
+        if (message){
+          setPayed(true)
+          setSubmit(false)
+        }
     }       
-    let message=(JSON.parse(localStorage.getItem('message')))
-    if (message){
-      setPayed(true)
-      setSubmit(false)
-    }
+   
+    
     return () => {      
     }
   }, [])
@@ -124,8 +126,9 @@ function GivingRent() {
 
 //  getting category id and get and show
 
-  const cityGetting=async(id)=>{   
+  const cityGetting=async(id,name)=>{   
             setDistrict(id)
+            setDis(name)
         let request=(JSON.parse(localStorage.getItem('token')))  
     await axios.get(`job/showcity/${id}/`,{
             headers: {
@@ -140,6 +143,10 @@ function GivingRent() {
         })
     }
 
+
+    const [ca,setCa]=useState('')
+    const [dis,setDis]=useState('')
+    const [ci,setCi]=useState('')
 //   validations
 
 // ---------------------------------------
@@ -158,12 +165,14 @@ function GivingRent() {
   const[image2Err,setImage2Error]=useState({})
   const[dateErr,setDateError]=useState({})
 
-    const checkCate=(id)=>{
+    const checkCate=(id,name)=>{
         setCategory(id)
+        setCa(name)
     }
 
-    const checkCity=(id)=>{        
+    const checkCity=(id,name)=>{        
         setCity(id)
+        setCi(name)
     }
 
     // for submitting
@@ -424,7 +433,7 @@ const handlePaymentSuccess = async (response) => {
     bodyData.append("response", JSON.stringify(response));
 
    let request=(JSON.parse(localStorage.getItem('token')))  
-   
+   bodyData.append("typez",'rent')
     await axios.post('payment/payment/success/',bodyData,{headers:{Authorization:'Bearer '+request}})
       .then((res) => {
         console.log("Everything is OK!");
@@ -449,15 +458,18 @@ const loadScript = () => {
   document.body.appendChild(script);
 };
 
-const showRazorpay = async () => {
+const showRazorpay = async (e) => {
+  e.preventDefault()
   const res = await loadScript();
 
   let bodyData = new FormData();
 
   // we will pass the amount and product name to the backend using form data
   bodyData.append("amount", 50);
-  bodyData.append("name", name);
-
+  let order_number=(JSON.parse(localStorage.getItem('order_number'))) 
+  bodyData.append("name", order_number);
+  bodyData.append("typez",'rent')
+  bodyData.append("buyer",'yes')
   let request=(JSON.parse(localStorage.getItem('token')))  
   const data = await axios.post('payment/pay/',bodyData,{headers:{Authorization:'Bearer  ' +request}}).then((res) => {
     return res;
@@ -534,10 +546,11 @@ const showRazorpay = async () => {
                             <Dropdown.Menu className='fields'>
                                 {getcat? getcat.map((obj,key)=>                            
                                
-                                <Dropdown.Item href="#/action-1"  key={obj.id}   onClick={()=>checkCate(obj.id)}>{obj.name}</Dropdown.Item>  )   :' '}    
+                                <Dropdown.Item href="#/action-1"  key={obj.id}   onClick={()=>checkCate(obj.id,obj.name)}>{obj.name}</Dropdown.Item>  )   :' '}    
                               
                             </Dropdown.Menu>
                         </Dropdown>   
+                        <span style={{color:'yellow'}}>{ca}</span>
                         {Object.keys(cateErr).map((key)=>{
                                  return <div style={{color:'red'}} >{cateErr[key]}</div> })}
                     </div>
@@ -553,10 +566,11 @@ const showRazorpay = async () => {
                             <Dropdown.Menu className='fields'>
                             {getdis? getdis.map((obj,key)=>                            
                                
-                               <Dropdown.Item href="#/action-1"  key={obj.id}  onClick={()=>cityGetting(obj.id)}>{obj.district}</Dropdown.Item>  )   :' '}  
+                               <Dropdown.Item href="#/action-1"  key={obj.id}  onClick={()=>cityGetting(obj.id,obj.district)}>{obj.district}</Dropdown.Item>  )   :' '}  
                                 
                             </Dropdown.Menu>
                         </Dropdown> 
+                        <span style={{color:'yellow'}}>{dis}</span>
                         {Object.keys(disErr).map((key)=>{
                                  return <div style={{color:'red'}} >{disErr[key]}</div> })}                        
                     </div>
@@ -576,10 +590,11 @@ const showRazorpay = async () => {
                             <Dropdown.Menu className='fields'>
                             {getcity? getcity.map((obj,key)=>                            
                                
-                               <Dropdown.Item href="#/action-1"  key={obj.id} onClick={()=>checkCity(obj.id)}  >{obj.city}</Dropdown.Item>  )   :' '}                                 
+                               <Dropdown.Item href="#/action-1"  key={obj.id} onClick={()=>checkCity(obj.id,obj.city)}  >{obj.city}</Dropdown.Item>  )   :' '}                                 
                                
                             </Dropdown.Menu>
                         </Dropdown>   
+                        <span style={{color:'yellow'}}>{ci}</span>
                         {Object.keys(cityErr).map((key)=>{
                                  return <div style={{color:'red'}} >{cityErr[key]}</div> })}
                     </div>
@@ -673,7 +688,7 @@ const showRazorpay = async () => {
             <div className="row mb-4">
               <div className="col">                   
                       <div className="form-outline mb-4">
-                      <label className="form-label" >Rate</label>
+                      <label className="form-label" >Date</label>
                           <input type="date" id="form6Example5"  onChange={dateHandler} value={date}  placeholder='Give a rate for this service'  className="form-control" />
                           {Object.keys(dateErr).map((key)=>{
                                   return <div style={{color:'red'}} >{dateErr[key]}</div> })}                
@@ -700,11 +715,8 @@ const showRazorpay = async () => {
               <input type="checkbox" className='checkbox' id="vehicle1" name="vehicle1" value="Bike" required></input><p className='check-heading' >Accept all terms & conditions for wedid solutions</p>
                 <input type="checkbox" className='checkbox' id="vehicle1" name="vehicle1" value="Bike" required /><p  className='check-heading'>Accept all terms & conditions from Razorpay payment system</p>           
                 <p style={{color:'yellow',marginTop:'4rem'}}>** charges applied</p>
-                <p  style={{color:'red'}}>**  you should pay 50 rupess for posting </p>    
-           
+                <p  style={{color:'red'}}>**  you should pay 50 rupess for posting </p>  
             </div>
-           
-            
              <Button className='payment-btn2' type='submit' variant="outline-warning" onClick={showRazorpay}><p>Make Payment with razorpay</p></Button><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br>
              <Button className='payment-btn4' type='' onClick={cancelHandler} variant="outline-danger"><p>cancel</p></Button>
               <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
@@ -715,17 +727,12 @@ const showRazorpay = async () => {
                 </div>               
               </Snackbar>
          </form>  } 
-          {payed&& 
-           <div >
-            <CommonStepper steps={steps} activeStep={2}/>
-          </div>}
-
+         
 
         { payed &&
        
-         <form className='form-payment'>      
-        
-      
+         <form className='form-payment'>     
+         {/* <CommonStepper steps={steps} activeStep={2}/> */}
              <Button className='payment-btn2' type='submit' variant="outline-warning" onClick={lastSubmitHandler}><p>SHARE THE POST </p></Button><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br>
              <Button className='payment-btn4' type='' onClick={cancelHandler} variant="outline-danger"><p>cancel</p></Button>
                 <Snackbar open={opens} autoHideDuration={6000} onClose={handleCloses}>

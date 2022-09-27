@@ -38,6 +38,7 @@ urlpatterns = [
     
     
     path('giving_exp/',views.total_giving_expense,name='toal_exp'),
-     path('revenue/',views.total_revenue,name='toal_reve'),
-        
+    path('revenue/',views.total_revenue,name='toal_reve'),
+    path('completed/',views.total_completed_task,name="completed"),
+    
     ]+router.urls

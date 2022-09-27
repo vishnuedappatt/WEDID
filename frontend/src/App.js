@@ -17,7 +17,6 @@ import RentShowPage from "./pages/RentShowPage";
 import { RentProvider } from "./context/rentcontext";
 import SingleRentPage from "./pages/SingleRentPage";
 import ProfilePage from "./pages/ProfilePage";
-import RentHistoryPage from "./pages/RentHistoryPage";
 import ProfileEditPage from "./pages/ProfileEditPage";
 import JobTakenHistoryPage from "./pages/JobTakenHistoryPage";
 import JobGivenHistoryPage from "./pages/JobGivenHistoryPage";

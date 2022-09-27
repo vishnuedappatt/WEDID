@@ -151,7 +151,7 @@ await axios.post('job/end_verify/',{number:number},{
       console.log(res.data,'verify ')
      setCount(false)
       VerifyData(number)
-      setView(true)
+      setView(false)
       
   })
 }

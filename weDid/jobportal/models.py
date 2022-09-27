@@ -1,3 +1,4 @@
+from email.policy import default
 from operator import mod
 from django.db import models
 from user.models import City,Categories,District,Account
@@ -24,6 +25,7 @@ class Job_Detail(models.Model):
     booked_person=models.ForeignKey(Account, related_name="booked_persons", on_delete=models.SET_NULL,null=True)
     created_at = models.DateTimeField(auto_now_add=True)    
     valid_at=models.DateField(blank=True,null=True)
+    verified=models.BooleanField(default=False)
     
     
     def __str__(self):
@@ -34,6 +36,7 @@ class Job_Detail(models.Model):
 class JobVerification(models.Model):
     mobile=models.CharField(max_length=10,null=True,blank=True)
     order_number=models.CharField(max_length=30)
+    name=models.CharField(max_length=30,null=True,blank=True)
     job_start=models.BooleanField(default=False)
     start_otp=models.BooleanField(default=False)
     start_verify=models.BooleanField(default=False)
@@ -43,5 +46,5 @@ class JobVerification(models.Model):
     
     
     def __str__(self):
-        return self.mobile
+        return self.name
     

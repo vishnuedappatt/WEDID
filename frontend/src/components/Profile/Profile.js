@@ -164,7 +164,7 @@ const handleClosez = () => setOpenz(false);
      <MaterialModal handleClose={handleClose} open={open} head='Edit profile' data1={first_name} data2={last_name} set1={setFirstName} set2={setLastName} cancel={handleClose} save={userDataEdit}/>
      <Button style={{marginLeft:'20px'}} onClick={handleOpenz} variant="contained" color='warning' >Reset Password</Button>
      <MaterialModal handleClose={handleClosez} open={openz} head='password reset' data1={currentPassword} data2={newPassword}  data3= {confirmPassword} set1={setCurrentPassword} set2={setNewPassword}  set3={setConfirmPassword}cancel={handleClosez} save={userPasswordReset} error={error}/>
-      {/* <Button onClick={()=>navigate('/editprofile')} variant="contained">Edit Profile</Button> */}
+ 
       <Snackbar open={opens} autoHideDuration={6000} onClose={handleCloses}>
                 <div>
                  
@@ -176,15 +176,7 @@ const handleClosez = () => setOpenz(false);
     </Card>
           </div>
         </Col>  
-
-        </Row>
-        {/* <Row className='justify-content-center mt-1 pt-5'>
-        
-            <Col lg={5}>
-            <h3 style={{textAlign:'center',color:'white'}}>PROFILE</h3>
-             
-            </Col>
-        </Row>  */}
+        </Row>       
     </div>
   )
 }

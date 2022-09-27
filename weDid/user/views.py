@@ -1,6 +1,4 @@
-
 import datetime
-import re
 from unicodedata import category
 from django.shortcuts import render,redirect
 from rest_framework.decorators import api_view,permission_classes,authentication_classes
@@ -23,7 +21,7 @@ from django.contrib.auth.tokens import default_token_generator
 from django.core.mail import EmailMessage
 from django.contrib import auth
 from rest_framework import viewsets
-
+from django.core.mail import send_mail
 # Create your views here.
 
 
@@ -100,19 +98,13 @@ def verification(request):
         user.is_active=True
         email=user.email
         user.save()
-        # current_site = get_current_site(request)
-        # mail_subject ='Welcome Tag'
-        # message= render_to_string('user/welcome.html',{
-        #         'user':user,
-        #         'domain': current_site,
-        #         'uid':urlsafe_base64_encode(force_bytes(user.id)),
-        #         'token':default_token_generator.make_token(user),
+        
+        send_mail('Welcome ',
+            'Thank You For Registering and verify successfully ,we gladly welcome you to our community ',
+            'wedidsolutions@gmail.com'
+            ,[email]   
+            ,fail_silently=False)
 
-        #             })
-        # to_email = email
-        # send_email=EmailMessage(mail_subject, message ,to=[to_email])
-        # print("here")
-        # send_email.send()
         
         serializer=AccountSerializer(user,many=False)
         return Response(serializer.data)
@@ -367,6 +359,18 @@ class userprofile(viewsets.ModelViewSet):
     serializer_class=AccountSerializer
     
     
+    
+@api_view(['GET'])
+@authentication_classes([JWTAuthentications])
+def single_user_profile(request):
+    user=request.user
+    print(user)
+    userr=Account.objects.get(email=user)
+    serializer=AccountSerializer(userr,many=False)
+    return Response(serializer.data)
+
+
+
 @api_view(['POST'])
 @authentication_classes([JWTAuthentications])
 def change_password(request):
