@@ -231,7 +231,9 @@ const showRazorpay = async (e) => {
         <CommonModal message={rent.discriptions} modalHeading={'Discription and rules'} btnsave={''} show={show} onHide={handleClose}/>
         {/* <Card.Text >{rent.discriptions}</Card.Text> */}
         </div> }
-       {payed ? <Button  onClick={finalsubmit} variant="outline-dark">Get this Item</Button> : <Button style={{height:'60px',marginTop:'20px'}} onClick={handleShowz} className='h-5' variant="danger">Make Payment</Button>}
+       {payed ? <Button  onClick={finalsubmit} variant="outline-dark">Get this Item</Button> : <div>
+          { !rent.available?  <Button style={{height:'60px',marginTop:'20px'}} onClick={handleShowz} className='h-5' variant="danger" disabled>Not available</Button>:<Button style={{height:'60px',marginTop:'20px'}} onClick={handleShowz} className='h-5' variant="danger">Make Payment</Button>   }
+       </div>}
       </Card.Body>
     </Card>
         </div>}

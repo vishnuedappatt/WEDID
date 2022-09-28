@@ -39,7 +39,7 @@ def rentpost(request):
     print(order_number)
    
     
-    job= Rent_detail.objects.create(        
+    rent= Rent_detail.objects.create(        
         user=user,
         mobile=mobiles,
         district_id=request.data['district'],
@@ -61,7 +61,7 @@ def rentpost(request):
         valid_at=request.data['date'],        
                   
     )     
-    serializer=RentSerializer(job,many=False)
+    serializer=RentSerializer(rent,many=False)
     return Response(serializer.data)                    
 
 
@@ -73,14 +73,14 @@ def rentcategories(request):
     serializer=CategorySerializer(rent,many=True)
     return Response(serializer.data)
 
+
 # all data
 @api_view(['GET'])
 @authentication_classes([JWTAuthentications])
 def all_rent_show(request):
-    try:             
-        now=datetime.datetime.now()
-        job=Rent_detail.objects.filter(payment='True',booked='False',available='True',valid_at__gte=now)
-        serializer=RentSerializer(job,many=True)
+    try:  
+        rent=Rent_detail.objects.filter(payment='True').order_by('id')
+        serializer=RentSerializer(rent,many=True)
         return Response(serializer.data)
     except:
         response=Response()
@@ -187,6 +187,7 @@ class Edit_giving_job(viewsets.ModelViewSet):
     authentication_classes=[JWTAuthentications]
     queryset=Rent_detail.objects.all()
     serializer_class=RentSerializer
+
 
 @api_view(['GET'])
 @authentication_classes([JWTAuthentications])

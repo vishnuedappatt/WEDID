@@ -162,8 +162,7 @@ def Login(request):
             user_id=user.id,
             token=refresh_token,
             expired_at=datetime.datetime.utcnow()+datetime.timedelta(days=7)
-            )
-        
+            )        
         
         response=Response()
         response.set_cookie(key='refresh_token',value=refresh_token,httponly=True)
@@ -175,6 +174,7 @@ def Login(request):
             'last_name':user.last_name,
             'email':user.email,       
             'count':user.count,
+            'is_admin':user.is_admin,
         }
         # serializer=AccountSerializer(user,many=False)
         # return Response(serializer.data)

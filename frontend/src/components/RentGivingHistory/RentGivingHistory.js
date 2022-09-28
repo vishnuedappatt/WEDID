@@ -14,19 +14,21 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import ImageUrl from '../common/Image/Image';
+import Switch from '@mui/material/Switch';
 
+const label = { inputProps: { 'aria-label': 'Switch demo' } };
 
 
 function RentGivingHistory() {
   const [user,setUser]=useState('')
   const navigate=useNavigate()
     useEffect(() => {
-    userJobHistory()
+      userRentHistory()
     }, [])
     
 
      // user datas
-     const userJobHistory=async()=>{   
+     const userRentHistory=async()=>{   
       let request=(JSON.parse(localStorage.getItem('token')))  
  
      await axios.get('rent/rent_giving_history/',{
@@ -42,7 +44,7 @@ function RentGivingHistory() {
 
   const handleClickOpen = (id) => {
     setOpen(true);
-    userSingleJobHistory(id)
+    userSingleRentHistory(id)
 
   };
 
@@ -57,7 +59,7 @@ function RentGivingHistory() {
   const [single,setSingle]=useState('')
   
    // user datas
-   const userSingleJobHistory=async(id)=>{   
+   const userSingleRentHistory=async(id)=>{   
     let request=(JSON.parse(localStorage.getItem('token')))  
    await axios.get(`rent/singleview/${id}/`,{
         headers: {
@@ -68,6 +70,39 @@ function RentGivingHistory() {
         console.log(res.data,'evide work ann')
     })
 }
+
+
+
+
+
+const handleAvailable=async(id,name)=>{
+  let request=(JSON.parse(localStorage.getItem('token'))) 
+  if (name){
+    await axios.patch(`rent/rents/${id}/`,{
+      available:'False'
+    },{
+      headers: {
+          Authorization:'Bearer  '+ request
+      }
+  }).then((res)=>{
+     console.log(res.data)
+     userRentHistory()
+    })
+  }else{
+    await axios.patch(`rent/rents/${id}/`,{
+      available:'True'
+    },{
+      headers: {
+          Authorization:'Bearer  '+ request
+      }
+  }).then((res)=>{
+     console.log(res.data)
+     userRentHistory()
+    })
+  }
+
+}
+
 
   return (
     <div>
@@ -92,17 +127,24 @@ function RentGivingHistory() {
           <th>category</th>
           <th>posted on</th>
           <th>valid</th>
+          <th>Available</th>
           <th>view </th>
         </tr>
       </thead>
       <tbody> 
-       {user && user.map((obj)=>     
+       {user && user.map((obj,index)=>     
        <tr>
-          <td >{obj.id}</td>
+          <td >{index+1}</td>
           <td>{obj.title}</td>
           <td>{obj.category.name }</td>
           <td>{String(obj.created_at).slice(0,10).split("-").reverse().join("-")}</td>
           <td>{String(obj.valid_at).split("-").reverse().join("-")}</td>
+          <td> <Switch
+              checked={obj.available}
+              onClick={()=>handleAvailable(obj.id,obj.available)}
+              inputProps={{ 'aria-label': 'controlled' }}
+            /></td>
+    
           <td style={{color:'blue',cursor:'pointer'}} onClick={()=>handleClickOpen(obj.id)}><TouchAppIcon /></td> 
              
      

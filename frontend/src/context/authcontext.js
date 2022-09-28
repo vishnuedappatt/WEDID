@@ -10,7 +10,8 @@ export const AuthProvider=({children})=>{
     // const [user, setUser] = useState([])
  let [authToken,setAuthToken]=useState(()=>localStorage.getItem('authToken')? JSON.parse(localStorage.getItem('authToken')):null)
  let [user,setUser]=useState(()=>localStorage.getItem('authToken')? jwt_decode(localStorage.getItem('authToken')):null)
-
+  let [admin,setAdmin]=useState(()=>localStorage.getItem('adminAuthToken')? jwt_decode(localStorage.getItem('adminAuthToken')):null)
+  let [adminAuthToken,setAdminAuthToken]=useState(()=>localStorage.getItem('adminAuthToken')? JSON.parse(localStorage.getItem('adminAuthToken')):null)
     const navigate=useNavigate()
     
     const [show, setShow] = useState(false);
@@ -45,14 +46,23 @@ const handleClicks = () => {
                 console.log(res.data.message)
 
                 if (res.data.token){
-                 
-                     localStorage.setItem('authToken',JSON.stringify(res.data))
-                     localStorage.setItem('token',JSON.stringify(res.data.token))
-                     setAuthToken(res.data)
-                     setUser(res.data.token)                      
-                     SetError(res.data.message)
-                     localStorage.setItem('userId',JSON.stringify(res.data.id))
-                    navigate('/')
+                  if (!res.data.is_admin){
+                    localStorage.setItem('authToken',JSON.stringify(res.data))
+                    localStorage.setItem('token',JSON.stringify(res.data.token))
+                    setAuthToken(res.data)
+                    setUser(res.data.token)                      
+                    SetError(res.data.message)
+                    localStorage.setItem('userId',JSON.stringify(res.data.id))
+                   navigate('/')
+                  }                 
+                  else{
+                    localStorage.setItem('adminAuthToken',JSON.stringify(res.data))
+                    localStorage.setItem('token',JSON.stringify(res.data.token))
+                    setAdminAuthToken(res.data)
+                    setAdmin(res.data.token)                      
+                    SetError(res.data.message)
+                    navigate('/admin')
+                  }
                 }
              
               if(res.data.message){              
@@ -77,6 +87,9 @@ const handleClicks = () => {
             localStorage.removeItem('authToken')
             localStorage.removeItem('token')
             localStorage.removeItem('userId')
+            localStorage.removeItem('adminAuthToken')
+            localStorage.removeItem('Admintoken')
+
             setUser(null)
             setAuthToken(null)
             navigate('/login')
@@ -96,7 +109,9 @@ const handleClicks = () => {
             authToken:authToken,
             mobile:mobile,
             setMobile:setMobile,   
-            errors:errors,       
+            errors:errors,    
+            adminAuthToken:adminAuthToken,
+            admin:admin,   
             
             
             setShow:setShow,
@@ -105,6 +120,7 @@ const handleClicks = () => {
             show:show,
             handleCloses:handleCloses,
             opens:opens,
+
            
           
           

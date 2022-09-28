@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'payment',
     'rentportal',
     'django_filters',
+    'admin_portal',
 ]
 
 MIDDLEWARE = [

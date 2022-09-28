@@ -25,4 +25,5 @@ urlpatterns = [
     path('job/',include('jobportal.urls')),
     path('payment/',include('payment.urls')), 
     path('rent/',include('rentportal.urls')),
+    path('adminz/',include('admin_portal.urls')),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

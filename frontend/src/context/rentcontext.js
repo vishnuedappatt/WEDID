@@ -7,17 +7,17 @@ export default RentContext;
 export const RentProvider=({children})=>{
     const [data,setData]=useState([])
      // / getting all jobpost
-  const getrentjob=()=>{
-    let request=(JSON.parse(localStorage.getItem('token')))  
-    axios.get('rent/all/',{
-        headers: {
-            Authorization:'Bearer '+ request
-          }
-    }).then((res)=>{
-      console.log(res.data,'its the datass')  
-      setData(res.data)    
-    })
-  }
+    const getrentjob=()=>{
+      let request=(JSON.parse(localStorage.getItem('token')))  
+      axios.get('rent/all/',{
+          headers: {
+              Authorization:'Bearer '+ request
+            }
+      }).then((res)=>{
+        console.log(res.data,'its the datass')  
+        setData(res.data)    
+      })
+    }
 
 
   // empty

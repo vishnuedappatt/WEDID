@@ -13,6 +13,11 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+// for switch
+import Switch from '@mui/material/Switch';
+
+const label = { inputProps: { 'aria-label': 'Switch demo' } };
+
 
 function JobGivingHistory() {
   const [user,setUser]=useState('')
@@ -68,6 +73,35 @@ function JobGivingHistory() {
 }
 
 
+
+const handleAvailable=async(id,name)=>{
+  let request=(JSON.parse(localStorage.getItem('token'))) 
+  if (name){
+    await axios.patch(`job/jobz/${id}/`,{
+      available:'False'
+    },{
+      headers: {
+          Authorization:'Bearer  '+ request
+      }
+  }).then((res)=>{
+     console.log(res.data)
+     userJobHistory()
+    })
+  }else{
+    await axios.patch(`job/jobz/${id}/`,{
+      available:'True'
+    },{
+      headers: {
+          Authorization:'Bearer  '+ request
+      }
+  }).then((res)=>{
+     console.log(res.data)
+     userJobHistory()
+    })
+  }
+
+}
+
   return (
     <div>
     <Row>
@@ -88,17 +122,23 @@ function JobGivingHistory() {
           <th>category</th>
           <th>posted on</th>
           <th>valid</th>
+          <th>Available</th>
           <th>view </th>
         </tr>
       </thead>
       <tbody> 
-       {user && user.map((obj)=>     
+       {user && user.map((obj,index)=>     
        <tr>
-          <td >{obj.id}</td>
+          <td >{index+1}</td>
           <td>{obj.title}</td>
           <td>{obj.category.name }</td>
           <td>{String(obj.created_at).slice(0,10).split("-").reverse().join("-")}</td>
           <td>{String(obj.valid_at).split("-").reverse().join("-")}</td>
+          <td> <Switch
+              checked={obj.available}
+              onClick={()=>handleAvailable(obj.id,obj.available)}
+              inputProps={{ 'aria-label': 'controlled' }}
+            /></td>
           <td style={{color:'blue',cursor:'pointer'}} onClick={()=>handleClickOpen(obj.id)}><TouchAppIcon /></td> 
              
      

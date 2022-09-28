@@ -217,10 +217,11 @@ def payemntfinish(request):
     try:
         data=request.data
         email=request.user
-        id=data['id']
+        id=data['id']              
         rent=Rent_detail.objects.get(id=id)
         rent.booked_person=email
         rent.booked=True
+        rent.available=False
         rent.save()      
         send_mail( 'From WEDID ',
             f'Thank You For purchase our Rent service \n, {rent.title} service posted  by mr.{rent.user.first_name} ,\n you can contact +91{rent.mobile} ,+91{rent.sub_mobile}  , \n thankyou ',

@@ -59,13 +59,12 @@ function VerifyServiceEmploye() {
   const handleSubmit=(id,number)=>{
     console.log(id)
     otpSenting(number)
-    setCount(true)
-   
+    setCount(true)  
 
     setTimeout(()=>{
       setCount(false);
       setView(false)
-  }, 100000);
+  }, 30000);
   
   }
 
@@ -75,12 +74,12 @@ function VerifyServiceEmploye() {
     console.log(id)
     endOtp(number)
     setCount(true)
-   
+
 
     setTimeout(()=>{
       setCount(false);
       setView(false)
-  }, 100000);
+  }, 30000);
   
   }
 
@@ -131,7 +130,7 @@ await axios.post('job/start_verify/',{number:number},{
         }
   }).then((res)=>{
       console.log(res.data,'verify ')
-     setCount(false)
+   
       VerifyData(number)
       setView(true)
       
@@ -149,7 +148,7 @@ await axios.post('job/end_verify/',{number:number},{
         }
   }).then((res)=>{
       console.log(res.data,'verify ')
-     setCount(false)
+      setCount(false)
       VerifyData(number)
       setView(false)
       
@@ -168,8 +167,7 @@ const Example = ({ type, color }) => (
     <Col lg={8}>
       <div style={{'height':'60vh','backgroundColor':'black'}}>
       <div style={{'height':'60vh','backgroundColor':'white '}}>
-          <Card sx={{ minWidth:'30%', maxWidth:'100%' ,padding:'50px'}}> 
-       
+          <Card sx={{ minWidth:'30%', maxWidth:'100%' ,padding:'50px'}}>        
       <Card>
       <Table striped>
       <thead>
@@ -191,10 +189,7 @@ const Example = ({ type, color }) => (
           <td>{String(obj.created_at).slice(0,10).split("-").reverse().join("-")}</td>
           <td>{String(obj.valid_at).split("-").reverse().join("-")}</td>
           <td style={{color:'blue',cursor:'pointer'}} onClick={()=>handleClickOpen(obj.id,obj.ordernumber)}><TouchAppIcon /></td> 
-          
-     
         </tr> 
-
          )}       
       </tbody>
     </Table>
@@ -214,8 +209,7 @@ const Example = ({ type, color }) => (
                { verify.start_otp ? 
                 <div align='center'>   
                 { verify.start_verify ? <div> 
-                  {verify.end_otp ? <div>
-                    {/* <Button variant="contained"  onClick={()=>handleSubmit(single.mobile,single.ordernumber)} color='success'>Complete job sent OTP</Button>  */}
+                  {verify.end_otp ? <div>                   
                     <div>
                       { verify.end_verify ?
                       <div>
@@ -224,7 +218,13 @@ const Example = ({ type, color }) => (
                          }
                       </div>
                     :
-                    <span>waiting for employer response </span> }
+                    <div>
+                         <span>waiting for employer response </span>
+                         {count?  <Example  type='bars' color='red'/> :<div>
+                         <Button variant="contained"  onClick={()=>handleSubmit(single.mobile,single.ordernumber)} color='success'>Resent OTP</Button>
+                         </div> }
+                    </div>
+                    }
                     </div>
                  
                   </div>:
@@ -232,10 +232,16 @@ const Example = ({ type, color }) => (
                   <span>Start the job  Successfully , finish the job enter the button for verifications </span>                  
                  
                   {count ?   <Example  type='bars' color='red'/>
+
           :  <Button variant="contained"  onClick={()=>endSubmit(single.mobile,single.ordernumber)} color='success'>End of job </Button> }        
                   </div>}
                   </div>  :
-                  <span>OTP sent Successfully , your employer is waiting for response </span>
+                  <div>
+                    <span>OTP sent Successfully , your employer is waiting for response </span>
+
+                  { count?<div><Example  type='bars' color='red'/> <Chip label={<Countdown date={Date.now() + 30000} />} color="error" variant="contained" ></Chip></div> : <Button variant="contained"  onClick={()=>handleSubmit(single.mobile,single.ordernumber)} color='success'>Resent OTP</Button>  }
+                  </div>
+                  
                 }
                 </div> :
                <div align='center'>                    
@@ -245,14 +251,12 @@ const Example = ({ type, color }) => (
                 </div> 
                 }
                 <div align='center'>
-                { view   ?  <Chip label={<Countdown date={Date.now() + 100000} />} color="error" variant="contained" ></Chip> :''}
-                </div>             
-             
+                { view   ?  <Chip label={<Countdown date={Date.now() + 30000} />} color="error" variant="contained" ></Chip> :''}
+                </div>                          
               </DialogContentText>
             </DialogContent>
             <DialogActions>
-              <Button variant="contained" color="primary" onClick={handleClose}>Close</Button>
-         
+              <Button variant="contained" color="primary" onClick={handleClose}>Close</Button>         
             </DialogActions>
           </Dialog>  }
       </Card>

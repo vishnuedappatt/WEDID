@@ -7,11 +7,9 @@ from rest_framework.routers import DefaultRouter
 
 router=DefaultRouter()
 router.register('jobz',giving_job_edit,basename='edit_job_edit')
-# router.register('verify',VerificatinData,basename='verify')
 
 urlpatterns = [
     
-    path('',views.hello,name='hello'),
     path('rentcate/',views.rentcategories,name='rentcategory'),
     path('jobcate/',views.jobcategories,name='rentcategory'),
     path('showcity/<int:id>/',views.getcity,name='get-city'),

@@ -429,7 +429,7 @@ const showRazorpay = async (e) => {
     console.log(sum)
     setSalary(sum)
   }else{
-    const sum=parseInt(rate)+parseInt(rate*1.5)
+    const sum=parseInt(rate)+parseInt(rate*.025)
     bodyData.append("amount", sum);
     console.log(sum)
     setSalary(sum)
@@ -576,8 +576,7 @@ const showRazorpay = async (e) => {
                         <input type="text" id="form6Example3"  placeholder="This number is not same as you registerd"  onChange={(e)=>setSubMobile(e.target.value)} value={sub_mobile}   className="form-control" />
                         
                         {Object.keys(subMobileErr).map((key)=>{
-                                 return <div style={{color:'red'}} >{subMobileErr[key]}</div> })}
-                       
+                                 return <div style={{color:'red'}} >{subMobileErr[key]}</div> })}                       
                     </div>
                 </div>
             </div>
@@ -654,7 +653,7 @@ const showRazorpay = async (e) => {
                 <p style={{color:'yellow',marginTop:'4rem'}}>** charges applied</p>
                 <p  style={{color:'red'}}>**  your our rate is less than 500 you should pay 5%,</p>    
             <p  style={{color:'red'}}>**  your our rate is greater  than 500 you should pay 10%,</p>
-            <p  style={{color:'red'}}>**  your our rate is greater 1000 you should pay 15%,</p>     
+            {/* <p  style={{color:'red'}}>**  your our rate is greater 1000 you should pay 15%,</p>      */}
             </div>
            
             

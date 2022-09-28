@@ -21,8 +21,7 @@ from django.core.mail import send_mail
 # Create your views here.
 
 
-def hello(request):
-    pass
+
 # gettting rent categories
 
 @api_view(['GET'])

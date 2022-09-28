@@ -3,8 +3,7 @@ import Snackbar from '@mui/material/Snackbar';
 
 
 const CommonSnackbar=({transition,open,onClose,values,message})=> {
-  console.log(message,'tesdsfk')
-  console.log(open,'opee')
+  
   return (
     <div>
       <Snackbar

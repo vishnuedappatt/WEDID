@@ -15,6 +15,7 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import VerifyForm from '../common/Form/VerifyForm';
 import ReactLoading from 'react-loading';
+import ComonSnack from '../common/CommonSnackbar/CoomonSnack';
 
 function VerifyService() {
 
@@ -101,6 +102,7 @@ const [startVerified,setStartVerified]=useState(false)
 
 const [code,setCode]=useState('')
 const [order,setOrder]=useState('')
+const [error,setError]=useState('')
 // sent otp
 const otpVerify=async(number)=>{   
   let request=(JSON.parse(localStorage.getItem('token')))  
@@ -114,8 +116,10 @@ await axios.post('job/start_otp_check/',{number:order,otp:code},{
       console.log(res.data)  
       VerifyData(order)
       setStartVerified(false)
+
   }).catch((err)=>{
-  
+    setError(err.response.data.error)
+    handleClickze()
   })
 }
 // sent otp
@@ -131,9 +135,27 @@ await axios.post('job/end_otp_check/',{number:order,otp:code},{
       console.log(res.data)  
       VerifyData(order)
       setStartVerified(false)
+  }).catch((err)=>{
+    setError(err.response.data.error)
+    handleClickze()
   })
 }
 
+const [openze, setOpenze] = React.useState(false);
+
+const handleClickze = () => {
+  setOpenze(true);
+};
+
+const handleCloseze = (event, reason) => {
+  if (reason === 'clickaway') {
+    return;
+  }
+
+  setOpenze(false);
+};
+
+// bar loading
 const Example = ({ type, color }) => (
   <ReactLoading type={type} color={color} height={'20%'} width={'20%'} />
 );
@@ -147,8 +169,7 @@ const Example = ({ type, color }) => (
     <Col lg={8}>
       <div style={{'height':'60vh','backgroundColor':'black'}}>
       <div style={{'height':'60vh','backgroundColor':'white '}}>
-          <Card sx={{ minWidth:'30%', maxWidth:'100%' ,padding:'50px'}}> 
-        
+          <Card sx={{ minWidth:'30%', maxWidth:'100%' ,padding:'50px'}}>         
       <Card>
       <Table striped>
       <thead>
@@ -193,8 +214,6 @@ const Example = ({ type, color }) => (
                   {/* {(verify.start_verify || !verify.end_otp ) ? <span>Job started  ,waiting of Employer response</span> :' '}  */}
                 </div> 
 
-         
-                
                {(verify.start_otp  )?
                  <div>     
                              
@@ -206,8 +225,7 @@ const Example = ({ type, color }) => (
                            <span>Job Completed successfully !! Money will credit to Employee account  with in few hours</span> 
                       }
                           
-                    </div> 
-                 
+                    </div>                  
                      :    <span>Job started !!!! You are waiting for employer confirmation </span> 
                     }
                      
@@ -217,6 +235,7 @@ const Example = ({ type, color }) => (
                        <span>Please enter the otp you get</span> 
                         <VerifyForm  save={otpVerify} set1={setCode} data1={code}  savebtn='Verify'/>
                         { startVerified &&   <Example  type='bars' color='red'/> }
+                     {openze && <ComonSnack onClose={handleCloseze}  message={error} open={openze} /> }
                     </div>
                        } 
 
@@ -227,6 +246,7 @@ const Example = ({ type, color }) => (
                   {(!verify.end_verify ) ?
                   <VerifyForm  save={endOtpVerify} set1={setCode} data1={code}  savebtn='job complete Verify'/> :'' } 
                      { startVerified &&   <Example  type='bars' color='red'/> }
+                     {openze && <ComonSnack onClose={handleCloseze} message={error} open={openze} /> }
 
                 </div> 
                 : ''} 

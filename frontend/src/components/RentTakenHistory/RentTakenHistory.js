@@ -94,9 +94,9 @@ function RentTakenHistory() {
         </tr>
       </thead>
       <tbody> 
-       {user && user.map((obj)=>     
+       {user && user.map((obj,index)=>     
        <tr>
-          <td >{obj.id}</td>
+          <td >{index+1}</td>
           <td>{obj.title}</td>
           <td>{obj.category.name }</td>
           <td>{String(obj.created_at).slice(0,10).split("-").reverse().join("-")}</td>

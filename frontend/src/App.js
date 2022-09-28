@@ -17,18 +17,21 @@ import RentShowPage from "./pages/RentShowPage";
 import { RentProvider } from "./context/rentcontext";
 import SingleRentPage from "./pages/SingleRentPage";
 import ProfilePage from "./pages/ProfilePage";
-import ProfileEditPage from "./pages/ProfileEditPage";
 import JobTakenHistoryPage from "./pages/JobTakenHistoryPage";
 import JobGivenHistoryPage from "./pages/JobGivenHistoryPage";
 import RentGivingHistoryPage from "./pages/RentGivingHistoryPage";
 import RentTakenHistoryPage from "./pages/RentTakenHistoryPage";
 import GivingJobEditPage from "./pages/GivingJobEditPage";
-import EditRentHistory from "./components/EditRentHistory/EditRentHistory";
 import RentGivingEditPage from "./pages/RentGivingEditPage";
 import VerifyServicePage from "./pages/VerifyServicePage";
 import VerifyServiceEmployeePage from "./pages/VerifyServiceEmployeePage";
 import TransactionPage from "./pages/TransactionPage";
-
+import AdminUserPage from "./pages/AdminUserPage";
+import AdminPrivetRoute from "./PrivetRouters/AdminPrivetRoute";
+import AdminHomePage from "./pages/AdminHomePage";
+import AdminJobPage from "./pages/AdminJobPage";
+import AdminRentPage from "./pages/AdminRentPage";
+import ServiceCompletePage from "./pages/ServiceCompletePage";
 
 function App() {
   return (
@@ -66,10 +69,16 @@ function App() {
                 <Route path="/profile/verifier/" element={<VerifyServiceEmployeePage />} /> 
                 {/* <Route path='/pay' element={<Payment />} /> */}
 
-
+                {/* admin side  */}
+           
                 
                
               </Route>    
+              <Route path="/admin" element={<AdminHomePage />} />
+              <Route path='/admin/userView' element={<AdminUserPage />} />
+              <Route path="/admin/job" element={<AdminJobPage />} />
+              <Route path="/admin/rent" element={<AdminRentPage />} />
+              <Route path="/admin/complete" element={<ServiceCompletePage />} />
             </Routes>
           </RentProvider>
         </AuthProvider>
