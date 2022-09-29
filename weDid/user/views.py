@@ -3,8 +3,8 @@ from unicodedata import category
 from django.shortcuts import render,redirect
 from rest_framework.decorators import api_view,permission_classes,authentication_classes
 from rest_framework.permissions import IsAuthenticated
-from .models import Account,UserToken,Categories,City,District
-from .serializers import AccountSerializer,CategorySerializer
+from .models import Account, BankDetails, UPIDetails,UserToken,Categories,City,District
+from .serializers import AccountSerializer, BankSerializer,CategorySerializer, UpiSerializer
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated,IsAdminUser
 from rest_framework  import status
@@ -396,6 +396,32 @@ def change_password(request):
         return Response(message,status=status.HTTP_400_BAD_REQUEST)
 
 
+class bank_create(viewsets.ModelViewSet):
+    authentication_classes=[JWTAuthentications]
+    queryset=BankDetails.objects.all()
+    serializer_class=BankSerializer
 
 
 
+@api_view(['GET'])
+@authentication_classes([JWTAuthentications])
+def bank_of_user(request):
+    user=request.user    
+    userr=BankDetails.objects.filter(user=user)
+    serializer=BankSerializer(userr,many=True)
+    return Response(serializer.data)
+
+
+class upi_create(viewsets.ModelViewSet):
+    authentication_classes=[JWTAuthentications]
+    queryset=UPIDetails.objects.all()
+    serializer_class=UpiSerializer
+
+
+@api_view(['GET'])
+@authentication_classes([JWTAuthentications])
+def upi_of_user(request):
+    user=request.user    
+    userr=UPIDetails.objects.filter(user=user)
+    serializer=UpiSerializer(userr,many=True)
+    return Response(serializer.data)

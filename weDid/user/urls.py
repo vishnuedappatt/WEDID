@@ -5,7 +5,8 @@ from .views import *
 
 router=DefaultRouter()
 router.register('profile',userprofile,basename='userprofile')
-
+router.register('addbank',bank_create,basename='bank_create')
+router.register('addupi',upi_create,basename='upi_create')
 
 urlpatterns = [
 
@@ -20,6 +21,9 @@ urlpatterns = [
     path('resetPassword/',views.resetPassword,name="resetPassword"),
     path('profile/change_password/',views.change_password,name='change password'),
     path('profiles/',views.single_user_profile,name='single_user'),
+    
+    path('bank_user/',bank_of_user,name='bank_of_user'),
+    path('upi_user/',upi_of_user,name='upi_of_user'),
 
   
     ]+router.urls

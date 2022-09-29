@@ -23,8 +23,11 @@ function VerifyServiceEmploye() {
   const navigate=useNavigate()
     useEffect(() => {
     userJobHistory()
+    userUpi()
+    userBank()
+   
     }, [])
-    
+ 
 
      // user datas
      const userJobHistory=async()=>{   
@@ -158,6 +161,41 @@ const Example = ({ type, color }) => (
     <ReactLoading type={type} color={color} height={'20%'} width={'20%'} />
 );
 
+
+const [upis,setUpis]=useState([])
+const userUpi=async()=>{
+  let request=(JSON.parse(localStorage.getItem('token')))  
+    await axios.get(`user/upi_user/`,
+    {
+      headers: {
+          Authorization:'Bearer '+ request
+      }
+  }).then((res)=>{
+    console.log(res.data)
+    setUpis(res.data)
+   
+  })
+}
+
+
+const [userbank,setUserBank]=useState([])
+const userBank=async()=>{
+  let request=(JSON.parse(localStorage.getItem('token')))  
+  let id=(JSON.parse(localStorage.getItem('userId')))  
+    await axios.get(`user/bank_user/`,
+    {
+      headers: {
+          Authorization:'Bearer '+ request
+      }
+  }).then((res)=>{
+    console.log(res.data,'ppp')
+    setUserBank(res.data)
+   
+  })
+}
+console.log(upis.length,userbank,'kkkkk')
+
+
   return (
     <div>
     <Row>
@@ -244,11 +282,13 @@ const Example = ({ type, color }) => (
                   
                 }
                 </div> :
+                { userbank.length  || upis.length <1 ?' ': <>
                <div align='center'>                    
                   <h5>Please Make sure that this verification OTP sent to employer and OTP verified by employer in 5 min   </h5>          
                {count ?   <Example  type='bars' color='red'/>
           :  <Button variant="contained"  onClick={()=>handleSubmit(single.mobile,single.ordernumber)} color='success'>sent OTP</Button> }                  
                 </div> 
+                </>}
                 }
                 <div align='center'>
                 { view   ?  <Chip label={<Countdown date={Date.now() + 30000} />} color="error" variant="contained" ></Chip> :''}

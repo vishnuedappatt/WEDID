@@ -15,6 +15,7 @@ import CommonSnackbar from '../common/CommonSnackbar/CommonSnackBar'
 import AddIcon from '@mui/icons-material/Add';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
+import MatModal from '../common/MatModal/MatModal'
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -57,8 +58,13 @@ const handleClosez = () => setOpenz(false);
   
 
   const navigate=useNavigate()
+
  useEffect(() => {
-  userData()
+  
+      userData()
+      userBank()
+      userUpi()
+
    }, [])
 
 
@@ -98,8 +104,7 @@ const handleClosez = () => setOpenz(false);
           console.log(res.data,'evide work ann')
           setFirstName(res.data.first_name)
           setLastName(res.data.last_name)
-          handleClose() 
-           
+          handleClose()            
       })
   }
   const [error,setError]=useState('')
@@ -107,6 +112,7 @@ const handleClosez = () => setOpenz(false);
   const [currentPassword,setCurrentPassword]=useState('')
   const [newPassword,setNewPassword]=useState('')
   const [confirmPassword,setConfirmPassword]=useState('') 
+
 
   // user edit calling
   const userPasswordReset=async()=>{   
@@ -132,6 +138,234 @@ const handleClosez = () => setOpenz(false);
       console.log(err.response.data.error)
     })
 }
+
+
+
+
+// for account adding
+const [name,setName]=useState('')
+const [accNo,setAccNo]=useState('')
+const [confAccNo,setConfAcc]=useState('')
+const [ifsc,setIfsc]=useState('')
+
+// for error
+const [nameErr,setNameErr]=useState('')
+const [accNoErr,setAccNoErr]=useState('')
+const [confAccNoErr,setConfAccErr]=useState('')
+const [ifscErr,setIfscErr]=useState('')
+
+// for upi
+const [upi,setUpi]=useState('')
+const [phone,setPhone]=useState('')
+// /for error
+const [upiErr,setUpiErr]=useState('')
+const [phoneErr,setPhoneErr]=useState('')
+
+
+
+
+const formValidationAcc=()=>{
+  const nameErr={}
+  const accNoErr={}
+  const confAccNoErr={}
+  const ifscErr={}
+
+  let isValid=true
+
+  
+    if (!name){
+        nameErr.short_fname = '* this name field is required'
+        isValid = false
+      }
+    if (!accNo){
+    accNoErr.short_fname = '* this account no field is required'
+    isValid = false
+    }
+
+
+    if (!confAccNo){
+    confAccNoErr.short_fname = '* this confirm Account No field is required'
+    isValid = false
+
+    }else if (confAccNo != accNo){
+      confAccNoErr.short_fname=' * account number mismatch'
+      isValid = false
+    }
+    
+    if(!ifsc){
+      ifscErr.short_fname='* this field is required'
+    }
+
+
+    setAccNoErr(accNoErr)
+    setNameErr(nameErr)
+    setConfAccErr(confAccNoErr)
+    setIfscErr(ifscErr)
+
+    return isValid
+     
+}
+
+
+
+// for upi
+
+const formValidationUPI=()=>{
+  const nameErr={}
+  const upiErr={}
+  const phoneErr={}
+
+
+  let isValid=true
+
+  
+    if (!name){
+        nameErr.short_fname = '* this name field is required'
+        isValid = false
+      }
+    if (!upi){
+    upiErr.short_fname = '* this upi  field is required'
+    isValid = false
+    }
+    if (!phone){
+    phoneErr.short_fname = '* this mobile required'
+    isValid = false
+
+    }
+
+    
+    setNameErr(nameErr)
+    setUpiErr(upiErr)
+    setPhoneErr(phoneErr)
+
+    return isValid
+     
+}
+
+
+const handleAccSave=async()=>{
+  const validation=formValidationAcc()
+  if (validation){   
+      let request=(JSON.parse(localStorage.getItem('token')))  
+      let id=(JSON.parse(localStorage.getItem('userId')))  
+        await axios.post(`user/addbank/`,{
+          user:id,
+          name:name,
+          account_no:accNo,
+          ifsc:ifsc,      
+
+        },
+        {
+          headers: {
+              Authorization:'Bearer '+ request
+          }
+      }).then((res)=>{
+        userBank()
+        console.log(res.data)
+        setAccNo(' ')
+        setConfAcc(' ')
+        setIfsc(' ')
+        setName(' ')
+      
+      })
+  }
+}
+
+
+// showing all banks of user
+const [userbank,setUserBank]=useState([])
+const userBank=async()=>{
+  let request=(JSON.parse(localStorage.getItem('token')))  
+  let id=(JSON.parse(localStorage.getItem('userId')))  
+    await axios.get(`user/bank_user/`,
+    {
+      headers: {
+          Authorization:'Bearer '+ request
+      }
+  }).then((res)=>{
+    console.log(res.data)
+    setUserBank(res.data)
+   
+  })
+}
+
+// delete bank
+const bankDelete=async(bankId)=>{
+  let request=(JSON.parse(localStorage.getItem('token')))  
+   await axios.delete(`user/addbank/${bankId}/`,
+    {
+      headers: {
+          Authorization:'Bearer '+ request
+      }
+  }).then((res)=>{
+    console.log(res.data)
+    userBank()
+   
+  })
+}
+
+
+
+const handleUpiSave=async()=>{
+  const validation=formValidationUPI()
+  if (validation){   
+      let request=(JSON.parse(localStorage.getItem('token')))  
+      let id=(JSON.parse(localStorage.getItem('userId')))  
+        await axios.post(`user/addupi/`,{
+          user:id,
+          name:name,
+          upi:upi,
+          mobile:phone,      
+
+        },
+        {
+          headers: {
+              Authorization:'Bearer '+ request
+          }
+      }).then((res)=>{
+        console.log(res.data)
+        setName('')
+        setUpi('')
+        setPhone('  ')
+        userUpi()
+      })
+  }
+}
+
+
+// showing all banks of user
+const [userupi,setUserUpi]=useState([])
+const userUpi=async()=>{
+  let request=(JSON.parse(localStorage.getItem('token')))  
+  let id=(JSON.parse(localStorage.getItem('userId')))  
+    await axios.get(`user/upi_user/`,
+    {
+      headers: {
+          Authorization:'Bearer '+ request
+      }
+  }).then((res)=>{
+    console.log(res.data)
+    setUserUpi(res.data)
+   
+  })
+}
+
+// delete bank
+const upiDelete=async(upiId)=>{
+  let request=(JSON.parse(localStorage.getItem('token')))  
+   await axios.delete(`user/addupi/${upiId}/`,
+    {
+      headers: {
+          Authorization:'Bearer '+ request
+      }
+  }).then((res)=>{
+    console.log(res.data)
+    userUpi()
+   
+  })
+}
+
+
   return (
     <div>
       <Row>
@@ -170,7 +404,12 @@ const handleClosez = () => setOpenz(false);
      <Button style={{marginLeft:'20px'}} onClick={handleOpenz} variant="contained" color='warning' >Reset Password</Button>
      <MaterialModal handleClose={handleClosez} open={openz} head='password reset' data1={currentPassword} data2={newPassword}  data3= {confirmPassword} set1={setCurrentPassword} set2={setNewPassword}  set3={setConfirmPassword}cancel={handleClosez} save={userPasswordReset} error={error}/>
      <Button style={{marginLeft:'20px'}} onClick={handleOpenzz} variant="outlined" color='error' ><AddIcon/> Account Details</Button>
-
+   
+    <MatModal open={openzz} data1={name} data2={accNo} data3={confAccNo} data4={ifsc} data5={upi} data6={phone}
+    set1={setName} set2={setAccNo} set3={setConfAcc} set4={setIfsc}  set5={setUpi} set6={setPhone}
+    save={handleAccSave} cancel={handleClosezz} save1={handleUpiSave} result1={userbank} result2={userupi} delete1={bankDelete} delete2={upiDelete}
+    error1={nameErr} error2={accNoErr} error3={confAccNoErr} error4={ifscErr} error5={upiErr} error6={phoneErr} />
+    
       <Snackbar open={opens} autoHideDuration={6000} onClose={handleCloses}>
                 <div>                 
                 <Alert onClose={handleCloses} severity="success" sx={{ width: '100%' }} >

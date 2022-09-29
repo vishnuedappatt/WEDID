@@ -1,5 +1,8 @@
 
 
+from email.policy import default
+from enum import auto
+from unittest.util import _MAX_LENGTH
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser,BaseUserManager
 
@@ -124,6 +127,25 @@ class City(models.Model):
 
 
 
+class BankDetails(models.Model):
+    user=models.ForeignKey(Account,on_delete=models.CASCADE)
+    account_no=models.CharField(max_length=30)
+    name=models.CharField(max_length=30)
+    ifsc=models.CharField(max_length=30)
+    select=models.BooleanField(default=False)
+    created_at=models.DateTimeField(auto_now_add=True)
+
+    def __str__(serlf):
+        return serlf.name    
     
     
-    
+class UPIDetails(models.Model):
+    user=models.ForeignKey(Account,on_delete=models.CASCADE)
+    upi=models.CharField(max_length=30)
+    mobile=models.CharField(max_length=30)
+    name=models.CharField(max_length=30)
+    select=models.BooleanField(default=False)
+    created_at=models.DateTimeField(auto_now_add=True)
+
+    def __str__(serlf):
+        return serlf.name    

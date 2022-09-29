@@ -1,5 +1,5 @@
 from dataclasses import field, fields
-from .models import Account, Categories
+from .models import Account, Categories,UPIDetails,BankDetails
 from rest_framework import serializers
 
 
@@ -18,4 +18,16 @@ class AccountSerializer(serializers.ModelSerializer):
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model=Categories
+        fields='__all__'
+        
+
+class BankSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=BankDetails
+        fields='__all__'
+        
+        
+class UpiSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=UPIDetails
         fields='__all__'
