@@ -117,7 +117,9 @@ var CLR=''
       <div style={{'height':'60vh','backgroundColor':'white '}}>
       <Card sx={{ minWidth:'30%', maxWidth:'100%' ,padding:'50px'}}>          
       <Card>
+      <p style={{float:'left'}}>booked</p>
       <Table>
+       
       <thead>
         <tr>
         <th className='vanish'>id</th>
@@ -132,7 +134,7 @@ var CLR=''
       </thead>
       {user && user.map((obj,index)=> 
       <tbody> 
-     
+       <p style={{display:'none'}}> {obj.booked ? CLR='cyan' : CLR='white'}</p>
          <tr style={{backgroundColor:CLR}}> 
        <td className='vanish' >{index+1}</td>
           <td>{obj.title} </td>

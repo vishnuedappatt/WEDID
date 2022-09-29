@@ -32,6 +32,7 @@ import AdminHomePage from "./pages/AdminHomePage";
 import AdminJobPage from "./pages/AdminJobPage";
 import AdminRentPage from "./pages/AdminRentPage";
 import ServiceCompletePage from "./pages/ServiceCompletePage";
+import AdminProfitPage from "./pages/AdminProfitPage";
 
 function App() {
   return (
@@ -79,6 +80,7 @@ function App() {
               <Route path="/admin/job" element={<AdminJobPage />} />
               <Route path="/admin/rent" element={<AdminRentPage />} />
               <Route path="/admin/complete" element={<ServiceCompletePage />} />
+              <Route path='/admin/profit' element={<AdminProfitPage />} />
             </Routes>
           </RentProvider>
         </AuthProvider>

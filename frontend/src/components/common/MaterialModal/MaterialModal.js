@@ -7,6 +7,7 @@ import Modal from '@mui/material/Modal';
 import Form from '../Form/Form';
 import PasswordForm from '../Form/PasswordForm';
 import CommonTable from '../CommonTable/CommonTable';
+import AccountForm from '../Form/AccountForm';
 
 const style = {
   position: 'absolute',
@@ -21,7 +22,7 @@ const style = {
 };
 
 
-const MaterialModal=({open,handleClose,head,message,cancel,data1,data2,set1,set2,save,data3,set3,error,table})=>{
+const MaterialModal=({open,handleClose,head,message,cancel,data1,data2,set1,set2,save,data3,set3,error,table,zop})=>{
     return(
         <>     
             <Modal
@@ -35,7 +36,7 @@ const MaterialModal=({open,handleClose,head,message,cancel,data1,data2,set1,set2
                 {head}
                 </Typography>
             {message ?  <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-               {message}
+                  {zop ? <AccountForm />:  {message} }
                 </Typography> :
                 <Typography id="modal-modal-description" sx={{ mt: 2 }}>
               {!table?  <div> { set3 ?  <PasswordForm save={save} savebtn='reset password' error={error} cancel={cancel} data1={data1} data2={data2} set1={set1} set2={set2} data3={data3} set3={set3}/>   : <Form save={save}  cancel={cancel} data1={data1} data2={data2} set1={set1} set2={set2} savebtn='save'/>  } </div>:

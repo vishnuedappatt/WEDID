@@ -469,7 +469,7 @@ const showRazorpay = async (e) => {
   let order_number=(JSON.parse(localStorage.getItem('order_number'))) 
   bodyData.append("name", order_number);
   bodyData.append("typez",'rent')
-  bodyData.append("buyer",'yes')
+  bodyData.append("buyer",'no')
   let request=(JSON.parse(localStorage.getItem('token')))  
   const data = await axios.post('payment/pay/',bodyData,{headers:{Authorization:'Bearer  ' +request}}).then((res) => {
     return res;

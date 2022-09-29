@@ -11,6 +11,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import TouchAppIcon from '@mui/icons-material/TouchApp';
 // for switch
 import Switch from '@mui/material/Switch';
 import SideBar from '../SideBar/SideBar';
@@ -23,15 +24,15 @@ function ServiceCompletion() {
  
   const navigate=useNavigate()
     useEffect(() => {
-    userList()
+        JobList()
     }, [])
     
     const [user,setUser]=useState([])
      // user datas
-     const userList=async()=>{   
+     const JobList=async()=>{   
       let request=(JSON.parse(localStorage.getItem('token')))  
  
-     await axios.get('adminz/user/',{
+     await axios.get('adminz/job/',{
           headers: {
               Authorization:'Bearer '+ request
             }
@@ -63,7 +64,7 @@ function ServiceCompletion() {
    const userSingleJobHistory=async(id)=>{   
     let request=(JSON.parse(localStorage.getItem('token')))  
     console.log(id,'ddd')
-   await axios.get(`job/singlejob/${id}/`,{
+   await axios.get(`adminz/job/${id}/`,{
         headers: {
             Authorization:'Bearer '+ request
           }
@@ -78,31 +79,33 @@ function ServiceCompletion() {
 const handleAvailable=async(id,name)=>{
   let request=(JSON.parse(localStorage.getItem('token'))) 
   if (name){
-    await axios.patch(`adminz/user/${id}/`,{
-      is_active:'False'
+    await axios.patch(`adminz/job/${id}/`,{
+      available:'False'
     },{
       headers: {
           Authorization:'Bearer  '+ request
       }
   }).then((res)=>{
      console.log(res.data)
-     userList()
+     JobList()
     })
   }else{
-    await axios.patch(`adminz/user/${id}/`,{
-      is_active:'True'
+    await axios.patch(`adminz/job/${id}/`,{
+      available:'True'
     },{
       headers: {
           Authorization:'Bearer  '+ request
       }
   }).then((res)=>{
      console.log(res.data)
-     userList()
+     JobList()
     })
   }
 
 }
 
+
+var CLR=''
   return (
     <div>
     <Row>
@@ -114,38 +117,45 @@ const handleAvailable=async(id,name)=>{
       <div style={{'height':'60vh','backgroundColor':'white '}}>
       <Card sx={{ minWidth:'30%', maxWidth:'100%' ,padding:'50px'}}>          
       <Card>
-      <Table striped>
+      <p style={{float:'left'}}>booked</p>
+      <Table>
+       
       <thead>
         <tr>
-          <th className='vanish'>No.s</th>
-          <th className='vanish'>user id</th>
-          <th>Full Name</th>
-          <th className='vanish'>Email</th>
-          <th>Mobile</th>
-          <th>Status</th>
+        <th className='vanish'>id</th>
+          <th > Title</th>
+          <th className='vanish'>category</th>
+          <th className='vanish'>posted on</th>
+          <th>valid</th>
+          <th>Available</th>
+          <th>view </th>
         
         </tr>
       </thead>
+      {user && user.map((obj,index)=> 
       <tbody> 
-       {user && user.map((obj,index)=>     
-       <tr>
-          <td  className='vanish'>{index+1}</td>
-          <td  className='vanish'>{obj.id}</td>
-          <td>{obj.first_name + obj.last_name}</td>
-          <td  className='vanish'>{obj.email}</td>
-          <td>{obj.mobile}</td>        
+        {obj.verified ?
+        <>
+       <p style={{display:'none'}}> {obj.booked ? CLR='cyan' : CLR='white'}</p>
+         <tr style={{backgroundColor:CLR}}> 
+       <td className='vanish' >{obj.id}</td>
+          <td>{obj.title} </td>
+          <td className='vanish'>{obj.category.name }</td>
+          <td className='vanish'>{String(obj.created_at).slice(0,10).split("-").reverse().join("-")}</td>
+          <td>{String(obj.valid_at).split("-").reverse().join("-")}</td>
           <td> <Switch
-              checked={obj.is_active}
-              onClick={()=>handleAvailable(obj.id,obj.is_active)}
+              checked={obj.available}
+              onClick={()=>handleAvailable(obj.id,obj.available)}
               inputProps={{ 'aria-label': 'controlled' }}
             /></td>
-          {/* <td style={{color:'blue',cursor:'pointer'}} onClick={()=>handleClickOpen(obj.id)}><TouchAppIcon /></td>  */}
+          <td style={{color:'blue',cursor:'pointer'}} onClick={()=>handleClickOpen(obj.id)}><TouchAppIcon /></td> 
              
      
         </tr> 
-
-         )}       
+        </>
+        :''}
       </tbody>
+      )}     
     </Table>
         {single &&  <Dialog
               // style={{width:'900px'}} 
@@ -177,9 +187,9 @@ const handleAvailable=async(id,name)=>{
             </DialogContent>
             <DialogActions>
               <Button onClick={handleClose}>Close</Button>
-          {single.booked ?  '':  <Button onClick={()=>navigate(`edit/${single.id}/`)} autoFocus>
+          {/* {single.booked ?  '':  <Button onClick={()=>navigate(`edit/${single.id}/`)} autoFocus>
               Edit
-              </Button> }
+              </Button> } */}
             </DialogActions>
           </Dialog>  }
       </Card>

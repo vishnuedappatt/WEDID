@@ -177,7 +177,7 @@ const handleAvailable=async(id,name)=>{
             <h5 style={{color:'blue',fontWeight:800}}> Posted on :<span style={{color:'black'}}>{String(single.created_at).slice(0,10).split("-").reverse().join("-")}</span></h5><br></br>
             <h5 style={{color:'blue',fontWeight:800}}> Valid on :<span style={{color:'black'}}> {String(single.valid_at).split("-").reverse().join("-")} </span></h5><br></br>
             <h5 style={{color:'blue',fontWeight:800}}> Rate :<span style={{color:'black'}}>{single.rate}</span></h5><br></br>
-            { single.image  && <div><img style={{width:'100px',height:'100px'}} src={single.image} /> <img style={{width:'100px',height:'100px'}} src={single.image1} /><img style={{width:'100px',height:'100px'}} src={single.image2} /></div> }
+            { single.image  && <div><img style={{width:'150px',height:'150px'}} src={single.image} /> <img style={{width:'150px',height:'150px'}} src={single.image1} /><img style={{width:'150px',height:'150px'}} src={single.image2} /></div> }
             { single.booked ?  <div>
             <h5>Booked Person</h5>
                 Name :  {single.booked_person.first_name} {single.booked_person.last_name}<br></br>

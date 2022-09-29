@@ -12,7 +12,7 @@ import axios from '../../axios';
 import Button from '@mui/material/Button';
 import MaterialModal from '../common/MaterialModal/MaterialModal'
 import CommonSnackbar from '../common/CommonSnackbar/CommonSnackBar'
-
+import AddIcon from '@mui/icons-material/Add';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 
@@ -27,6 +27,11 @@ function Profile() {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   
+// for modal
+const [openzz, setOpenzz] = React.useState(false);
+const handleOpenzz = () => setOpenzz(true);
+const handleClosezz = () => setOpenzz(false);
+
 
 
 // snackbar
@@ -164,10 +169,10 @@ const handleClosez = () => setOpenz(false);
      <MaterialModal handleClose={handleClose} open={open} head='Edit profile' data1={first_name} data2={last_name} set1={setFirstName} set2={setLastName} cancel={handleClose} save={userDataEdit}/>
      <Button style={{marginLeft:'20px'}} onClick={handleOpenz} variant="contained" color='warning' >Reset Password</Button>
      <MaterialModal handleClose={handleClosez} open={openz} head='password reset' data1={currentPassword} data2={newPassword}  data3= {confirmPassword} set1={setCurrentPassword} set2={setNewPassword}  set3={setConfirmPassword}cancel={handleClosez} save={userPasswordReset} error={error}/>
- 
+     <Button style={{marginLeft:'20px'}} onClick={handleOpenzz} variant="outlined" color='error' ><AddIcon/> Account Details</Button>
+
       <Snackbar open={opens} autoHideDuration={6000} onClose={handleCloses}>
-                <div>
-                 
+                <div>                 
                 <Alert onClose={handleCloses} severity="success" sx={{ width: '100%' }} >
                  {mess}
                 </Alert>

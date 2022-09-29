@@ -63,53 +63,16 @@ function SideBar() {
          <ListGroup className='p-5' style={{'height':'65vh','backgroundColor':'black'}}>
          <Link style={{'backgroundColor':'black' ,'color':'red','textDecoration':'none','textAlign':'center','fontSize':'22px'}} className='mt-2'  to="/admin">   <Button  variant="contained" color='warning' fullWidth >Graphical Representation</Button></Link>
          <Link style={{'backgroundColor':'black' ,'color':'red','textDecoration':'none','textAlign':'center','fontSize':'22px'}} className='mt-2'  to="/admin/userView">   <Button  variant="contained" color='warning' fullWidth >userList</Button></Link>
-         {/* <Accordion className='mt-4'> */}
-        {/* <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel1a-content"
-          id="panel1a-header"
-        >
-          <Typography style={{fontWeight:'900'}}>JOB HISTORY</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Typography>
-          <Link style={{'backgroundColor':'black' ,'color':'red','textDecoration':'none','textAlign':'center','fontSize':'22px'}} className='mt-5'  to="/givenjobs">Given Jobs</Link>       
-          </Typography>
-          <Typography>
-          <Link style={{'backgroundColor':'black' ,'color':'red','textDecoration':'none','textAlign':'center','fontSize':'22px'}} className='mt-5'  to="/takenjobs">Taked Jobs</Link>
-            
-          </Typography>
-        </AccordionDetails>
-      </Accordion>
-      <Accordion className='mt-4'>
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel1a-content"
-          id="panel1a-header"
-        >
-          <Typography style={{fontWeight:'900'}}>RENT HISTORY</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Typography>
-          <Link style={{'backgroundColor':'black' ,'color':'red','textDecoration':'none','textAlign':'center','fontSize':'22px'}} className='mt-5'  to="/givenrents">Given Rents</Link>       
-          </Typography>
-          <Typography>
-          <Link style={{'backgroundColor':'black' ,'color':'red','textDecoration':'none','textAlign':'center','fontSize':'22px'}} className='mt-5'  to="/takenrents">Taked Rents</Link>
-            
-          </Typography>
-          <Typography>
-         
-                </Typography>
-        </AccordionDetails>
-      </Accordion>
-    */}
+      
         <Link style={{'backgroundColor':'black' ,'color':'red','textDecoration':'none','textAlign':'center','fontSize':'22px'}} className='mt-5'   to="/admin/job"><Button  variant="contained" style={{backgroundColor:'white',color:'black',width:'100%'}} fullWidth >Job Service</Button></Link>
                     
         <Link style={{'backgroundColor':'black' ,'color':'red','textDecoration':'none','textAlign':'center','fontSize':'22px'}} className='mt-5'   to="/admin/rent"><Button  variant="contained" style={{backgroundColor:'white',color:'black'}} fullWidth > Rent Service </Button></Link>
         <Link style={{'backgroundColor':'black' ,'color':'red','textDecoration':'none','textAlign':'center','fontSize':'22px'}} className='mt-5'   to="/admin/complete"><Button  variant="contained" style={{backgroundColor:'white',color:'black'}} fullWidth > Completed job Service </Button></Link>
-        <Link style={{'backgroundColor':'black' ,'color':'red','textDecoration':'none','textAlign':'center','fontSize':'22px'}}   to="/profile/trans">
-        <Button className='mt-5'  variant="contained" style={{backgroundColor:'primary',color:'white'}} fullWidth >Total Service transactions </Button>
-        </Link>
+        <Link style={{'backgroundColor':'black' ,'color':'red','textDecoration':'none','textAlign':'center','fontSize':'22px'}} className='mt-5'   to="/admin/profit"><Button  variant="contained" style={{backgroundColor:'white',color:'black'}} fullWidth > Profit Details </Button></Link>       
+        {/* <Link style={{'backgroundColor':'black' ,'color':'red','textDecoration':'none','textAlign':'center','fontSize':'22px'}} className='mt-5'   to="/admin/complete"><Button  variant="contained" style={{backgroundColor:'white',color:'black'}} fullWidth > Completed job Service </Button></Link>        */}
+        {/* <Link style={{'backgroundColor':'black' ,'color':'red','textDecoration':'none','textAlign':'center','fontSize':'22px'}}   to="/profile/trans"> */}
+      
+        {/* </Link> */}
        
                  
       </ListGroup>
