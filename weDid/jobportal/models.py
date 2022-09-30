@@ -1,5 +1,3 @@
-from email.policy import default
-from operator import mod
 from django.db import models
 from user.models import City,Categories,District,Account
 # Create your models here.
@@ -48,3 +46,14 @@ class JobVerification(models.Model):
     def __str__(self):
         return self.name
     
+    
+
+class JobComplaint(models.Model):
+    user=models.ForeignKey(Account,on_delete=models.CASCADE)
+    job=models.ForeignKey(Job_Detail,on_delete=models.CASCADE)
+    buyer=models.BooleanField()
+    complaint=models.TextField(max_length=300)
+    create_at=models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return self.user.first_name

@@ -59,6 +59,32 @@ function Transaction() {
           
         })
     }
+
+    const [errorz,setError]=useState(false)
+    const completedRent=async(id)=>{   
+      let request=(JSON.parse(localStorage.getItem('token')))  
+    
+     await axios.get('rent/completed/',{
+          headers: {
+              Authorization:'Bearer '+request
+            }
+      }).then((res)=>{
+        
+      //  setRevenue(res.data.count)
+      setError(false)
+      setComplete(res.data)
+       console.log(res.data,'dataa  ')
+        
+      }).catch((err)=>{
+        console.log(err.response.data.error)
+        setError(true)
+      })
+  }
+
+
+
+
+    
     const [open, setOpen] = React.useState(false);
     const handleClickOpen = (id) => {
       setOpen(true);
@@ -83,18 +109,42 @@ function Transaction() {
   
 
     const [opens, setOpens] = React.useState(false);
-
+    const [number,setNumber]=useState(true)
     const handleClickOpens= (id) => {
+      setNumber(true)
       setOpens(true);
+     
       completed()
+
      
     };
   
     const handleCloses = () => {
       setOpens(false);
     };
+
+
+
+
+    const [shows, setShows] = React.useState(false);
+
+    const handleClickShows= (id) => {
+      console.log('lklkkk')
+      setShows(true);
+      setNumber(false)
+      completedRent()
+     
+    };
   
+    const handleClozss = () => {
+    
+      setShows(false);
+    
+    };
   
+
+  
+
   return (
     <div>
           <Row>
@@ -105,10 +155,14 @@ function Transaction() {
           <div align='center' style={{'height':'60vh','backgroundColor':'black',padding:'14rem'}}>
             <MaterialModal open={open} handleClose={handleClose} head='Your Total Revenue' message={'you  have erned    '+   revenue + ' ₹' }/>
             <MaterialModal open={openz} handleClose={handleClosez} head='Your Total Service Expence ' message={'you  gived erned    ' +  exp  +'  ₹ '}/>
-            <MaterialModal open={opens} handleClose={handleCloses} head='Your Total Service Expence ' table={opens} data1={complete}/>
+            <MaterialModal open={opens} handleClose={handleCloses} number={number} head='Your Completed Job Services ' table={opens} data1={complete}/>
+            <MaterialModal open={shows} handleClose={handleClozss} number={number}  head='YourCompleted Rent Service ' errorz={errorz} table={shows} data1={complete}/>
+      
             <Button onClick={handleClickOpen}>Your Revenue</Button><br></br>
             <Button onClick={handleClickOpenz}>Expense for service</Button><br></br>
-            <Button  onClick={handleClickOpens}>Completed Service</Button>
+        
+            <Button  onClick={handleClickOpens}>Completed  Service</Button>
+            <Button  onClick={handleClickShows}>Completed Rent Service</Button>
             </div>
         </Col>  
 

@@ -1,11 +1,11 @@
-
 // modal
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import AccountForm from '../Form/AccountForm';
-
+import React from 'react';
+import TextareaAutosize from '@mui/material/TextareaAutosize'
 const style = {
   position: 'absolute',
   top: '50%',
@@ -33,7 +33,20 @@ const MatModal=({open,handleClose,head,message,cancel,data1,data2,set1,set2,set3
                 {head}
                 </Typography>
             {message ?  <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                 <AccountForm /> {message} 
+                                <TextareaAutosize
+                              
+                        aria-label="empty textarea"
+                        placeholder="Write your complaint here "
+                        style={{ width: '100%' }}
+                        value={data1}
+                        onChange={(e)=>set1(e.target.value)}
+                        
+                        />
+                        {error2 && <p> {error2} </p>}
+                        {error1 && <p style={{color:'red'}}>* this field is required</p>}
+                                                   <Button style={{float:'right',marginTop:'30px',marginRight:'20px'}} onClick={save} variant="contained" color='warning' >submit </Button>
+                           <Button style={{float:'right',marginTop:'30px',marginRight:'20px'}} onClick={cancel} variant="contained" color='error' >Cancel </Button>
+                                 
                 </Typography> :
                 <Typography id="modal-modal-description" sx={{ mt: 2 }}>
            

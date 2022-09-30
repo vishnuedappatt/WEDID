@@ -39,4 +39,6 @@ urlpatterns = [
     path('revenue/',views.total_revenue,name='toal_reve'),
     path('completed/',views.total_completed_task,name="completed"),
     
+    path('complaint/',views.job_complaint,name='job_complaint'),
+    
     ]+router.urls

@@ -4,16 +4,15 @@ from django.shortcuts import render,redirect
 from rest_framework.decorators import api_view,permission_classes,authentication_classes
 from rest_framework.permissions import IsAuthenticated
 from user.models import Account,UserToken,Categories,District,City
-from .models import Job_Detail,JobVerification
+from .models import Job_Detail,JobVerification,JobComplaint
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated,IsAdminUser
 import random
 from user.authentication import ADMINAuth, JWTAuthentications, create_access_token,create_refresh_token,decode_access_token,decode_refresh_token
-from .serializer import CategorySerializer,CitySerializer,DistrictSerializer, JobHistorySerializer,JobSerializer,EditJobSerializer, JobVerificationSerializer
+from .serializer import CategorySerializer,CitySerializer,DistrictSerializer, JobHistorySerializer,JobSerializer,EditJobSerializer, JobVerificationSerializer,JobComplaintSerializer
 from rest_framework.pagination import PageNumberPagination
 from rest_framework import generics
 from rest_framework import viewsets
-from . import serializer
 from django_filters import rest_framework as filters
 from user.verify import send,check
 from rest_framework  import status
@@ -331,7 +330,7 @@ def start_verify_data(request):
     print(number,'ithhh')
     verify=JobVerification.objects.get(order_number=number)
     mobile=verify.mobile
-    print(mobile,'mobile')
+    print(mobile,'mobilezzzz')
     send(mobile)
     verify.job_start=True
     verify.start_otp=True
@@ -455,14 +454,80 @@ def total_completed_task(request):
     verify=Job_Detail.objects.filter(user=user,verified=True).exists()
     if verify:
         verify=Job_Detail.objects.filter(user=user,verified=True)
-        serializer=JobSerializer(verify,many=True)
-        return Response(serializer.data)
-    elif Job_Detail.objects.filter(booked_person__email=user):
-        verify=Job_Detail.objects.filter(booked_person__email=user)
-        serializer=JobSerializer(verify,many=True)
-        return Response(serializer.data)
+        
     else:
-        return Response({'error':'wow'})
-    
+        ver=Job_Detail.objects.filter(booked_person__email=user,verifed=True).exits()
+        if ver:
+           verify=Job_Detail.objects.filter(booked_person__email=user,verifed=True)
+        
+    serializer=JobSerializer(verify,many=True)
+    return Response(serializer.data)
+   
 
+@api_view(["POST"])
+@authentication_classes([JWTAuthentications])
+def job_complaint(request):
+    data=request.data
+    user=request.user
+    job=data['jobId'] 
+    typeId=Job_Detail.objects.filter(user=user).exists()
+    if typeId:
+        type='buyer'
+    else:
+        type='worker'
+        
+    value=JobComplaint.objects.filter(job=job).exists()
+    if value:       
+        if type=='buyer':
+            verify=JobComplaint.objects.filter(job=job,buyer=True).exists()
+            if verify:
+                message={'error':'you are already submitted the complaint'}
+                return Response(message,status=status.HTTP_400_BAD_REQUEST)
+            
+            else:
+                comp=JobComplaint.objects.create(
+                user=user,
+                job_id=job,
+                complaint=data['complaint'],
+                buyer=True,    
+            )
+                serializer=JobComplaintSerializer(comp,many=False)
+                return Response(serializer.data)         
+        else:
+            verify=JobComplaint.objects.filter(job=job,buyer=False).exists()
+            if verify:
+                message={'error':'you are already submitted the complaint'}
+                return Response(message,status=status.HTTP_400_BAD_REQUEST)
+            else:
+                comp=JobComplaint.objects.create(
+                user=user,
+                job_id=job,
+                complaint=data['complaint'],
+                buyer=False,    
+                )
+                serializer=JobComplaintSerializer(comp,many=False)
+                return Response(serializer.data)     
+
+            
+    else:
+        if type=='buyer':
+            verify=JobComplaint.objects.filter(user=user,buyer=True).exists()
+            comp=JobComplaint.objects.create(
+                user=user,
+                job_id=job,
+                complaint=data['complaint'],
+                buyer=True,    
+            )
+            serializer=JobComplaintSerializer(comp,many=False)
+            return Response(serializer.data)           
+        else:
+            comp=JobComplaint.objects.create(
+                user=user,
+                job_id=job,
+                complaint=data['complaint'],
+                buyer=False,    
+            )
+            serializer=JobComplaintSerializer(comp,many=False)
+            return Response(serializer.data)      
+        
                         

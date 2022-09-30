@@ -130,7 +130,7 @@ function RentTakenHistory() {
             <h5 style={{color:'blue',fontWeight:800}}> Valid on :<span style={{color:'black'}}> {String(single.valid_at).split("-").reverse().join("-")} </span></h5><br></br>
             <h5 style={{color:'blue',fontWeight:800}}> Rate :<span style={{color:'black'}}>{single.rate}</span></h5><br></br>
             { single.image  && <div><img style={{width:'100px',height:'100px'}} src={single.image} /> <img style={{width:'100px',height:'100px'}} src={single.image1} /><img style={{width:'100px',height:'100px'}} src={single.image2} /></div> }
-            <h5>Hiring Person</h5>
+            <h5>Owner of itme </h5>
                 Name :  {single.user.first_name} {single.user.last_name}<br></br>
                 Eamil :{single.user.email}<br></br>
                 Mobile :{single.user.mobile}<br></br>              

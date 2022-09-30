@@ -221,6 +221,7 @@ def payemntfinish(request):
         rent=Rent_detail.objects.get(id=id)
         rent.booked_person=email
         rent.booked=True
+        
         rent.available=False
         rent.save()      
         send_mail( 'From WEDID ',

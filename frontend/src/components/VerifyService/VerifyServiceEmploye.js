@@ -178,7 +178,7 @@ const userUpi=async()=>{
 }
 
 
-const [userbank,setUserBank]=useState([])
+const [bank,setBank]=useState([])
 const userBank=async()=>{
   let request=(JSON.parse(localStorage.getItem('token')))  
   let id=(JSON.parse(localStorage.getItem('userId')))  
@@ -189,11 +189,10 @@ const userBank=async()=>{
       }
   }).then((res)=>{
     console.log(res.data,'ppp')
-    setUserBank(res.data)
+    setBank(res.data)
    
   })
 }
-console.log(upis.length,userbank,'kkkkk')
 
 
   return (
@@ -266,32 +265,44 @@ console.log(upis.length,userbank,'kkkkk')
                     </div>
                  
                   </div>:
+                  
                   <div>
+                    <>
+                  
                   <span>Start the job  Successfully , finish the job enter the button for verifications </span>                  
                  
                   {count ?   <Example  type='bars' color='red'/>
-
-          :  <Button variant="contained"  onClick={()=>endSubmit(single.mobile,single.ordernumber)} color='success'>End of job </Button> }        
-                  </div>}
+      :  <Button variant="contained"  onClick={()=>endSubmit(single.mobile,single.ordernumber)} color='success'>End of job </Button> }    
+                  
+                  </>
+                  </div> }
                   </div>  :
                   <div>
                     <span>OTP sent Successfully , your employer is waiting for response </span>
 
-                  { count?<div><Example  type='bars' color='red'/> <Chip label={<Countdown date={Date.now() + 30000} />} color="error" variant="contained" ></Chip></div> : <Button variant="contained"  onClick={()=>handleSubmit(single.mobile,single.ordernumber)} color='success'>Resent OTP</Button>  }
+                  { count?<div><Example  type='bars' color='red'/> </div> : <Button variant="contained"  onClick={()=>handleSubmit(single.mobile,single.ordernumber)} color='success'>Resent OTP</Button>  }
                   </div>
                   
                 }
                 </div> :
-                { userbank.length  || upis.length <1 ?' ': <>
-               <div align='center'>                    
+  
+               <div align='center'>   
+              
+                    { (bank.length === 0 ) && (upis.length === 0 ) ? <>
+                    <h5>Please Fill account details before starting the job</h5> </> :
+                    <> 
+
                   <h5>Please Make sure that this verification OTP sent to employer and OTP verified by employer in 5 min   </h5>          
                {count ?   <Example  type='bars' color='red'/>
-          :  <Button variant="contained"  onClick={()=>handleSubmit(single.mobile,single.ordernumber)} color='success'>sent OTP</Button> }                  
+               :  <Button variant="contained"  onClick={()=>handleSubmit(single.mobile,single.ordernumber)} color='success'>sent OTP</Button> }       
+                 </>
+                    }            
                 </div> 
-                </>}
+                
                 }
                 <div align='center'>
                 { view   ?  <Chip label={<Countdown date={Date.now() + 30000} />} color="error" variant="contained" ></Chip> :''}
+
                 </div>                          
               </DialogContentText>
             </DialogContent>

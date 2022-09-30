@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from user.serializers import AccountSerializer
-from . models import Rent_detail
+from . models import Rent_detail, RentComplaint
 from jobportal.serializer import CategorySerializer,CitySerializer,DistrictSerializer
 
 class RentSerializer(serializers.ModelSerializer):
@@ -13,3 +13,10 @@ class RentSerializer(serializers.ModelSerializer):
     class Meta:
         model=Rent_detail
         fields='__all__'
+        
+        
+class RentComplaintSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=RentComplaint
+        fields='__all__'
+        

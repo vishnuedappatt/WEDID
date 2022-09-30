@@ -1,7 +1,9 @@
+from dataclasses import field
+from pyexpat import model
 from rest_framework import serializers
 from user.models import Account, Categories,District,City
 from user.serializers import AccountSerializer
-from .models import Job_Detail, JobVerification
+from .models import Job_Detail, JobComplaint, JobVerification
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -55,6 +57,13 @@ class JobHistorySerializer(serializers.ModelSerializer):
 class JobVerificationSerializer(serializers.ModelSerializer):
     class Meta:
         model=JobVerification
+        fields='__all__'
+        
+        
+        
+class JobComplaintSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=JobComplaint
         fields='__all__'
         
         

@@ -171,7 +171,8 @@ const handleAvailable=async(id,name)=>{
            <div><h5>Booked Person</h5>
                 Name :  {single.booked_person.first_name} {single.booked_person.last_name}<br></br>
                 Eamil :{single.booked_person.email}<br></br>
-                Mobile :{single.booked_person.mobile}<br></br> </div> :' ' }          
+                Mobile :{single.booked_person.mobile}<br></br>
+                </div> :' ' }         
               
               </DialogContentText>
             </DialogContent>

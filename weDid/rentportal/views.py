@@ -10,14 +10,14 @@ from rest_framework.permissions import IsAuthenticated,IsAdminUser
 import random
 import datetime
 from user.authentication import ADMINAuth, JWTAuthentications, create_access_token,create_refresh_token,decode_access_token,decode_refresh_token
-from .models import Rent_detail
-from .serializer import RentSerializer
+from .models import Rent_detail, RentComplaint
+from .serializer import RentComplaintSerializer, RentSerializer
 from user.authentication import JWTAuthentications
 from jobportal.serializer import  CategorySerializer,CitySerializer,DistrictSerializer
 from rest_framework import generics
 from rest_framework import filters
 from rest_framework import viewsets
-import datetime
+from rest_framework  import status
 # Create your views here.
 
 @api_view(["POST"])
@@ -200,6 +200,89 @@ def taking_rent_history(request):
   
   
   
+# total completed services
+@api_view(['GET'])
+@authentication_classes([JWTAuthentications])
+def total_completed_task(request):
+    user=request.user
+    verify=Rent_detail.objects.filter(user=user,item_backed=True).exists()
+    if verify:
+        verify=Rent_detail.objects.filter(user=user,item_backed=True)
+        
+    else:
+        ver=Rent_detail.objects.filter(booked_person__email=user,item_backed=True).exits()
+        if ver:
+           verify=Rent_detail.objects.filter(booked_person__email=user,item_backed=True) 
 
-  
+    serializer=RentSerializer(verify,many=True)
+    return Response(serializer.data)
+
+
+@api_view(["POST"])
+@authentication_classes([JWTAuthentications])
+def rent_complaint(request):
+    data=request.data
+    user=request.user
+    rent=data['jobId'] 
+    typeId=Rent_detail.objects.filter(user=user).exists()
+    if typeId:
+        type='buyer'
+    else:
+        type='worker'
+        
+    value=RentComplaint.objects.filter(rent=rent).exists()
+    if value:       
+        if type=='buyer':
+            verify=RentComplaint.objects.filter(rent=rent,buyer=True).exists()
+            if verify:
+                message={'error':'you are already submitted the complaint'}
+                return Response(message,status=status.HTTP_400_BAD_REQUEST)
+            
+            else:
+                comp=RentComplaint.objects.create(
+                user=user,
+                rent_id=rent,
+                complaint=data['complaint'],
+                buyer=True,    
+            )
+                serializer=RentComplaintSerializer(comp,many=False)
+                return Response(serializer.data)         
+        else:
+            verify=RentComplaint.objects.filter(rent=rent,buyer=False).exists()
+            if verify:
+                message={'error':'you are already submitted the complaint'}
+                return Response(message,status=status.HTTP_400_BAD_REQUEST)
+            else:
+                comp=RentComplaint.objects.create(
+                user=user,
+                rent_id=rent,
+                complaint=data['complaint'],
+                buyer=False,    
+                )
+                serializer=RentComplaintSerializer(comp,many=False)
+                return Response(serializer.data)     
+
+            
+    else:
+        if type=='buyer':
+            verify=RentComplaint.objects.filter(user=user,buyer=True).exists()
+            comp=RentComplaint.objects.create(
+                user=user,
+                rent_id=rent,
+                complaint=data['complaint'],
+                buyer=True,    
+            )
+            serializer=RentComplaintSerializer(comp,many=False)
+            return Response(serializer.data)           
+        else:
+            comp=RentComplaint.objects.create(
+                user=user,
+                rent_id=rent,
+                complaint=data['complaint'],
+                buyer=False,    
+            )
+            serializer=RentComplaintSerializer(comp,many=False)
+            return Response(serializer.data)      
+        
+                        
   

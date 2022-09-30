@@ -73,6 +73,24 @@ function RentGivingHistory() {
 
 
 
+const returnHandler=async(id)=>{
+  let request=(JSON.parse(localStorage.getItem('token'))) 
+
+    await axios.patch(`rent/rents/${id}/`,{
+      item_backed:'True'
+    },{
+      headers: {
+          Authorization:'Bearer  '+ request
+      }
+  }).then((res)=>{
+     console.log(res.data)
+     userRentHistory()
+     userSingleRentHistory()
+    })
+}
+
+
+
 
 
 const handleAvailable=async(id,name)=>{
@@ -179,7 +197,7 @@ const handleAvailable=async(id,name)=>{
                 Name :  {single.booked_person.first_name} {single.booked_person.last_name}<br></br>
                 Eamil :{single.booked_person.email}<br></br>
                 Mobile :{single.booked_person.mobile}<br></br>  
-                </div> :' '}            
+                {single.item_backed ? <h6 style={{color:'red'}}> **  Item was returned successfully  **</h6>:<Button onClick={()=>returnHandler(single.id)} variant="contained" color="warning">Return Completed</Button>}</div> :' '}            
               
               </DialogContentText>
             </DialogContent>

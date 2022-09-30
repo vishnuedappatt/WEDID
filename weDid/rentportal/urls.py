@@ -17,5 +17,10 @@ urlpatterns = [
     path('singleview/<int:id>/',views.singlerentview,name='singlerent view'),
     path('rent_giving_history/',views.Giving_rent_history,name='giving_rent_history'),
     path('rent_taking_history/',views.taking_rent_history,name='taking_rent_history'),
+    
+    path('completed/',views.total_completed_task,name="completed"),
+    
+    path('complaint/',views.rent_complaint,name='rent_complaint'),
+    
       
     ]+router.urls
