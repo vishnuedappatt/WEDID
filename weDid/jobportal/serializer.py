@@ -62,6 +62,7 @@ class JobVerificationSerializer(serializers.ModelSerializer):
         
         
 class JobComplaintSerializer(serializers.ModelSerializer):
+    user=AccountSerializer(many=False)
     class Meta:
         model=JobComplaint
         fields='__all__'

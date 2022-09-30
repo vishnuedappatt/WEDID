@@ -60,7 +60,7 @@ function SideBar() {
 
   return (
     <div>
-         <ListGroup className='p-5' style={{'height':'65vh','backgroundColor':'black'}}>
+         <ListGroup className='p-5' style={{'height':'90vh','backgroundColor':'black'}}>
          <Link style={{'backgroundColor':'black' ,'color':'red','textDecoration':'none','textAlign':'center','fontSize':'22px'}} className='mt-2'  to="/admin">   <Button  variant="contained" color='warning' fullWidth >Graphical Representation</Button></Link>
          <Link style={{'backgroundColor':'black' ,'color':'red','textDecoration':'none','textAlign':'center','fontSize':'22px'}} className='mt-2'  to="/admin/userView">   <Button  variant="contained" color='warning' fullWidth >userList</Button></Link>
       
@@ -68,7 +68,9 @@ function SideBar() {
                     
         <Link style={{'backgroundColor':'black' ,'color':'red','textDecoration':'none','textAlign':'center','fontSize':'22px'}} className='mt-5'   to="/admin/rent"><Button  variant="contained" style={{backgroundColor:'white',color:'black'}} fullWidth > Rent Service </Button></Link>
         <Link style={{'backgroundColor':'black' ,'color':'red','textDecoration':'none','textAlign':'center','fontSize':'22px'}} className='mt-5'   to="/admin/complete"><Button  variant="contained" style={{backgroundColor:'white',color:'black'}} fullWidth > Completed job Service </Button></Link>
-        <Link style={{'backgroundColor':'black' ,'color':'red','textDecoration':'none','textAlign':'center','fontSize':'22px'}} className='mt-5'   to="/admin/profit"><Button  variant="contained" style={{backgroundColor:'white',color:'black'}} fullWidth > Profit Details </Button></Link>       
+        <Link style={{'backgroundColor':'black' ,'color':'red','textDecoration':'none','textAlign':'center','fontSize':'22px'}} className='mt-5'   to="/admin/profit"><Button  variant="contained" style={{backgroundColor:'white',color:'black'}} fullWidth > Profit Details </Button></Link>      
+        <Link style={{'backgroundColor':'black' ,'color':'red','textDecoration':'none','textAlign':'center','fontSize':'22px'}} className='mt-5'   to="/admin/complaint"><Button  variant="contained" style={{backgroundColor:'white',color:'black'}} fullWidth > Complaints Details </Button></Link>    
+        <Link style={{'backgroundColor':'black' ,'color':'red','textDecoration':'none','textAlign':'center','fontSize':'22px'}} className='mt-5'   to="/admin/payment"><Button  variant="contained" style={{backgroundColor:'white',color:'black'}} fullWidth > Pending Payment </Button></Link>            
         {/* <Link style={{'backgroundColor':'black' ,'color':'red','textDecoration':'none','textAlign':'center','fontSize':'22px'}} className='mt-5'   to="/admin/complete"><Button  variant="contained" style={{backgroundColor:'white',color:'black'}} fullWidth > Completed job Service </Button></Link>        */}
         {/* <Link style={{'backgroundColor':'black' ,'color':'red','textDecoration':'none','textAlign':'center','fontSize':'22px'}}   to="/profile/trans"> */}
       

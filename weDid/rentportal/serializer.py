@@ -16,6 +16,7 @@ class RentSerializer(serializers.ModelSerializer):
         
         
 class RentComplaintSerializer(serializers.ModelSerializer):
+    user=AccountSerializer(many=False)
     class Meta:
         model=RentComplaint
         fields='__all__'

@@ -152,17 +152,17 @@ function Transaction() {
           <ListSideBar val={1}/>
         </Col>
         <Col  lg={8}>
-          <div align='center' style={{'height':'60vh','backgroundColor':'black',padding:'14rem'}}>
+          <div align='center' style={{'height':'60vh','backgroundColor':'black',padding:'5rem'}}>
             <MaterialModal open={open} handleClose={handleClose} head='Your Total Revenue' message={'you  have erned    '+   revenue + ' ₹' }/>
             <MaterialModal open={openz} handleClose={handleClosez} head='Your Total Service Expence ' message={'you  gived erned    ' +  exp  +'  ₹ '}/>
             <MaterialModal open={opens} handleClose={handleCloses} number={number} head='Your Completed Job Services ' table={opens} data1={complete}/>
             <MaterialModal open={shows} handleClose={handleClozss} number={number}  head='YourCompleted Rent Service ' errorz={errorz} table={shows} data1={complete}/>
       
-            <Button onClick={handleClickOpen}>Your Revenue</Button><br></br>
-            <Button onClick={handleClickOpenz}>Expense for service</Button><br></br>
+            <Button variant="outlined"  onClick={handleClickOpen}>Your Revenue</Button><br></br>
+            <Button variant="outlined" className='mt-5' onClick={handleClickOpenz}>Expense for service</Button><br></br>
         
-            <Button  onClick={handleClickOpens}>Completed  Service</Button>
-            <Button  onClick={handleClickShows}>Completed Rent Service</Button>
+            <Button variant="outlined" className='mt-5'  onClick={handleClickOpens}>Completed  Service</Button><br></br>
+            <Button variant="outlined" className='mt-5' onClick={handleClickShows}>Completed Rent Service</Button>
             </div>
         </Col>  
 

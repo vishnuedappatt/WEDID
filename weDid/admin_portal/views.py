@@ -4,10 +4,10 @@ from rest_framework.decorators import APIView,api_view
 from user.models import Account
 from user.serializers import AccountSerializer
 from user.authentication import JWTAuthentications
-from jobportal.models import Job_Detail,JobVerification
-from jobportal.serializer import JobVerificationSerializer,JobSerializer
-from rentportal.models import Rent_detail
-from rentportal.serializer import RentSerializer
+from jobportal.models import Job_Detail,JobVerification,JobComplaint
+from jobportal.serializer import JobVerificationSerializer,JobSerializer,JobComplaintSerializer
+from rentportal.models import Rent_detail,RentComplaint
+from rentportal.serializer import RentSerializer,RentComplaintSerializer
 from rest_framework.response import Response
 from rest_framework  import status
 from payment.models import Order, OrderRent
@@ -105,7 +105,7 @@ def job_profit_list(request):
         print(i,'values')
         val=i.ordernumber
         print(val)
-        bob=Order.objects.get(order_product=val)
+        bob=Order.objects.get(order_product=val,buyer=False)
         givenz.append(bob)
     print(givenz,'kkk')
     values=OrderSerializer(givenz,many=True)
@@ -121,3 +121,24 @@ def rent_profit_list(request):
     rent=OrderRent.objects.all()
     serializer=OrderRentSerializer(rent,many=True)
     return Response(serializer.data)
+
+
+
+
+@api_view(['GET'])
+def all_complaint(request):
+    rent=RentComplaint.objects.all()
+    rent_se=RentComplaintSerializer(rent,many=True) 
+    job=JobComplaint.objects.all()
+    job_se=JobComplaintSerializer(job,many=True)
+    max={
+        'rent':rent_se.data,
+        'job':job_se.data,
+    }
+    return Response(max)
+
+
+class accepting_payment(viewsets.ModelViewSet):
+    authentication_classes=[JWTAuthentications]
+    queryset=JobVerification.objects.filter(job_end=False,end_verify=True)
+    serializer_class=JobVerificationSerializer

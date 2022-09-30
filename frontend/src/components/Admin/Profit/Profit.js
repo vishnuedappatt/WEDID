@@ -219,7 +219,7 @@ const handleChanger=()=>{
             <td>{index+1}</td>
             <td>{obj.order_product}</td>
             <td>{obj.order_payment_id} {obj.order_amount}</td>
-            <td>{(obj.order_amount >500 )? ( Math.round(parseInt(obj.order_amount)*0.10)) :(Math.round(parseInt( obj.order_amount)*0.05))  }</td>
+            <td>{obj.order_amount}</td>
             <td>{obj.order_date}</td>
             </> }
           </tr>

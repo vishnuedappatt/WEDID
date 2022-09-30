@@ -89,17 +89,17 @@ const CommonTable=({data1,errorz,cancel,number})=> {
 
 
   return (
-    <Box sx={{ width: '100%' }}>
+    <Box sx={{ width: '100%' ,margin:'0rem'}}>
       <MatModal save={submitHandler} error2={errorCom} data1={complaint}  set1={setComplaint} error1={comErr} open={open} cancel={cancel} message='innddd'  />
       {data1.length ==0 ? <><h6>no data found</h6></> :
        <Table striped>
       <thead>
         <tr>
-          <th>id</th>
+          {/* <th>id</th> */}
           <th> Title</th>
           <th>category</th>
-          <th>posted on</th>
-          <th>valid</th> 
+          <th className='vanish'>posted on</th>
+          <th className='vanish'>valid</th> 
           <th>Complaints</th>        
         </tr>
       </thead>
@@ -108,11 +108,11 @@ const CommonTable=({data1,errorz,cancel,number})=> {
         
        {data1 && data1.map((obj,key)=>     
        <tr>
-          <td >{obj.id}</td>
+          {/* <td >{obj.id}</td> */}
           <td>{obj.title}</td>
           <td>{obj.category.name }</td>
-          <td>{String(obj.created_at).slice(0,10).split("-").reverse().join("-")}</td>
-          <td>{String(obj.valid_at).split("-").reverse().join("-")}</td>
+          <td className='vanish'>{String(obj.created_at).slice(0,10).split("-").reverse().join("-")}</td>
+          <td className='vanish'>{String(obj.valid_at).split("-").reverse().join("-")}</td>
           <td><Button onClick={()=>handleClickOpen(obj.id)}>Complaints</Button></td>
         </tr> 
 
