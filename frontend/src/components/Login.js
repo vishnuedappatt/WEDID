@@ -73,22 +73,16 @@ const count=0
       PasswordChecker(false)
     }
      }
+
+
+
   return (
   
       <>   
-     
-    
-
-   
+      
     <Card style={{ backgroundColor:'#339966',borderRadius:'2rem'}}>     
-      <Card.Body>       
-      <Snackbar open={opens} autoHideDuration={6000} onClose={handleCloses}>
-        <div className='box' >
-        <Alert onClose={handleCloses} severity="error" sx={{ width: '100%',marginTop:'100px',}} >
-          {errors}
-        </Alert>
-        </div>               
-      </Snackbar>
+      <Card.Body>          
+    
     <Form onSubmit={loginHandler} >
       <Form.Group className="mb-3 mt-5" controlId="formBasicEmail">
         <Form.Label>Email address</Form.Label>
@@ -109,11 +103,17 @@ const count=0
       <Button variant="dark" type="submit"  style={{width:'30%',height:'4rem'}} >
         Submit
       </Button><br></br><br></br>
+    {opens ?  <Alert variant="filled" auto severity="error">
+      {errors}
+      </Alert>   : ' '}
    {fshow?   <Link style={{textDecoration:'None',color:'black',marginTop:'2rem'}} to='/forgot_password'>forgotpassword ?</Link>:''}<br></br><br></br>
+   
       <Link to='/register' style={{textDecoration:'None',color:'black',marginTop:'2rem'}}> Create An Account</Link> 
    </div>
-    </Form>      
+    </Form>
+          
       </Card.Body>
+      
     </Card>
    
   

@@ -84,6 +84,21 @@
     padding: 0% 60px;
 }
 
+
+
+.resbookbtn{
+    background-color:rgb(2, 175, 233)  ;
+    color:black;
+    font-weight: bold;
+    padding: 10px 5px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    height: 50px;
+ border: #010407 solid 1px;
+
+}
+
 @media (max-width:980px){
  
     .listTile{
@@ -105,17 +120,7 @@
         
     }
 
-    .bookbtn{
-        font-size: 22px;
-        background-color: #7ae9a8f6;
-        /* border: #010407 solid 1px; */
-        font-weight: bold;
-        color: #054d80;
-        width: max-content;
-        padding: 5px;
-        border-radius: 5px;
-    
-    }
+ 
 
     .list{
         border: 2px solid rgb(230, 17, 17);      
@@ -152,5 +157,17 @@
     .main-list{
         padding: 0% 5px;
         margin: 0%;
+    }
+}
+
+
+@media (max-width:800px){
+    .listImg{
+       display: none;
+    }
+    .bookbtn{
+      
+        display: none;
+    
     }
 }

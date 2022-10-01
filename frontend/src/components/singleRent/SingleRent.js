@@ -9,6 +9,8 @@ import CommonModal from '../common/Modal/Modal';
 import { useNavigate } from 'react-router-dom';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import LocationOn from '@mui/icons-material/LocationOn';
+import ReactLoading from 'react-loading';
+
 
 function SingleRent() {
     const parms=useParams();
@@ -54,7 +56,10 @@ function SingleRent() {
       }
 
 
-
+      const Example = ({ type, color }) => (
+        <ReactLoading type={type} color={color} height={'20%'} width={'20%'} />
+    );
+    
 
 
  // common modal
@@ -160,9 +165,11 @@ const showRazorpay = async (e) => {
   rzp1.open();
 };
 
+const [shows,setShows]=useState(false)
 
 // / final submit
     const finalsubmit=async()=>{
+      setShows(true)
         let request=(JSON.parse(localStorage.getItem('token')))  
           await axios.post('payment/finish/',{id:id},{
             headers: {
@@ -170,6 +177,7 @@ const showRazorpay = async (e) => {
             }
         }).then((res)=>{
           if(res.status===200){
+            setShows(false)
             // setJob(res.data)
             localStorage.removeItem('message')
             handleClose()
@@ -231,7 +239,10 @@ const showRazorpay = async (e) => {
         <CommonModal message={rent.discriptions} modalHeading={'Discription and rules'} btnsave={''} show={show} onHide={handleClose}/>
         {/* <Card.Text >{rent.discriptions}</Card.Text> */}
         </div> }
-       {payed ? <Button  onClick={finalsubmit} variant="outline-dark">Get this Item</Button> : <div>
+       {payed ?<> <Button  onClick={finalsubmit} variant="outline-dark">Get this Item</Button>
+       { shows && <Example  type='bars' color='red'/> }
+      
+        </>: <div>
           { !rent.available?  <Button style={{height:'60px',marginTop:'20px'}} onClick={handleShowz} className='h-5' variant="danger" disabled>Not available</Button>:<Button style={{height:'60px',marginTop:'20px'}} onClick={handleShowz} className='h-5' variant="danger">Make Payment</Button>   }
        </div>}
       </Card.Body>

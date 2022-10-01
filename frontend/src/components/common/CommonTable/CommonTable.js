@@ -92,7 +92,7 @@ const CommonTable=({data1,errorz,cancel,number})=> {
     <Box sx={{ width: '100%' ,margin:'0rem'}}>
       <MatModal save={submitHandler} error2={errorCom} data1={complaint}  set1={setComplaint} error1={comErr} open={open} cancel={cancel} message='innddd'  />
       {data1.length ==0 ? <><h6>no data found</h6></> :
-       <Table striped>
+       <Table className='width_table' striped>
       <thead>
         <tr>
           {/* <th>id</th> */}

@@ -39,7 +39,7 @@ const handleClicks = () => {
   
 
     const Userlogin=async(email,password)=>{
-        // e.preventDefault()
+       
         console.log(email,password)
        await axios.post('user/login/',{email:email,password:password}).then((res)=>{
                 console.log(res.data)
@@ -68,9 +68,11 @@ const handleClicks = () => {
               if(res.data.message){              
                 SetError(res.data.message)
                 handleShow()
+
                 handleClicks()
                 setTimeout(() => {
                     handleClose(false);
+                    handleCloses()
                        }, 5000);
               }
 

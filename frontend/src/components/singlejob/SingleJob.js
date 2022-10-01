@@ -11,7 +11,7 @@ import GetCity from '../common/City/City';
 import CommonModal from '../common/Modal/Modal';
 import CommonSnackbar from '../common/CommonSnackbar/CommonSnackBar';
 import Slide from '@mui/material/Slide';
-
+import ReactLoading from 'react-loading';
 
 function SingleJob() {
     const parms=useParams();
@@ -89,6 +89,7 @@ const [count,setCount]=useState(false)
 
     // free payment
     const freePayment=async()=>{
+      setView(true)
       let request=(JSON.parse(localStorage.getItem('token')))  
         await axios.post('payment/free/',{id:id},{
           headers: {
@@ -97,6 +98,7 @@ const [count,setCount]=useState(false)
       }).then((res)=>{
         if(res.status===200){
           // setJob(res.data)
+          setView(false)
           localStorage.removeItem('message')
           handleClose()
           console.log(res.data)
@@ -221,6 +223,13 @@ const showRazorpay = async () => {
 
 
 
+const [view,setView]=useState(false)
+const Example = ({ type, color }) => (
+  <ReactLoading type={type} color={color} height={'20%'} width={'20%'} />
+);
+
+
+
 const val='30rem'
 
   return (
@@ -232,15 +241,20 @@ const val='30rem'
       <Card.Body> 
       {payed ?
     
-    <div align='center'>
+    <div align='center' style={{height:'20rem'}}>
        <CommonSnackbar onClose={snackHandleClose} message={'are you want this'} values={'fdfdffdd'} transition={transition} open={open} />
-    <p style={{color:'yellow'}}>You are ready to get this service </p>
+      
+    <p style={{color:'yellow',marginTop:'15rem'}}>You are ready to get this service </p>
+    <h5 style={{color:'white'}}>{job.title }</h5>
+    { view && <Example  type='bars' color='red'/>}
   <Button variant="dark" type=""  onClick={freePayment}    style={{textAlign:'center',height:'4rem',width:'15rem',}}>Get this Service</Button>
+
   </div>:''}
      {errorfixing ?   
     <div style={{paddingLeft:'100px'}}>   
     { payed ?'':
     <div>
+        <span style={{color:'wheat',}}>Title</span> <h2 style={{color:'white',marginLeft:'60px',marginTop:'20px'}}>{job.title }</h2>
       <span style={{color:'wheat',}}>CATEGORY</span> <h2 style={{color:'white',marginLeft:'60px',marginTop:'20px'}}>{job.category.name }</h2>
       <span style={{color:'wheat',}}>DISTRICT</span> <h3 style={{color:'white',marginLeft:'60px',marginTop:'20px'}}>{job.district.district}</h3>      
       <span style={{color:'wheat',}}>CITY</span> <h3 style={{color:'white',marginLeft:'60px',marginTop:'20px'}}>{job.city.city }</h3>      

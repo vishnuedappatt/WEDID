@@ -16,7 +16,8 @@ import TouchAppIcon from '@mui/icons-material/TouchApp';
 import Switch from '@mui/material/Switch';
 import SideBar from '../SideBar/SideBar';
 // import './userview.css'
-
+import VerifiedIcon from '@mui/icons-material/Verified';
+import UnpublishedIcon from '@mui/icons-material/Unpublished';
 const label = { inputProps: { 'aria-label': 'Switch demo' } };
 
 
@@ -113,6 +114,9 @@ var CLR=''
       <SideBar />
     </Col>
     <Col lg={8}>
+    <div align='center'>
+      <h3 style={{textAlign:'center',color:'white'}}>JOB PORTAL</h3>
+      </div>
       <div style={{'height':'60vh','backgroundColor':'black'}}>
       <div style={{'height':'60vh','backgroundColor':'white '}}>
       <Card sx={{ minWidth:'30%', maxWidth:'100%' ,padding:'50px'}}>          
@@ -127,25 +131,21 @@ var CLR=''
           <th className='vanish'>category</th>
           <th className='vanish'>posted on</th>
           <th>valid</th>
-          <th>Available</th>
+          <th>Booked</th>
           <th>view </th>
         
         </tr>
       </thead>
       {user && user.map((obj,index)=> 
       <tbody> 
-       <p style={{display:'none'}}> {obj.booked ? CLR='cyan' : CLR='white'}</p>
-         <tr style={{backgroundColor:CLR}}> 
+     
+         <tr> 
        <td className='vanish' >{index+1}</td>
           <td>{obj.title} </td>
           <td className='vanish'>{obj.category.name }</td>
           <td className='vanish'>{String(obj.created_at).slice(0,10).split("-").reverse().join("-")}</td>
           <td>{String(obj.valid_at).split("-").reverse().join("-")}</td>
-          <td> <Switch
-              checked={obj.available}
-              onClick={()=>handleAvailable(obj.id,obj.available)}
-              inputProps={{ 'aria-label': 'controlled' }}
-            /></td>
+         <td>{obj.booked ? <VerifiedIcon  style={{color:'green'}}/> : <UnpublishedIcon style={{color:'red'}} />}</td>
           <td style={{color:'blue',cursor:'pointer'}} onClick={()=>handleClickOpen(obj.id)}><TouchAppIcon /></td> 
              
      

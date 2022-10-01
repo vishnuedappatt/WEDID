@@ -28,7 +28,7 @@ useEffect (()=>{
               <RentSideBar />               
             </Col>
             <Col  lg={9}>
-                <List  currentpage={currentData} />                
+                <List empty={empty}  currentpage={currentData} />                
             </Col>
             <Pagination totalpost={data.length} postperpage={postperpage} setcurrentPage={setcurrentPage} currentpage={currentpage}/>
         </Row>

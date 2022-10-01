@@ -215,8 +215,11 @@ var CLR=''
       <Card sx={{ minWidth:'30%', maxWidth:'100%' ,padding:'50px'}}>          
       <Card>
       <p style={{float:'left'}}>booked</p>
-      <Table>
-       
+      {(rent.length==0) ? 
+     
+      <div align='center'>
+      <h3>No match found</h3>
+    </div> :<Table> 
       <thead>
         <tr>
         <th className='vanish'>id</th>
@@ -253,7 +256,7 @@ var CLR=''
         :''}
       </tbody>
       )}     
-    </Table>
+    </Table> }    
         {singleRent &&  <Dialog
               // style={{width:'900px'}} 
             open={openz}

@@ -155,7 +155,7 @@ def filter_rent_show(request,id,cid):
         return response 
     
 class Rentitems(generics.ListAPIView):
-    queryset =Rent_detail.objects.filter(payment='True',booked='False',available='True')
+    queryset =Rent_detail.objects.filter(payment='True')
     serializer_class = RentSerializer
     filter_backends = [filters.SearchFilter]
     search_fields = ['title','place','category__name','district__district','city__city']

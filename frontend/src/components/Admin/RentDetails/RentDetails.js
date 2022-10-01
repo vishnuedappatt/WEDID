@@ -15,6 +15,8 @@ import DialogTitle from '@mui/material/DialogTitle';
 import ImageUrl from '../../common/Image/Image';
 import Switch from '@mui/material/Switch';
 import SideBar from '../SideBar/SideBar';
+import VerifiedIcon from '@mui/icons-material/Verified';
+import UnpublishedIcon from '@mui/icons-material/Unpublished';
 
 const label = { inputProps: { 'aria-label': 'Switch demo' } };
 
@@ -115,6 +117,9 @@ const handleAvailable=async(id,name)=>{
       <SideBar val={4}/>
     </Col>
     <Col lg={8}>
+    <div align='center'>
+      <h3 style={{textAlign:'center',color:'white'}}>RENT PORTAL</h3>
+      </div>
       <div style={{'height':'60vh','backgroundColor':'black'}}>
         
 
@@ -123,6 +128,10 @@ const handleAvailable=async(id,name)=>{
           <Card sx={{ minWidth:'30%', maxWidth:'100%' ,padding:'50px'}}> 
             {/* <Button onClick={()=>navigate('addUser')} variant="contained">Add User</Button> */}
       <Card>
+        {(user.length ===0)? 
+         <div align='center'>
+         <h3>No match found</h3>
+       </div>:
       <Table striped>
       <thead>
         <tr>
@@ -131,7 +140,7 @@ const handleAvailable=async(id,name)=>{
           <th>category</th>
           <th>posted on</th>
           <th>valid</th>
-          <th>Available</th>
+          <th>Booked</th>
           <th>view </th>
         </tr>
       </thead>
@@ -143,11 +152,7 @@ const handleAvailable=async(id,name)=>{
           <td>{obj.category.name }</td>
           <td>{String(obj.created_at).slice(0,10).split("-").reverse().join("-")}</td>
           <td>{String(obj.valid_at).split("-").reverse().join("-")}</td>
-          <td> <Switch
-              checked={obj.available}
-              onClick={()=>handleAvailable(obj.id,obj.available)}
-              inputProps={{ 'aria-label': 'controlled' }}
-            /></td>
+          <td>{obj.booked ? <VerifiedIcon  style={{color:'green'}}/> : <UnpublishedIcon style={{color:'red'}} />}</td>
     
           <td style={{color:'blue',cursor:'pointer'}} onClick={()=>handleClickOpen(obj.id)}><TouchAppIcon /></td> 
              
@@ -156,7 +161,8 @@ const handleAvailable=async(id,name)=>{
 
          )}       
       </tbody>
-    </Table>
+    </Table> 
+    }
         {single &&  <Dialog
               // style={{width:'900px'}} 
             open={open}

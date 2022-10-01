@@ -159,9 +159,9 @@ function Transaction() {
             <MaterialModal open={shows} handleClose={handleClozss} number={number}  head='YourCompleted Rent Service ' errorz={errorz} table={shows} data1={complete}/>
       
             <Button variant="outlined"  onClick={handleClickOpen}>Your Revenue</Button><br></br>
-            <Button variant="outlined" className='mt-5' onClick={handleClickOpenz}>Expense for service</Button><br></br>
+            <Button variant="outlined" className='mt-5' onClick={handleClickOpenz}>Expense for Service</Button><br></br>
         
-            <Button variant="outlined" className='mt-5'  onClick={handleClickOpens}>Completed  Service</Button><br></br>
+            <Button variant="outlined" className='mt-5'  onClick={handleClickOpens}>Completed Service</Button><br></br>
             <Button variant="outlined" className='mt-5' onClick={handleClickShows}>Completed Rent Service</Button>
             </div>
         </Col>  

@@ -406,8 +406,8 @@ const loadScript = () => {
   document.body.appendChild(script);
 };
 
-const showRazorpay = async (e) => {
-    e.preventDefault()
+const showRazorpay = async () => {
+    // e.preventDefault()
   const res = await loadScript();
 
   let bodyData = new FormData();
@@ -499,9 +499,38 @@ const showRazorpay = async (e) => {
     })
   }
 
+const [che1,setChe1]=useState(false)
+  const checkBox1=()=>{
+
+    if(!che1){
+      setChe1(true)
+    }else{
+      setChe1(false)
+    }
+
+  }
+  const [che2,setChe2]=useState(false)
+  const checkBox2=()=>{
+    if(!che2){
+      setChe2(true)
+    }else{
+      setChe2(false)
+    }
+  }
+const  checkChecker=()=>{
+  if(!che1 || !che2 ){
+    console.log('workingg')
+  }else{
+    showRazorpay()
+  }
+}
+
   return (
     <div >       
-        <h1 className='heading'>APPLY FOR AN OPPORTUNITY</h1>
+      <div align='center'>
+      <h1 className='heading'>APPLY FOR AN OPPORTUNITY</h1>
+      </div>
+        
           {/* <CommonStepper className='mt-5' activeStep={0} steps={steps}/> */}
        {submit || payed ?   <CommonStepper className='mt-5' activeStep={1} steps={steps}/>: <form onSubmit={submitHandler}   className='main'>
   
@@ -648,8 +677,9 @@ const showRazorpay = async (e) => {
          {submit ?
          <form className='form-payment'>
             <div className='check-main'>
-              <input type="checkbox" className='checkbox' id="vehicle1" name="vehicle1" value="Bike" required></input><p className='check-heading' >Accept all terms & conditions for wedid solutions</p>
-                <input type="checkbox" className='checkbox' id="vehicle1" name="vehicle1" value="Bike" required /><p  className='check-heading'>Accept all terms & conditions from Razorpay payment system</p>           
+              <input type="checkbox" className='checkbox' id="vehicle1" name="vehicle1" value="Bike" onClick={checkBox1} ></input><p className='check-heading' >Accept all terms & conditions for wedid solutions</p>
+                <input type="checkbox" className='checkbox' id="vehicle1" name="vehicle1" value="Bike"   onClick={checkBox2}/><p  className='check-heading'>Accept all terms & conditions from Razorpay payment system</p>     
+            { (!che1 || !che2 )?   <Alert variant="filled" auto severity="error">Please click tick for terms and condition</Alert>   : ' '}   
                 <p style={{color:'yellow',marginTop:'4rem'}}>** charges applied</p>
                 <p  style={{color:'red'}}>**  your our rate is less than 500 you should pay 5%,</p>    
             <p  style={{color:'red'}}>**  your our rate is greater  than 500 you should pay 10%,</p>
@@ -657,8 +687,11 @@ const showRazorpay = async (e) => {
             </div>
            
             
-             <Button className='payment-btn2' type='submit' variant="outline-warning" onClick={showRazorpay}><p>Make Payment with razorpay</p></Button><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br>
+             <Button className='payment-btn2' type='submit' variant="outline-warning" onClick={checkChecker}><p>Make Payment with razorpay</p></Button><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br>
              <Button className='payment-btn4' type='' onClick={cancelHandler} variant="outline-danger"><p>cancel</p></Button>
+
+             { open &&<Alert variant="filled" auto severity="erro">Please click tick for terms and condition</Alert> }
+
               <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
                 <div className='box'  >
                 <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }} >
@@ -671,11 +704,7 @@ const showRazorpay = async (e) => {
 
 
 {payed ?
-         <form className='form-payment'>
-          <div className='check-main'>
-       
-            <p  className='check-heading'>Accept all terms & conditions from Razorpay payment system</p>
-          </div>
+         <form className='form-payment'>         
            
              <Button className='payment-btn2' type='submit' variant="outline-warning" onClick={lastSubmitHandler}><p>SHARE THE POST </p></Button><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br>
              <Button className='payment-btn4' type='' onClick={cancelHandler} variant="outline-danger"><p>cancel</p></Button>

@@ -12,8 +12,7 @@ function ServiceCompletePage() {
 </Row>
 <Row className='justify-content-center mt-1 pt-5'>
 
-    <Col lg={11}>
-    <h3 style={{textAlign:'center',color:'white'}}>PROFILE</h3>
+    <Col lg={11}>   
         <ServiceCompletion />
         
     </Col>

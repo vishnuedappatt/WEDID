@@ -35,6 +35,7 @@ import ServiceCompletePage from "./pages/ServiceCompletePage";
 import AdminProfitPage from "./pages/AdminProfitPage";
 import AdminComplaintPage from "./pages/AdminComplaintPage";
 import AdminPaymentGivenPage from "./pages/AdminPaymentGivenPage";
+import CaseOfAdmin from "./PrivetRouters/CaseOfAdmin";
 
 function App() {
   return (
@@ -43,7 +44,10 @@ function App() {
         <AuthProvider>
           <RentProvider>            
             <Routes>
-              <Route path="/" element={<HomePage />} />
+              <Route element={<CaseOfAdmin />}>
+                <Route path="/" element={<HomePage />} />
+              </Route>
+              
               <Route element={<CaseOfReverse />}>               
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/register" element={<RegisterPage />} />
@@ -51,6 +55,7 @@ function App() {
                 <Route path='/forgot_password' element={<ForgotPage/>}/>  
               </Route>
               <Route element={<LoginProtect/>}>
+
                 <Route path="/postjob" element={<PosingJobPage />} />  
                 <Route path='/joblook' element={<JobHomePage />}/>    
                 <Route path='/payment' element={<Payment />}/>               
@@ -69,22 +74,20 @@ function App() {
                 <Route path="/givenrents" element={<RentGivingHistoryPage />} />
                 <Route path="/givenrents/editz/:id" element={<RentGivingEditPage />} />
                 <Route path="/profile/verify/" element={<VerifyServicePage />} /> 
-                <Route path="/profile/verifier/" element={<VerifyServiceEmployeePage />} /> 
-                {/* <Route path='/pay' element={<Payment />} /> */}
-
-                {/* admin side  */}
-           
-                
-               
+                <Route path="/profile/verifier/" element={<VerifyServiceEmployeePage />} />  
               </Route>    
-              <Route path="/admin" element={<AdminHomePage />} />
-              <Route path='/admin/userView' element={<AdminUserPage />} />
-              <Route path="/admin/job" element={<AdminJobPage />} />
-              <Route path="/admin/rent" element={<AdminRentPage />} />
-              <Route path="/admin/complete" element={<ServiceCompletePage />} />
-              <Route path='/admin/profit' element={<AdminProfitPage />} />
-              <Route path='/admin/complaint' element={<AdminComplaintPage />} />
-              <Route path='/admin/payment' element={<AdminPaymentGivenPage />} />
+
+              <Route element={<AdminPrivetRoute />} >
+                <Route path="/admin" element={<AdminHomePage />} />
+                <Route path='/admin/userView' element={<AdminUserPage />} />
+                <Route path="/admin/job" element={<AdminJobPage />} />
+                <Route path="/admin/rent" element={<AdminRentPage />} />
+                <Route path="/admin/complete" element={<ServiceCompletePage />} />
+                <Route path='/admin/profit' element={<AdminProfitPage />} />
+                <Route path='/admin/complaint' element={<AdminComplaintPage />} />
+                <Route path='/admin/payment' element={<AdminPaymentGivenPage />} />
+              </Route>
+
             </Routes>
           </RentProvider>
         </AuthProvider>

@@ -458,8 +458,8 @@ const loadScript = () => {
   document.body.appendChild(script);
 };
 
-const showRazorpay = async (e) => {
-  e.preventDefault()
+const showRazorpay = async () => {
+      // e.preventDefault()
   const res = await loadScript();
 
   let bodyData = new FormData();
@@ -527,10 +527,40 @@ const showRazorpay = async (e) => {
     })
   }
 
+  const [che1,setChe1]=useState(false)
+  const checkBox1=()=>{
+
+    if(!che1){
+      setChe1(true)
+    }else{
+      setChe1(false)
+    }
+
+  }
+  const [che2,setChe2]=useState(false)
+  const checkBox2=()=>{
+    if(!che2){
+      setChe2(true)
+    }else{
+      setChe2(false)
+    }
+  }
+const  checkChecker=(e)=>{
+    e.preventDefault()
+  if(!che1 || !che2 ){
+    console.log('workingg')
+  }else{
+      showRazorpay()
+    console.log('razor')
+  }
+}
+
   return (
     <div >       
-
+        <div align='center'>
         <h1 className='heading'>GIVING RENT ITEMS</h1>
+        </div>
+        
        
        {submit || payed ?  '': <form onSubmit={submitHandler}   className='main'>
        <CommonStepper steps={steps} activeStep={0}/>
@@ -712,20 +742,17 @@ const showRazorpay = async (e) => {
          <form className='form-payment'>
             <div className='check-main'>
             <CommonStepper steps={steps} activeStep={1}/>
-              <input type="checkbox" className='checkbox' id="vehicle1" name="vehicle1" value="Bike" required></input><p className='check-heading' >Accept all terms & conditions for wedid solutions</p>
-                <input type="checkbox" className='checkbox' id="vehicle1" name="vehicle1" value="Bike" required /><p  className='check-heading'>Accept all terms & conditions from Razorpay payment system</p>           
+            <input type="checkbox" className='checkbox' id="vehicle1" name="vehicle1" value="Bike" onClick={checkBox1} ></input><p className='check-heading' >Accept all terms & conditions for wedid solutions</p>
+                <input type="checkbox" className='checkbox' id="vehicle1" name="vehicle1" value="Bike"   onClick={checkBox2}/><p  className='check-heading'>Accept all terms & conditions from Razorpay payment system</p>
+                { (!che1 || !che2 )?   <Alert variant="filled" auto severity="error">Please click tick for terms and condition</Alert>   : ' '}        
                 <p style={{color:'yellow',marginTop:'4rem'}}>** charges applied</p>
                 <p  style={{color:'red'}}>**  you should pay 50 rupess for posting </p>  
+                { open ?   <Alert variant="filled" auto severity="success">Sucessfully created the post</Alert>   : ' '}  
             </div>
-             <Button className='payment-btn2' type='submit' variant="outline-warning" onClick={showRazorpay}><p>Make Payment with razorpay</p></Button><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br>
+          
+             <Button className='payment-btn2' type='submit' variant="outline-warning" onClick={checkChecker}><p>Make Payment with razorpay</p></Button><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br>
              <Button className='payment-btn4' type='' onClick={cancelHandler} variant="outline-danger"><p>cancel</p></Button>
-              <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-                <div className='box'  >
-                <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }} >
-                  Successfully register your post
-                </Alert>
-                </div>               
-              </Snackbar>
+             
          </form>  } 
          
 
@@ -735,14 +762,8 @@ const showRazorpay = async (e) => {
          {/* <CommonStepper steps={steps} activeStep={2}/> */}
              <Button className='payment-btn2' type='submit' variant="outline-warning" onClick={lastSubmitHandler}><p>SHARE THE POST </p></Button><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br>
              <Button className='payment-btn4' type='' onClick={cancelHandler} variant="outline-danger"><p>cancel</p></Button>
-                <Snackbar open={opens} autoHideDuration={6000} onClose={handleCloses}>
-                <div className='box'>
-                 
-                <Alert onClose={handleCloses} severity="success" sx={{ width: '100%' }} >
-                  payment done successfully 
-                </Alert>
-                </div>               
-              </Snackbar>
+             { opens ?   <Alert variant="filled" auto severity="success">payment done successfully</Alert>   : ' '}  
+            
             
          </form>
          

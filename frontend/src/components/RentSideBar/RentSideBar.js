@@ -140,35 +140,40 @@ const CatCityFilter=async(e)=>{
 
 }
 
-
+const [searErr,setErrorSear]=useState(false)
 // category city filter
 const searchData=async(e)=>{
   e.preventDefault()
   console.log(sear,'search key')
-let request=(JSON.parse(localStorage.getItem('token')))  
-await axios.get(`rent/search/?search=${sear}`,{
- headers: {
-     Authorization:'Bearer '+ request
- }
-}).then((res)=>{
-if (res.status===200){
- // setCity(res.data)
- if (res.data.results){
-  setSearchImage(true)
-  setData(res.data.results)   
- }
-  
-  
-  console.log(res.data.results,'fjdfdfkfdf')
- setEmpty(false)
- if(res.data.length===0){
-   setEmpty(true)
- }
-}    
-}).catch((err)=>{
- console.log(err.res.data,'fjdfdfkfdf')
-})
-
+  if (!sear){
+    setErrorSear(true)
+  }
+  else{
+    console.log('ethiii ')
+    let request=(JSON.parse(localStorage.getItem('token')))  
+    await axios.get(`rent/search/?search=${sear}`,{
+     headers: {
+         Authorization:'Bearer '+ request
+     }
+    }).then((res)=>{
+    if (res.status===200){
+     // setCity(res.data)
+     if (res.data.results){
+      setSearchImage(true)
+      setData(res.data.results)   
+      console.log(res.data.results)
+     }
+      
+     setEmpty(false)
+     if(res.data.results.length===0){
+       setEmpty(true)
+     }
+    }    
+    }).catch((err)=>{
+     console.log(err.res.data,'fjdfdfkfdf')
+    })
+    
+  }
 }
 
 // search
@@ -194,6 +199,7 @@ const searchHandler=(e)=>{
                   />
                   <Button className='submit-btn m-4' type='submit' variant="outline-dark">Search</Button>
                 </Form>
+                {searErr && <p style={{color:'red'}}> * please enter any key for searching</p>}
         <Box>
           <Typography className='type' id="modal-modal-title" variant="h6" component="h2">    
             <Accordion className= 'accordion bg-dark mt-3 p-3'>

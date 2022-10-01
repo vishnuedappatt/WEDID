@@ -114,6 +114,10 @@ const handleAvailable=async(id,name)=>{
       <div style={{'height':'60vh','backgroundColor':'white '}}>
       <Card sx={{ minWidth:'30%', maxWidth:'100%' ,padding:'50px'}}>          
       <Card>
+        {(user.length==0)?
+      <div align='center'>
+      <h3>No match found</h3>
+    </div> :
       <Table striped>
       <thead>
         <tr>
@@ -122,7 +126,7 @@ const handleAvailable=async(id,name)=>{
           <th>Full Name</th>
           <th className='vanish'>Email</th>
           <th>Mobile</th>
-          <th>Status</th>
+          <th>Block/Active</th>
         
         </tr>
       </thead>
@@ -146,7 +150,7 @@ const handleAvailable=async(id,name)=>{
 
          )}       
       </tbody>
-    </Table>
+    </Table> }
         {single &&  <Dialog
               // style={{width:'900px'}} 
             open={open}

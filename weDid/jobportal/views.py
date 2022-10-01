@@ -412,7 +412,7 @@ def total_giving_expense(request):
     mobile=user.mobile
     print(mobile)
     job=JobVerification.objects.filter(mobile=mobile,job_end=True)
-    print(job,'idddddddd')
+    print(len(job),'lengthhh')
     sum=0
     for i in job:
         print(i.order_number)
@@ -442,7 +442,7 @@ def total_revenue(request):
             if revenue.job_end:
                 sum=sum+i.rate
                 print(sum,'ddd')
-    return Response({'count':sum})
+    return Response({'count':sum})  
 
 
 

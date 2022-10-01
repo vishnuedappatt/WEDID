@@ -24,6 +24,7 @@ import Form from 'react-bootstrap/Form';
 // import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack'
 import Pagination from '../Pagination';
+import Col from 'react-bootstrap/esm/Col';
 
 
 const style = {
@@ -342,12 +343,13 @@ const CatCityFilter=async(e)=>{
       </div>
 
     {currentData ? currentData.map((obj,key)=>
-    <div  className=' m-5'>   
-     <Table striped borderless hover>
+    <div align='center'  >   
+    <Col lg={11}>
+     <Table className='width_table' striped borderless hover>
       <thead>
-        <tr style={{backgroundColor:'gray'}}>           
-          <th style={{marginLeft:'3rem'}}>CATEGORY</th>
-          <th>DISTRICT</th>
+        <tr  style={{backgroundColor:'gray'}}>           
+          <th className='vanish' style={{marginLeft:'3rem'}}>CATEGORY</th>
+          <th className='vanish'>DISTRICT</th>
           <th>TITLE OF ROLE</th>
           <th>RATE</th>
           <th>VIEW </th>
@@ -355,17 +357,18 @@ const CatCityFilter=async(e)=>{
       </thead>
       <tbody>
         <tr style={{height:'8rem',border:'1px white solid'}}>
-            <td  style={{color:'white'}} className='column pt-5 '>{obj.category.name}</td>
-          <td  style={{color:'white'}}  className='column pt-5 '> {obj.district.district }</td>
+            <td   style={{color:'white'}} className='vanish column  pt-5 '>{obj.category.name}</td>
+          <td  style={{color:'white'}}  className='vanish column pt-5 '> {obj.district.district }</td>
           <td  style={{color:'white'}}    className='column pt-5 '>{obj.title}</td>
-          <td  style={{color:'white'}}  className='column pt-5 '>{obj.rate}</td>
+          <td  style={{color:'white'}}  className='column pt-5 '>{obj.rate} ₹</td>
          <td className=' pay-btn pt-5 '> <Button variant="outline-success" onClick={()=>navigate(`/singlejob/${obj.id}`)} >view and pay</Button></td> 
         </tr>
         
       </tbody>
     </Table>
-  
-       </div>)
+    </Col>
+       </div>
+       )
         :''
       }  <Stack  spacing={9}>
        

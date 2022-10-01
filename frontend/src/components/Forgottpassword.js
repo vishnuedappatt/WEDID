@@ -4,8 +4,11 @@ import Form from 'react-bootstrap/Form';
 import Card from 'react-bootstrap/Card'
 import { Link } from 'react-router-dom';
 import axios from '../axios' ;
-import Modal from 'react-bootstrap/Modal';
-import BasicSnackBar from './common/CommonSnackbar/CommonSnackBar';
+import Alert from '@mui/material/Alert';
+import ClearIcon from '@mui/icons-material/Clear';
+import ReactLoading from 'react-loading';
+
+
 
 function Forgottpassword() {
   const [email,setEmail]=useState('')
@@ -13,23 +16,14 @@ function Forgottpassword() {
   const [emailerror,setEmailError]=useState(false)
   const[backend,setBackend]=useState('')
 
-// // snackbar
-// const [open, setOpen] = React.useState(false);  
-// const handleClick = () => {
-//   setOpen(true);
-// };
-// const handleClose = (event, reason) => {
-//   if (reason === 'clickaway') {
-//     return;
-//   }
-//   setOpen(false);
-// };
+  const [loading,setLoading]=useState(false)
 
-// modal
-
+const [view,setView]=useState(false)
   const [show, setShow] = useState(false);
   const handleClose = () => {setShow(false)};
   const handleShow = () => {setShow(true)};
+  const handleClosez = () => {setView(false)};
+  const handleShowz = () => {setView(true)};
 
   const Emailcarrier=(e)=>{
 
@@ -40,7 +34,7 @@ function Forgottpassword() {
 
   const forgothandler=(e)=>{  
     e.preventDefault()
-    // console.log(email)
+    setLoading(true)
     if(email.length ==0){
       setError(true)
       console.log('emptyy')
@@ -57,19 +51,18 @@ function Forgottpassword() {
          axios.post('user/forgotpassword/',{email:email}).then((res)=>{
           console.log(res.data)
           if(res.data.success){
-            handleShow()
-            // handleClick() snackk
+            setLoading(false)
+            handleShowz()
             setBackend(res.data.success+' reset and login again')
+      
           }
           if(res.data.error){
+            setLoading(false)
             setBackend(res.data.error)
             handleShow()
-            // handleClick() snack
+            // handleClick() snack         
           }
         })
-
-
-
       }
       else{
         console.log('no email field')
@@ -78,25 +71,15 @@ function Forgottpassword() {
    
 
     }
-
+    
   }
+  const Example = ({ type, color }) => (
+    <ReactLoading type={type} color={color} height={'20%'} width={'20%'} />
+);
   return (
     <div>
        
-      <Modal show={show} onHide={handleClose} animation={false}>
-        <Modal.Header closeButton>
-          <Modal.Title></Modal.Title>
-        </Modal.Header>
-        <Modal.Body>{backend}</Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Close
-          </Button>
-          {/* <Button variant="primary" onClick={handleClose}>
-            Save Changes
-          </Button> */}
-        </Modal.Footer>
-      </Modal>
+     
 
     <Card style={{ backgroundColor:'#339966',borderRadius:'2rem'}}>     
       <Card.Body>       
@@ -109,18 +92,18 @@ function Forgottpassword() {
         {emailerror?<span style={{color:'red'}}>* enter a valid email field </span>:''}
         <Form.Text className="text-muted">        
         </Form.Text>
-        {/* <BasicSnackBar  
-open={open}
-onClose={handleClose}
-severity='warning'
-message={backend}
-/> */}
+     
       </Form.Group>
   
       <div style={{textAlign:'center'}}>
-      <Button variant="dark" type="submit"  style={{width:'30%',height:'4rem'}} >
-        Submit
-      </Button><br></br><br></br>
+          {loading ?  <Example  type='bars' color='red'/> :
+        <Button variant="dark" type="submit"  style={{width:'30%',height:'4rem'}} > 
+          Submit
+        </Button> }<br></br><br></br> 
+       
+      {show &&    <Alert variant="filled" auto severity="error">{backend}  <ClearIcon onClick={handleClose}/></Alert> }
+      {view &&  <Alert variant="filled" auto severity="success">{backend}  <ClearIcon onClick={handleClosez}/></Alert>      }
+      
       <Link style={{textDecoration:'None',color:'white',marginTop:'2rem'}} to='/login'>back ?</Link><br></br><br></br>
       
 

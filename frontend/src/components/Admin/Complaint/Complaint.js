@@ -79,6 +79,9 @@ const handler=()=>{
       <SideBar val={4}/>
     </Col>
     <Col className='mt-5' lg={8}>
+    <div align='center'>
+      <h3 style={{textAlign:'center',color:'white'}}>COMPLAINT PORTAL</h3>
+      </div>
       <div style={{'height':'60vh','backgroundColor':'black'}}>  
 
       <div style={{'height':'60vh','backgroundColor':'white '}}>
@@ -88,6 +91,7 @@ const handler=()=>{
           </div>
            
       <Card>
+    
       <Table striped>
       <thead>
         <tr>

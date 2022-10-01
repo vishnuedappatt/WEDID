@@ -108,6 +108,9 @@ margin-left: 2rem;
         }
     .main-header1{
     padding-top: 5rem;
-    font-size: x-large;
+    font-size: small;
+}
+.clk-btn{
+    width: 9rem ;
 }
 }

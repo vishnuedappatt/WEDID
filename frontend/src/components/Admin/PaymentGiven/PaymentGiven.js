@@ -89,10 +89,12 @@ const [verifyId,setVerifyId]=useState(' ')
     </Col>
     <Col lg={8}>
       <div style={{'height':'60vh','backgroundColor':'black'}}>  
+      <div align='center'>
+      <h3 style={{textAlign:'center',color:'white'}}>PAYMENT GIVING ACTION TO EMPLOYEE</h3>
+      </div>
 
 
-
- <Dialog
+    <Dialog
         open={open}
         TransitionComponent={Transition}
         keepMounted
@@ -115,6 +117,10 @@ const [verifyId,setVerifyId]=useState(' ')
 
            
       <Card>
+     {(user.length==0) ?
+     <div align='center'>
+     <h3>No match found</h3>
+   </div> :
       <Table striped>
       <thead>
         <tr>
@@ -137,7 +143,7 @@ const [verifyId,setVerifyId]=useState(' ')
         </tr> 
          )}       
         </tbody>
-    </Table>      
+    </Table>      }
       </Card>
     </Card>
         </div>
