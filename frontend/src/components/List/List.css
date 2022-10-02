@@ -86,8 +86,21 @@
 
 
 
-.resbookbtn{
+.resbookbtnz{
     background-color:rgb(2, 175, 233)  ;
+    color:black;
+    font-weight: bold;
+    padding: 10px 5px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    height: 50px;
+ border: #010407 solid 1px;
+
+}
+
+.resbookbtn{
+    background-color:rgb(233, 17, 2)  ;
     color:black;
     font-weight: bold;
     padding: 10px 5px;

@@ -152,11 +152,58 @@ def handle_payment_success(request):
         print(ord)
         ord.isPaid =True 
         ord.save()    
+        val=ord.order_product
+        case=ord.buyer
+        user=request.user
+        if case:
+            job=Job_Detail.objects.get(ordernumber=val)
+            job.booked_person=user
+            job.booked=True
+            job.save()
+            user=Account.objects.get(email=user)
+            user.count+=1
+            user.save()     
+
+            send_mail( 'From WEDID ',
+                f'Thank You For purchase our service \n, {job.title} service posted  by mr.{job.user.first_name} ,\n you can contact +91{job.mobile} ,+91{job.sub_mobile}  , \n thankyou ',
+                'wedidsolutions@gmail.com'
+                ,[user.email]   
+                ,fail_silently=False)
+            send_mail( 'From WEDID ',
+                f'congradulations  !!!  Your service got purchased   \n, {job.title} service is takened by   {request.user.first_name} ,\n you can contact +91{request.user.mobile} , \n thankyou ',
+                'wedidsolutions@gmail.com'
+                ,[job.user.email]   
+                ,fail_silently=False)
+        else:            
+            job=Job_Detail.objects.get(ordernumber=val)
+            job.payment=True
+            job.save()
+             
+        
+        
     else:
         ord= OrderRent.objects.get(order_payment_id=ord_id)
         print(ord)
         ord.isPaid =True 
-        ord.save()    
+        ord.save()
+        val=ord.order_product
+        case=ord.buyer
+        user=request.user
+        if case:
+            rent=Rent_detail.objects.get(ordernumber=val)
+            rent.booked_person=user
+            rent.booked=True
+            rent.available=False
+            rent.save()
+            user=Account.objects.get(email=user)
+            user.count+=1
+            user.save()  
+        
+        
+        else:            
+            job=Rent_detail.objects.get(ordernumber=val)
+            job.payment=True
+            job.save()
     response=Response()
     response.data = {
         'message': 'payment successfully completed'

@@ -40,7 +40,7 @@ function Home() {
      </div>
      
      <div  className='main-btn2 mt-5 ml-5 textAlign:center'>
-     <img className='pic1' src='https://media-exp1.licdn.com/dms/image/C4E12AQFVBCbzbVjy4w/article-cover_image-shrink_720_1280/0/1566212213357?e=1666828800&v=beta&t=0Z2L2Nj_sZszUnc2LJEtIblpzlGyOJ67gSXyG0TxFyc' alt='nothing inside' />
+     <img className='pic1' src='https://thumbs.dreamstime.com/z/key-car-hand-cartoon-style-give-take-buy-rent-vehicle-vector-illustration-flat-design-isolated-background-red-auto-template-147799430.jpg' />
      <h1 className='main-header1'>BORROW AN EQUIPMENT</h1>
       
         <p className='sub-heading'>Are you looking for a rent item  ?are you want a job then click the button </p>   
@@ -48,14 +48,10 @@ function Home() {
      </div>
      
 
-      {/* <Button className='main-btn1  mt-5  '>Wow</Button>
-      <Button className='main-btn2 mt-5 ml-3'>Wow</Button> */}
-      {/* <br></br> */}
-      {/* <Button className='main-btn1 mt-5'>Wow</Button>
-      <Button className='main-btn2 mt-5 ml-3'>Wow</Button> */}
+  
         <div style={{backgroundColor:'gray'}}>
            
-            {/* <h4>ആരാണ്  WEDID  ? എന്താണ് ഞങ്ങൾ നിങ്ങൾക്കായി ചെയ്യുന്നത്  ? ഒരേഒരു ഉത്തരമേ ഉള്ളോ ഞങ്ങൾ നിങ്ങളിൽ ഒരാൾ ആണ്  </h4> */}
+          
             <p className='wedid'>WEDID</p>
             <p style={{marginTop:'70px'}}>wedidsolutions@gmail.com</p>
       </div>

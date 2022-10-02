@@ -5,16 +5,17 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import axios from '../axios'
 import {useNavigate} from 'react-router-dom';
 import './materalui.css'
+import Alert from '@mui/material/Alert';
 
 // material ui
 // import Button from '@mui/material/Button';
 import Snackbar from '@mui/material/Snackbar';
-import MuiAlert from '@mui/material/Alert';
+// import MuiAlert from '@mui/material/Alert';
 import CommonStepper from './common/CommonStepper/CommonStepper';
 
-const Alert = React.forwardRef(function Alert(props, ref) {
-  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-});
+// const Alert = React.forwardRef(function Alert(props, ref) {
+//   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+// });
 
 function GivingService() {
     const navigate=useNavigate()
@@ -386,12 +387,15 @@ const handlePaymentSuccess = async (response) => {
       .then((res) => {
         console.log("Everything is OK!");
         handleClicks()
-        console.log(res.data.message)
-        localStorage.setItem('message',JSON.stringify(res.data.message))
+        console.log(res.data.message)       
         setPayed(true)
         setSubmit(false)
         setName("");
         setAmount("");
+        localStorage.removeItem('order_number')
+        localStorage.removeItem('rate')
+        navigate('/joblook')
+
       })
     }catch(error){
     console.log(console.error())
@@ -482,22 +486,6 @@ const showRazorpay = async () => {
 
 
 
-// for final view 
-  const lastSubmitHandler=(e)=>{
-    e.preventDefault()
-    let order_number=(JSON.parse(localStorage.getItem('order_number'))) 
-    axios.post('job/payedjob/',{
-      order_number:order_number
-    }).then((res)=>{
-      if(res.data){
-        localStorage.removeItem('order_number')
-        localStorage.removeItem('rate')
-        localStorage.removeItem('message')
-        navigate('/joblook')
-      }
-     
-    })
-  }
 
 const [che1,setChe1]=useState(false)
   const checkBox1=()=>{
@@ -517,7 +505,8 @@ const [che1,setChe1]=useState(false)
       setChe2(false)
     }
   }
-const  checkChecker=()=>{
+const  checkChecker=(e)=>{
+  e.preventDefault()
   if(!che1 || !che2 ){
     console.log('workingg')
   }else{
@@ -690,7 +679,7 @@ const  checkChecker=()=>{
              <Button className='payment-btn2' type='submit' variant="outline-warning" onClick={checkChecker}><p>Make Payment with razorpay</p></Button><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br>
              <Button className='payment-btn4' type='' onClick={cancelHandler} variant="outline-danger"><p>cancel</p></Button>
 
-             { open &&<Alert variant="filled" auto severity="erro">Please click tick for terms and condition</Alert> }
+             {/* { open &&<Alert variant="filled" auto severity="error">Please click tick for terms and condition</Alert> } */}
 
               <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
                 <div className='box'  >
@@ -703,22 +692,16 @@ const  checkChecker=()=>{
 
 
 
-{payed ?
+{/* {payed ?
          <form className='form-payment'>         
            
              <Button className='payment-btn2' type='submit' variant="outline-warning" onClick={lastSubmitHandler}><p>SHARE THE POST </p></Button><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br>
              <Button className='payment-btn4' type='' onClick={cancelHandler} variant="outline-danger"><p>cancel</p></Button>
-                <Snackbar open={opens} autoHideDuration={6000} onClose={handleCloses}>
-                <div className='box'>
-                <Alert onClose={handleCloses} severity="success" sx={{ width: '100%' }} >
-                  payment done successfully 
-                </Alert>
-                </div>               
-              </Snackbar>
+              
             
          </form>
          
-           :'  '     } 
+           :'  '     }  */}
            
             </div> 
             

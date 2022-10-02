@@ -36,7 +36,8 @@ function List({currentpage}) {
         <span className='listPrice'><span className='span'>Price: </span>{obj.rate} ₹</span>      
        
         <span className='listSize'><span className='span'>valid up to: </span>{obj.valid_at} </span>
-        <button className='resbookbtn' onClick={()=>navigate(`rentsingle/${obj.id}`)}>View and Book</button>
+        { !obj.available?  <button className='resbookbtn' onClick={()=>navigate(`rentsingle/${obj.id}`)} disabled>Not available</button>:   <button className='resbookbtnz' onClick={()=>navigate(`rentsingle/${obj.id}`)}>View and Book</button> }
+         {/* { !rent.available?  <Button style={{height:'60px',marginTop:'20px'}} onClick={handleShowz} className='h-5' variant="danger" disabled>Not available</Button>:<Button style={{height:'60px',marginTop:'20px'}} onClick={handleShowz} className='h-5' variant="danger">Make Payment</Button>   } */}
       </div>
     
     </div>

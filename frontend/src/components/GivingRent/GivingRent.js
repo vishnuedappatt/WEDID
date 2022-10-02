@@ -44,7 +44,7 @@ function GivingRent() {
   const steps = [
     'Fill the black for creating rent',
     'payment section',
-    'Post the rent item',
+   
   ];
 
 
@@ -439,11 +439,14 @@ const handlePaymentSuccess = async (response) => {
         console.log("Everything is OK!");
         handleClicks()
         console.log(res.data.message)
-        localStorage.setItem('message',JSON.stringify(res.data.message))
         setPayed(true)
         setSubmit(false)
         setName("");
         setAmount("");
+        localStorage.removeItem('rate')
+        localStorage.removeItem('order_number')
+        localStorage.removeItem('message')
+        navigate('/rentlook')
       })
     }catch(error){
     console.log(console.error())
@@ -510,22 +513,7 @@ const showRazorpay = async () => {
 };
 
 
-// for final view 
-  const lastSubmitHandler=(e)=>{
-    e.preventDefault()
-    let order_number=(JSON.parse(localStorage.getItem('order_number'))) 
-    axios.post('rent/payment/finish/',{
-      order_number:order_number
-    }).then((res)=>{
-      if(res.data){
-        localStorage.removeItem('order_number')
-        localStorage.removeItem('rate')
-        localStorage.removeItem('message')
-        navigate('/rentlook')
-      }
-     
-    })
-  }
+
 
   const [che1,setChe1]=useState(false)
   const checkBox1=()=>{
@@ -747,7 +735,7 @@ const  checkChecker=(e)=>{
                 { (!che1 || !che2 )?   <Alert variant="filled" auto severity="error">Please click tick for terms and condition</Alert>   : ' '}        
                 <p style={{color:'yellow',marginTop:'4rem'}}>** charges applied</p>
                 <p  style={{color:'red'}}>**  you should pay 50 rupess for posting </p>  
-                { open ?   <Alert variant="filled" auto severity="success">Sucessfully created the post</Alert>   : ' '}  
+                { open ?   <Alert variant="filled" auto severity="success" onClick={handleCloses}>Sucessfully created the post</Alert>   : ' '}  
             </div>
           
              <Button className='payment-btn2' type='submit' variant="outline-warning" onClick={checkChecker}><p>Make Payment with razorpay</p></Button><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br>
@@ -756,18 +744,7 @@ const  checkChecker=(e)=>{
          </form>  } 
          
 
-        { payed &&
-       
-         <form className='form-payment'>     
-         {/* <CommonStepper steps={steps} activeStep={2}/> */}
-             <Button className='payment-btn2' type='submit' variant="outline-warning" onClick={lastSubmitHandler}><p>SHARE THE POST </p></Button><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br>
-             <Button className='payment-btn4' type='' onClick={cancelHandler} variant="outline-danger"><p>cancel</p></Button>
-             { opens ?   <Alert variant="filled" auto severity="success">payment done successfully</Alert>   : ' '}  
-            
-            
-         </form>
-         
-             } 
+    
            
             </div> 
             

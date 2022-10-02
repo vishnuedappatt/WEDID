@@ -1,6 +1,6 @@
 import axios from '../../axios';
 import React,{useEffect,useState} from 'react'
-import {useParams} from 'react-router-dom'
+import {Link, useParams} from 'react-router-dom'
 import Button from 'react-bootstrap/Button';
 import { useNavigate } from 'react-router-dom';
 import Card from 'react-bootstrap/Card'
@@ -150,12 +150,12 @@ const handlePaymentSuccess = async (response) => {
       .then((res) => {
         console.log("Everything is OK!");
         console.log(res.data.message)
-        localStorage.setItem('message',JSON.stringify(res.data.message))
         setPayed(true)
         handleClick(TransitionLeft)
         setName("");
         setAmount("");
         setErrorFixing(false)
+        navigate('/joblook')       
       })
     }catch(error){
     console.log(console.error())
@@ -239,17 +239,7 @@ const val='30rem'
         <CommonModal message={'are you sure to get this service'} modalHeading={'Confirmation for service'} btnsave={'confirm to get this '} fncall={freePayment} show={show} onHide={handleClose}/>
       <Card.Img  />
       <Card.Body> 
-      {payed ?
-    
-    <div align='center' style={{height:'20rem'}}>
-       <CommonSnackbar onClose={snackHandleClose} message={'are you want this'} values={'fdfdffdd'} transition={transition} open={open} />
-      
-    <p style={{color:'yellow',marginTop:'15rem'}}>You are ready to get this service </p>
-    <h5 style={{color:'white'}}>{job.title }</h5>
-    { view && <Example  type='bars' color='red'/>}
-  <Button variant="dark" type=""  onClick={freePayment}    style={{textAlign:'center',height:'4rem',width:'15rem',}}>Get this Service</Button>
-
-  </div>:''}
+  
      {errorfixing ?   
     <div style={{paddingLeft:'100px'}}>   
     { payed ?'':
@@ -261,6 +251,9 @@ const val='30rem'
       <span style={{color:'wheat',}}>DISCRIPTION</span> <h4 style={{color:'white',marginLeft:'60px',marginTop:'20px'}}>{job.discriptions}</h4>
       <span style={{color:'wheat',}}>POST DATE</span> <h4 style={{color:'white',marginLeft:'60px',marginTop:'20px'}}>{String(job.created_at).slice(0,10).split("-").reverse().join("-")}</h4>
       <span style={{color:'wheat',}}>VALID</span> <h4 style={{color:'white',marginLeft:'60px',marginTop:'20px'}}>{job.valid_at}</h4>
+
+
+      <Link to='/joblook' ><Button>Back</Button></Link>
       </div>}
       { count && !payed && <div align='center'>      
         <div align='center'>

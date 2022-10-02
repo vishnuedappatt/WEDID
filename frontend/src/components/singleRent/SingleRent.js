@@ -1,7 +1,7 @@
 import React,{useEffect, useState} from 'react';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
-import {useParams} from 'react-router-dom'
+import {Link, useParams} from 'react-router-dom'
 import axios from '../../axios';
 import ImageUrl from '../common/Image/Image';
 import Carousel from 'react-bootstrap/Carousel';
@@ -96,11 +96,12 @@ const handlePaymentSuccess = async (response) => {
       .then((res) => {
         console.log("Everything is OK!");
            console.log(res.data.message)
-        localStorage.setItem('message',JSON.stringify(res.data.message))
+     
         setPayed(true)     
         setName("");
         setAmount("");
         handleClosez()
+        navigate('/rentlook')     
       })
     }catch(error){
     console.log(console.error())
@@ -167,25 +168,6 @@ const showRazorpay = async (e) => {
 
 const [shows,setShows]=useState(false)
 
-// / final submit
-    const finalsubmit=async()=>{
-      setShows(true)
-        let request=(JSON.parse(localStorage.getItem('token')))  
-          await axios.post('payment/finish/',{id:id},{
-            headers: {
-                Authorization:'Bearer '+ request
-            }
-        }).then((res)=>{
-          if(res.status===200){
-            setShows(false)
-            // setJob(res.data)
-            localStorage.removeItem('message')
-            handleClose()
-            console.log(res.data)         
-            navigate('/rentlook')        
-          }
-        })
-      }
     
   return (
   <div align='center'>
@@ -225,11 +207,7 @@ const [shows,setShows]=useState(false)
       </Carousel.Item>
     </Carousel>     
       <Card.Body style={{backgroundColor:'#0962',borderBottomLeftRadius:'150px'}}>    
-      {payed ? <div>
-        <Card.Title className=''>{rent.title}</Card.Title>
-        <span>* please click the button for complete your order</span>
-      </div>
-    :' '}
+      
    {!payed &&   
    <div>   
         <Card.Title style={{fontWeight:'900' ,fontSize:'30px'}}>{rent.title}</Card.Title>
@@ -237,14 +215,13 @@ const [shows,setShows]=useState(false)
         <Card.Text><LocationOn color="dark" />   {rent.district.district},{rent.city.city}</Card.Text>
         <Card.Text onClick={handleShow} style={{color:'red'}}>Discriptions</Card.Text>
         <CommonModal message={rent.discriptions} modalHeading={'Discription and rules'} btnsave={''} show={show} onHide={handleClose}/>
+        <Card.Text style={{color:'red'}}>Price :{rent.rate}</Card.Text>
+        <Link to='/rentlook' ><Button>Back</Button></Link>
         {/* <Card.Text >{rent.discriptions}</Card.Text> */}
         </div> }
-       {payed ?<> <Button  onClick={finalsubmit} variant="outline-dark">Get this Item</Button>
-       { shows && <Example  type='bars' color='red'/> }
-      
-        </>: <div>
+      <div>
           { !rent.available?  <Button style={{height:'60px',marginTop:'20px'}} onClick={handleShowz} className='h-5' variant="danger" disabled>Not available</Button>:<Button style={{height:'60px',marginTop:'20px'}} onClick={handleShowz} className='h-5' variant="danger">Make Payment</Button>   }
-       </div>}
+       </div>
       </Card.Body>
     </Card>
         </div>}
