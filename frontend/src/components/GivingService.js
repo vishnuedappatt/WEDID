@@ -691,18 +691,7 @@ const  checkChecker=(e)=>{
          </form>:'  '  } 
 
 
-
-{/* {payed ?
-         <form className='form-payment'>         
-           
-             <Button className='payment-btn2' type='submit' variant="outline-warning" onClick={lastSubmitHandler}><p>SHARE THE POST </p></Button><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br>
-             <Button className='payment-btn4' type='' onClick={cancelHandler} variant="outline-danger"><p>cancel</p></Button>
-              
-            
-         </form>
-         
-           :'  '     }  */}
-           
+          
             </div> 
             
     </div>

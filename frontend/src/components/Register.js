@@ -47,12 +47,7 @@ function Register() {
     
 
 
-      // const override: CSSProperties = {
-      //   display: "block",
-      //   margin: "0 auto",
-      //   borderColor: "red",
-      // };
-  
+
 
     // validation
     const fnamecheck=(e)=>{       
@@ -65,10 +60,7 @@ function Register() {
         else{
           setFname(value)
           setFerror('*  name should contain min 3 charector ')
-          setValid(true)
-          // setTimeout(() => {
-          //  setFerror(false);
-          //     }, 5000);            
+          setValid(true)         
         }        
     }
 

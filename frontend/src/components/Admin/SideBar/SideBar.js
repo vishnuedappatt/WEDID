@@ -61,7 +61,7 @@ function SideBar() {
   return (
     <div>
          <ListGroup className='p-5' style={{'height':'90vh','backgroundColor':'black'}}>
-         <Link style={{'backgroundColor':'black' ,'color':'red','textDecoration':'none','textAlign':'center','fontSize':'22px'}} className='mt-2'  to="/admin">   <Button  variant="contained" color='warning' fullWidth >Chart of service </Button></Link>
+         <Link style={{'backgroundColor':'black' ,'color':'red','textDecoration':'none','textAlign':'center','fontSize':'22px'}} className='mt-2'  to="/admin">   <Button  variant="contained" color='warning' fullWidth >Dashboard </Button></Link>
          <Link style={{'backgroundColor':'black' ,'color':'red','textDecoration':'none','textAlign':'center','fontSize':'22px'}} className='mt-2'  to="/admin/userView">   <Button  variant="contained" color='warning' fullWidth >user details</Button></Link>
       
         <Link style={{'backgroundColor':'black' ,'color':'red','textDecoration':'none','textAlign':'center','fontSize':'22px'}} className='mt-5'   to="/admin/job"><Button  variant="contained" style={{backgroundColor:'white',color:'black',width:'100%'}} fullWidth >Job Details</Button></Link>

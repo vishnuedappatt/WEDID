@@ -30,7 +30,7 @@ function Verify() {
     }
     
     const otpSubmit=(e)=>{
-        // console.log(mobile,'mobile get')\\\\
+      
         e.preventDefault()
         console.log('otp given')
         axios.post('user/verify/',{
