@@ -4,8 +4,8 @@ import dayjs from 'dayjs'
 
 
 const  instance=axios.create({
-    // baseURL:'https://wedid.sportsbasket.tk/',
-    baseURL:'http://127.0.0.1:8000/'
+    baseURL:'https://wedid.sportsbasket.tk/',
+    // baseURL:'http://127.0.0.1:8000/'
 })
 
 // let authToken = localStorage.getItem('authToken') ? JSON.parse(localStorage.getItem('authToken')) : null
