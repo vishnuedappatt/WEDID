@@ -45,7 +45,7 @@ function App() {
           <RentProvider>            
             <Routes>
               <Route element={<CaseOfAdmin />}>
-                <Route path="/" element={<HomePage />} />
+                <Route path="" element={<HomePage />} />
               </Route>
               
               <Route element={<CaseOfReverse />}>               

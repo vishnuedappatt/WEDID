@@ -258,16 +258,14 @@ function Register() {
             password:password,
             confirm_password:confpass,
         }).then((res)=>{
-            console.log(res.data)
+            console.log(res.data,'data ann')
             setLoad(false)
             if (res.data.error){
               console.log(res.data.error)
               setErrors(res.data.error)
               handleShow()
             
-
-          }
-      
+         }      
             if(res.data.mobile){
               
                 console.log('get the mobile')

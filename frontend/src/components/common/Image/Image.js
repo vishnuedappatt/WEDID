@@ -1,6 +1,6 @@
 
 
-const ImageUrl='http://127.0.0.1:8000'
+const ImageUrl='https://wedid.sportsbasket.tk/'
 
 export default ImageUrl;
 

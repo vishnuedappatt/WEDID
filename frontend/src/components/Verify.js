@@ -7,6 +7,8 @@ import { Link,useNavigate } from 'react-router-dom';
 import axios from '../axios';
 import AuthContext from '../context/authcontext';
 import Modal from 'react-bootstrap/Modal';
+import Alert from '@mui/material/Alert';
+import ReactLoading from 'react-loading';
 
 function Verify() {
   const  {mobile}= useContext(AuthContext)
@@ -21,34 +23,56 @@ function Verify() {
     const handleShow = () => {setShow(true)};
   
 
-
+  const [check,setCheck]=useState(false)
     
     const otpcheck=(e)=>{
         console.log(e.target.value)
         setCode(e.target.value)
 
     }
+
+    const timeCheck=()=>{
+      setCheck(true)
+      setTimeout(() => {
+        setCheck(false)      
+           }, 5000);
+
+    }
+
+    const [showz,setShowz]=useState(false)
     
     const otpSubmit=(e)=>{
-      
+      setShowz(true)
         e.preventDefault()
         console.log('otp given')
         axios.post('user/verify/',{
             code:code,
             mobile:mobile,
         }).then((res)=>{
-            console.log(res.data)
+            console.log(res.data,'lllll')
             if(res.data.error){
+              timeCheck()
               setError(res.data.error)
+              console.log(res.data.error)
               handleShow()
+              setShowz(false)
             }
             if(res.data.is_active==true){
+              setCheck(false)
               console.log('success ittt')
+              setShowz(false)
               navigate('/login')
             }
+        }).catch((err)=>{
+          console.log(err.response)
         })
 
     }
+    // bar loading
+const Example = ({ type, color }) => (
+  <ReactLoading type={type} color={color} height={'20%'} width={'20%'} />
+);
+
   return (
     <div className='mt-5'>
       <Modal show={show} onHide={handleClose} animation={false}>
@@ -60,13 +84,8 @@ function Verify() {
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          {/* <Button variant="primary" onClick={handleClose}>
-            Save Changes
-          </Button> */}
         </Modal.Footer>
       </Modal>
-
-   
     <Card style={{ backgroundColor:'#339966',borderRadius:'2rem'}}>
       <Card.Img  />
       <Card.Body>
@@ -77,16 +96,14 @@ function Verify() {
         <Form.Text className="text-muted">        
         </Form.Text>
       </Form.Group>
+     {check &&  <Alert variant="filled" auto severity="error">{error}</Alert> }
      <div style={{textAlign:'center'}}>
-     <Button variant="dark" type="submit"    style={{textAlign:'center',height:'4rem',width:'15rem',marginTop:'3rem'}}>
+   {showz ?    <Example  type='bars' color='red'/>  :  <Button variant="dark" type="submit"    style={{textAlign:'center',height:'4rem',width:'15rem',marginTop:'3rem'}}>
         verify  
-      </Button>
-     </div>
+      </Button> }
     
-    </Form>     
-       
-        {/* <Button variant="primary" style={{marginLeft:'25rem'}}>Forgot password</Button> */}
-  
+     </div>    
+    </Form>    
       </Card.Body>
     </Card>
 

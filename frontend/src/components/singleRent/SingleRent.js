@@ -179,7 +179,7 @@ const [shows,setShows]=useState(false)
         <img
           className="d-block"
           style={{width:'500px'}}
-          src={ImageUrl+rent.image}
+          src={rent.image}
           alt="First slide"
           />
         <Carousel.Caption>        
@@ -189,7 +189,7 @@ const [shows,setShows]=useState(false)
         <img
           className="d-block "
           style={{width:'500px'}}
-          src={ImageUrl+rent.image1}
+          src={rent.image1}
           alt="Second slide"
           />
         <Carousel.Caption>         
@@ -199,7 +199,7 @@ const [shows,setShows]=useState(false)
         <img
           className="d-block "
           style={{width:'500px'}}
-          src={ImageUrl+rent.image2}
+          src={rent.image2}
           alt="Third slide"
         />
         <Carousel.Caption>       

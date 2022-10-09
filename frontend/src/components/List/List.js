@@ -26,7 +26,7 @@ function List({currentpage}) {
    <div align='center'>
 
    { searchimage ? <img src={obj.image} alt='noo' className='listImg'/> : 
-      <img src={ImageUrl +obj.image} alt='noo' className='listImg'/> }
+      <img src={obj.image} alt='noo' className='listImg'/> }
    </div>      
       <div className='listDesc'>
       <span className='span'>Item :</span><h3 className='listTile'>{obj.title}</h3>
